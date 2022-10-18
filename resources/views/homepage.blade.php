@@ -99,21 +99,21 @@
                             <a class="mega-menu-link" href="login" tabindex="0">Login</a>
                         </li> -->
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                        <a class="mega-menu-link" href="https://research.spit.ac.in/" tabindex="0">Reimbursement</a></li>
+                        <a class="mega-menu-link" target="_blank" href="https://research.spit.ac.in/" tabindex="0">Reimbursement</a></li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                        <a class="mega-menu-link" href="http://tpp.spit.ac.in/" tabindex="0">TPP</a></li>
+                        <a class="mega-menu-link" target="_blank" href="http://tpp.spit.ac.in/" tabindex="0">TPP</a></li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                        <a class="mega-menu-link" href="http://pec.spit.ac.in/" tabindex="0">PEC</a></li>
+                        <a class="mega-menu-link" target="_blank" href="http://pec.spit.ac.in/" tabindex="0">PEC</a></li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                        <a class="mega-menu-link" href="http://pdc.spit.ac.in/login" tabindex="0">PDC</a></li>
+                        <a class="mega-menu-link" target="_blank" href="http://pdc.spit.ac.in/login" tabindex="0">PDC</a></li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                        <a class="mega-menu-link" href="http://iedc-project.spit.ac.in/" tabindex="0">IEDC</a></li>
+                        <a class="mega-menu-link" target="_blank" href="http://iedc-project.spit.ac.in/" tabindex="0">IEDC</a></li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                        <a class="mega-menu-link" href="" tabindex="0">Proposal</a></li>
+                        <a class="mega-menu-link" target="_blank" href="" tabindex="0">Proposal</a></li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                        <a class="mega-menu-link" href="" tabindex="0">Event</a></li>
+                        <a class="mega-menu-link" target="_blank" href="" tabindex="0">Event</a></li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                        <a class="mega-menu-link" href="http://vlab-ci.spit.ac.in/" tabindex="0">VLab</a></li>
+                        <a class="mega-menu-link" target="_blank" href="http://vlab-ci.spit.ac.in/" tabindex="0">VLab</a></li>
                     </ul>
                 </div>
             </div>
@@ -126,7 +126,7 @@
 
     <div class="content">
         @section('content')
-                        <div style="width: 300px; height:400px"></div>
+            <div style="width: 300px; height:400px"></div>
         @show
     </div>
 
