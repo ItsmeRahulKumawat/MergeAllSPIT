@@ -17,4 +17,6 @@ Route::get('/', function () {
     return view('homepage');
 });
 
-
+Route::get('/proposal',function(){
+    return view('proposal');
+});
