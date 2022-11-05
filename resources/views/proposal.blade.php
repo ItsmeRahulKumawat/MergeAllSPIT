@@ -77,7 +77,17 @@
                 @section('content')
                 <h2>Proposal Submission</h2>
                 <div class="form" >
-                    <form method="POST" action="/api/proposal">
+                    <form method="POST" action="{{url('/proposal')}}">
+                        @csrf
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                            @endif
                         <div class="form-group w-75 p-3">
                             <label for="title-proposal">Title of Proposal</label>
                             <input name="proposal-title" type="text" class="form-control" id="title-proposal" placeholder="Title of Proposal">

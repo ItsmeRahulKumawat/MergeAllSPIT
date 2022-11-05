@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProposalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,7 @@ Route::get('/', function () {
 Route::get('/proposal',function(){
     return view('proposal');
 });
+
+// Route::get('/proposal', [ProposalController::class, 'index']);
+
+Route::post('/proposal', [ProposalController::class, 'store']);
