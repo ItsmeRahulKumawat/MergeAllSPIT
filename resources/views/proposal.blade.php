@@ -115,8 +115,15 @@
                             <input name="proposal-funding-amount" type="Number" class="form-control" id="amount" placeholder="Funding amount">
                         </div>
                         <div class="form-group w-75 p-3">
+                            <?php 
+                                $month = date('m');
+                                $day = date('d');
+                                $year = date('Y');
+                                $today = $year . '-' . $month . '-' . $day;
+                            ?>
                             <label for="amount">Date of Submission</label>
-                            <input name="proposal-submission-date" type="date" class="form-control" id="submission-date" placeholder="Date of Submission">
+                            <input name="proposal-submission-date" type="date" class="form-control" 
+                            id="submission-date" placeholder="Date of Submission"  value="<?php echo $today; ?>" max="<?php echo date("Y-m-d"); ?>">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

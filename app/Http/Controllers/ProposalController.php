@@ -26,20 +26,21 @@ class ProposalController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'proposal-title' => 'required',
+            'proposal-title' => 'required|unique:proposals|max:255',
             'proposal-abstract' => 'required',
             'proposal-funding-amount' => 'required',
             'proposal-submission-date' => 'required',
         ],[
             'proposal-title.required' => 'Proposal Title is required',
+            'proposal-title.unique' => 'Proposal Title already exists',
             'proposal-abstract.required' => 'Proposal Abstract is required',
             'proposal-funding-amount.required' => 'Proposal Funding Amount is required',
             'proposal-submission-date.required' => 'Proposal Submission Date is required',
-        ]);
-        // print errors
-
-        // Proposal::create($request->all());
-        // return view('proposal-submitted');
+        ],
+);
+        Proposal::create($request->all());
+        
+        return view('proposal-submitted');
     }
 
     /**
