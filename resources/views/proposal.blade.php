@@ -77,36 +77,36 @@
                 @section('content')
                 <h2>Proposal Submission</h2>
                 <div class="form" >
-                    <form>
+                    <form method="POST" action="/api/proposal">
                         <div class="form-group w-75 p-3">
                             <label for="title-proposal">Title of Proposal</label>
-                            <input type="text" class="form-control" id="title-proposal" placeholder="Title of Proposal">
+                            <input name="proposal-title" type="text" class="form-control" id="title-proposal" placeholder="Title of Proposal">
                         </div>
                         <div class="form-group w-75 p-3">
                             <label for="authority">Authority/Organization</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
+                            <select name="proposal-authority/organization" class="form-control" id="exampleFormControlSelect1">
                                 <option>Authority</option>
                                 <option>Organization</option>
                             </select>
                         </div>
                         <div class="form-group w-75 p-3">
                             <label for="govt">Govt./Private</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
+                            <select name="proposal-govt/private" class="form-control" id="exampleFormControlSelect1">
                                 <option>Govt</option>
                                 <option>Private</option>
                             </select>
                         </div>
                         <div class="form-group w-75 p-3">
                             <label for="abstract">Abstract</label>
-                            <textarea class="form-control" id="abstract" rows="3"></textarea>
+                            <textarea name="proposal-abstract" class="form-control" id="abstract" rows="3"></textarea>
                         </div>
                         <div class="form-group w-75 p-3">
                             <label for="amount">Funding amount applied for</label>
-                            <input type="Number" class="form-control" id="amount" placeholder="Funding amount">
+                            <input name="proposal-funding-amount" type="Number" class="form-control" id="amount" placeholder="Funding amount">
                         </div>
                         <div class="form-group w-75 p-3">
                             <label for="amount">Date of Submission</label>
-                            <input type="date" class="form-control" id="submission-date" placeholder="Date of Submission">
+                            <input name="proposal-submission-date" type="date" class="form-control" id="submission-date" placeholder="Date of Submission">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
