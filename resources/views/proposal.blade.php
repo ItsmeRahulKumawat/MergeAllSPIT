@@ -75,7 +75,7 @@
         <div id="main">
             <div class="content">
                 @section('content')
-                <h2>Proposal Sumbission</h2>
+                <h2>Proposal Submission</h2>
                 <div class="form" >
                     <form>
                         <div class="form-group w-75 p-3">
@@ -105,11 +105,10 @@
                             <input type="Number" class="form-control" id="amount" placeholder="Funding amount">
                         </div>
                         <div class="form-group w-75 p-3">
-                            <label for="amount">Funding amount applied for</label>
-                            <input type="date" class="form-control" id="amount" placeholder="Funding amount">
+                            <label for="amount">Date of Submission</label>
+                            <input type="date" class="form-control" id="submission-date" placeholder="Date of Submission">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
-
                     </form>
                 </div>
                 @show
