@@ -14,12 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('proposals', function (Blueprint $table) {
-            $table->string('proposal-title')->primary();
-            $table->string('proposal-authority/organization');
-            $table->string('proposal-govt/private');
-            $table->string('proposal-abstract');
-            $table->string('proposal-funding-amount');
-            $table->string('proposal-submission-date');
+            $table->string('proposal_title')->primary();
+            $table->string('proposal_authorityOrOrganization');
+            $table->string('proposal_govtPrivate');
+            $table->string('proposal_abstract');
+            $table->string('proposal_fundingAmount');
+            $table->string('proposal_submissionDate');
+            $table->string('proposal_file');
             $table->timestamps();
         });
     }

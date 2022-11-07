@@ -77,7 +77,7 @@
                 @section('content')
                 <h2>Proposal Submission</h2>
                 <div class="form" >
-                    <form method="POST" action="{{url('/proposal')}}">
+                    <form method="POST" action="{{url('/proposal')}}"" enctype="multipart/form-data">
                         @csrf
                         @if ($errors->any())
                         <div class="alert alert-danger">
@@ -89,30 +89,30 @@
                         </div>
                             @endif
                         <div class="form-group w-75 p-3">
-                            <label for="title-proposal">Title of Proposal</label>
-                            <input name="proposal-title" type="text" class="form-control" id="title-proposal" placeholder="Title of Proposal">
+                            <label for="proposal_title">Title of Proposal</label>
+                            <input name="proposal_title" type="text" class="form-control" id="title-proposal" placeholder="Title of Proposal">
                         </div>
                         <div class="form-group w-75 p-3">
-                            <label for="authority">Authority/Organization</label>
-                            <select name="proposal-authority/organization" class="form-control" id="exampleFormControlSelect1">
-                                <option>Authority</option>
-                                <option>Organization</option>
+                            <label for="proposal_authorityOrOrganization[]">Authority/Organization</label>
+                            <select name="proposal_authorityOrOrganization[]" class="form-control" id="exampleFormControlSelect1">
+                                <option value="Authority">Authority</option>
+                                <option value="Organization">Organization</option>
                             </select>
                         </div>
                         <div class="form-group w-75 p-3">
-                            <label for="govt">Govt./Private</label>
-                            <select name="proposal-govt/private" class="form-control" id="exampleFormControlSelect1">
-                                <option>Govt</option>
-                                <option>Private</option>
+                            <label for="proposal_govtPrivate[]">Govt./Private</label>
+                            <select name="proposal_govtPrivate[]" class="form-control" id="exampleFormControlSelect1">
+                                <option value="Govt">Govt</option>
+                                <option value="Private">Private</option>
                             </select>
                         </div>
                         <div class="form-group w-75 p-3">
                             <label for="abstract">Abstract</label>
-                            <textarea name="proposal-abstract" class="form-control" id="abstract" rows="3"></textarea>
+                            <textarea name="proposal_abstract" class="form-control" id="abstract" rows="3"></textarea>
                         </div>
                         <div class="form-group w-75 p-3">
-                            <label for="amount">Funding amount applied for</label>
-                            <input name="proposal-funding-amount" type="Number" class="form-control" id="amount" placeholder="Funding amount">
+                            <label for="proposal_fundingAmount">Funding amount applied for</label>
+                            <input name="proposal_fundingAmount" type="Number" class="form-control" id="amount" placeholder="Funding amount">
                         </div>
                         <div class="form-group w-75 p-3">
                             <?php 
@@ -122,8 +122,13 @@
                                 $today = $year . '-' . $month . '-' . $day;
                             ?>
                             <label for="amount">Date of Submission</label>
-                            <input name="proposal-submission-date" type="date" class="form-control" 
+                            <input name="proposal_submissionDate" type="date" class="form-control" 
                             id="submission-date" placeholder="Date of Submission"  value="<?php echo $today; ?>" max="<?php echo date("Y-m-d"); ?>">
+                        </div>
+                        
+                        <div class="form-group w-75 p-3">
+                            <label for="proposal_file">Upload File</label>
+                            <input type="file" name="proposal_file" accept="application/pdf" id="proposal_file" class="form-control" placeholder="" aria-describedby="">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

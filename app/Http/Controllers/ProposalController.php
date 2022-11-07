@@ -25,22 +25,35 @@ class ProposalController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
-            'proposal-title' => 'required|unique:proposals|max:255',
-            'proposal-abstract' => 'required',
-            'proposal-funding-amount' => 'required',
-            'proposal-submission-date' => 'required',
+            'proposal_title' => 'required|unique:proposals|max:255',
+            'proposal_abstract' => 'required',
+            'proposal_fundingAmount' => 'required',
+            'proposal_submissionDate' => 'required',
         ],[
-            'proposal-title.required' => 'Proposal Title is required',
-            'proposal-title.unique' => 'Proposal Title already exists',
-            'proposal-abstract.required' => 'Proposal Abstract is required',
-            'proposal-funding-amount.required' => 'Proposal Funding Amount is required',
-            'proposal-submission-date.required' => 'Proposal Submission Date is required',
+            'proposal_title.required' => 'Proposal Title is required',
+            'proposal_title.unique' => 'Proposal Title already exists',
+            'proposal_abstract.required' => 'Proposal Abstract is required',
+            'proposal_fundingAmount.required' => 'Proposal Funding Amount is required',
+            'proposal_submissionDate.required' => 'Proposal Submission Date is required',
         ],
-);
-        Proposal::create($request->all());
-        
-        return view('proposal-submitted');
+        );
+        $title = $request->input('proposal_title');
+        $file = $request->proposal_file;
+        $fileName = 'PDF_'.$title.'_'.time().'.'.$file->getClientOriginalExtension();
+        $file->storeAs('public/proposal_files', $fileName);
+
+        $proposal = new Proposal();
+        $proposal->proposal_title = $request->input('proposal_title');
+        $proposal->proposal_authorityOrOrganization = $request->proposal_authorityOrOrganization[0];
+        $proposal->proposal_govtPrivate = $request->proposal_govtPrivate[0];
+        $proposal->proposal_abstract = $request->input('proposal_abstract');
+        $proposal->proposal_fundingAmount = $request->input('proposal_fundingAmount');
+        $proposal->proposal_submissionDate = $request->input('proposal_submissionDate');
+        $proposal->proposal_file = $fileName;
+        $proposal->save();
+        return view('proposal_submitted');
     }
 
     /**

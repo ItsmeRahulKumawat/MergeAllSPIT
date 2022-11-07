@@ -9,11 +9,12 @@ class Proposal extends Model
 {
     use HasFactory;
     protected $fillable =[
-        'proposal-title',
-        'proposal-authority/organization',
-        'proposal-govt/private',
-        'proposal-abstract',
-        'proposal-funding-amount',
-        'proposal-submission-date',
+        'proposal_title',
+        'proposal_authorityOrOrganization',
+        'proposal_govtPrivate',
+        'proposal_abstract',
+        'proposal_fundingAmount',
+        'proposal_submissionDate',
+        'proposal_file',
     ];
 }
