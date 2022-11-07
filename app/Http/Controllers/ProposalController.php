@@ -31,12 +31,14 @@ class ProposalController extends Controller
             'proposal_abstract' => 'required',
             'proposal_fundingAmount' => 'required',
             'proposal_submissionDate' => 'required',
+            'proposal_file' => 'required|max:10240',
         ],[
             'proposal_title.required' => 'Proposal Title is required',
             'proposal_title.unique' => 'Proposal Title already exists',
             'proposal_abstract.required' => 'Proposal Abstract is required',
             'proposal_fundingAmount.required' => 'Proposal Funding Amount is required',
             'proposal_submissionDate.required' => 'Proposal Submission Date is required',
+            'proposal_file.max' => 'File size must be less than 10MB',
         ],
         );
         $title = $request->input('proposal_title');
