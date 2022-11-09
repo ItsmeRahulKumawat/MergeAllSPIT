@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
     <link rel="stylesheet" href="{{asset('css/app.css')}}" />
     <link rel="stylesheet" href="{{asset('css/custom.css')}}" />
     <link rel="stylesheet" href="{{asset('css/style.css')}}" />
@@ -18,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="https://www.spit.ac.in/wp-content/themes/spit-main/red.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        
 </head>
 
 <body>
@@ -59,11 +61,11 @@
                         data-hover-intent-interval="100">
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
                             id='mega-menu-item-25693'>
-                            <a class="mega-menu-link" target="_blank" href="" tabindex="0">Login</a>
+                            <a class="mega-menu-link" target="_blank" href="login" tabindex="0">Login</a>
                         </li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
                             id='mega-menu-item-25693'>
-                            <a class="mega-menu-link" target="_blank" href="" tabindex="0">Register</a>
+                            <a class="mega-menu-link" target="_blank" href="register" tabindex="0">Register</a>
                         </li>
                     </ul>
                 </div>
@@ -77,7 +79,7 @@
                 @section('content')
                 <h2>Proposal Submission</h2>
                 <div class="form" >
-                    <form method="POST" action="{{url('/proposal')}}"" enctype="multipart/form-data">
+                    <form method="POST" action="{{url('/proposal')}}" enctype="multipart/form-data">
                         @csrf
                         @if ($errors->any())
                         <div class="alert alert-danger">
@@ -193,6 +195,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+        
 </body>
 
 </html>

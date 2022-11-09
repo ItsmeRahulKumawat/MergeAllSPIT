@@ -22,6 +22,10 @@ Route::get('/proposal',function(){
     return view('proposal');
 });
 
+Route::get('/login',function(){
+    return view('login');
+});
+
 // Route::get('/proposal', [ProposalController::class, 'index']);
 
 Route::post('/proposal', [ProposalController::class, 'store']);
