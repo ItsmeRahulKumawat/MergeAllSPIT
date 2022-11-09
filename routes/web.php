@@ -30,6 +30,10 @@ Route::get('/register',function(){
     return view('register');
 });
 
+Route::get('/proposal_submitted',function(){
+    return view('proposal_submitted');
+});
+
 // Route::get('/proposal', [ProposalController::class, 'index']);
 
 Route::post('/proposal', [ProposalController::class, 'store']);

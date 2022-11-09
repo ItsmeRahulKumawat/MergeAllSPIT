@@ -1,9 +1,15 @@
 <html>
-    <head>
-        <title>Proposal Submitted</title>
-    </head>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/success.css') }}">
+  </head>
+
     <body>
-        <h1>Proposal Submitted</h1>
-        <p>Thank you for submitting your proposal. We will review it and get back to you as soon as possible.</p>
+
+      <div class="circle">
+        <div class="checkmark"></div>
+      </div>
+      <h1 style="font-family: monospace">Success</h1> 
+      <p style="font-family: monospace;"><b>We received your proposal paper<br/> we'll be in touch shortly!</b></p>
     </body>
-</html
+</html>
