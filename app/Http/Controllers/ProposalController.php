@@ -7,6 +7,16 @@ use App\Models\Proposal;
 
 class ProposalController extends Controller
 {
+
+    public function getDept(){
+        $dept = $_POST['department'];
+        $connection = mysqli_connect('localhost', 'root', '', 'laravel');
+        $sql = mysqli_query($connection, "SELECT faculty_name FROM faculties Where faculty_dept = '$dept'");
+        while ($row = $sql->fetch_assoc()) {
+            // echo option with value 
+            echo "<option value='" . $row['faculty_name'] . "'>" . $row['faculty_name'] . "</option>";
+        }
+    }
     /**
      * Display a listing of the resource.
      *
