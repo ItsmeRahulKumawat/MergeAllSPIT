@@ -86,7 +86,7 @@
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
                             <div class="form">
-                                <form method="POST" action="{{ url('/proposal') }}" enctype="multipart/form-data">
+                                <form   autocomplete="off" method="POST" action="{{ url('/proposal') }}" enctype="multipart/form-data">
                                     @csrf
                                     @if ($errors->any())
                                         <div class="alert alert-danger">
@@ -153,7 +153,7 @@
                                                             <label class="form-label" for="department"
                                                                 class="form-label">Department*</label>
                                                             <select class="form-control select" aria-label
-                                                                class="form-label" id="department_1" name="department"
+                                                                class="form-label faculty-department" id="department_1" name="department"
                                                                 required onchange="getFacultyFromDept(1)">
                                                                 <option selected disabled value="">Choose...</option>
                                                                 <option value="ETRX">ETRX</option>
@@ -166,7 +166,9 @@
                                                             </span>
                                                         </div>
                                                         <script>
-                                                         
+                                                            $(document).ready(function() {
+                                                                getFacultyFromDept(1);
+                                                            });
 
                                                             function getFacultyFromDept(i) {
                                                                 var selected = $(`#department_${i}`).val();
@@ -178,7 +180,7 @@
                                                                     data: {
                                                                         department: selected,
                                                                         _token: '{{ csrf_token() }}',
-                                                                        num:i
+                                                                        num: i
                                                                     },
                                                                     success: function(data) {
                                                                         $(`#faculty_name_${i}`).html(data);
@@ -192,8 +194,8 @@
                                                             <select class="form-control select" aria-label
                                                                 class="form-label" id="faculty_name_1"
                                                                 name="faculty_name"required>
-                                            <option selected disabled value="">Choose...</option>
-                                                                
+                                                                <option selected disabled value="">Choose...</option>
+
                                                             </select>
                                                             <span class="error-msg" id="dept-msg">
                                                             </span>
@@ -332,7 +334,7 @@
             <script src="{{ asset('js/app.js') }}"></script>
         @show
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
