@@ -9,6 +9,7 @@ class ProposalController extends Controller
 {
 
     public function getDept(){
+        $num = $_POST['num'];
         $dept = $_POST['department'];
         $connection = mysqli_connect('localhost', 'root', '', 'laravel');
         $sql = mysqli_query($connection, "SELECT faculty_name FROM faculties Where faculty_dept = '$dept'");

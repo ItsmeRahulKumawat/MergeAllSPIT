@@ -153,8 +153,8 @@
                                                             <label class="form-label" for="department"
                                                                 class="form-label">Department*</label>
                                                             <select class="form-control select" aria-label
-                                                                class="form-label" id="department" name="department"
-                                                                required>
+                                                                class="form-label" id="department_1" name="department"
+                                                                required onchange="getFacultyFromDept(1)">
                                                                 <option selected disabled value="">Choose...</option>
                                                                 <option value="ETRX">ETRX</option>
                                                                 <option value="EXTC">EXTC</option>
@@ -166,22 +166,22 @@
                                                             </span>
                                                         </div>
                                                         <script>
-                                                            $(document).ready(function() {
-                                                                $('#department').on('change', do_something);
-                                                            });
+                                                         
 
-                                                            function do_something() {
-                                                                var selected = $('#department').val();
+                                                            function getFacultyFromDept(i) {
+                                                                var selected = $(`#department_${i}`).val();
+                                                                console.log(selected);
                                                                 $.ajax({
                                                                     url: '/getDept',
                                                                     type: 'POST',
                                                                     dataType: 'html',
                                                                     data: {
                                                                         department: selected,
-                                                                        _token: '{{ csrf_token() }}'
+                                                                        _token: '{{ csrf_token() }}',
+                                                                        num:i
                                                                     },
                                                                     success: function(data) {
-                                                                        $('#faculty_name').html(data);
+                                                                        $(`#faculty_name_${i}`).html(data);
                                                                     }
                                                                 });
                                                             }
@@ -190,8 +190,9 @@
                                                             <label class="form-label" for="faculty_name"
                                                                 class="form-label">Faculty Name</label>
                                                             <select class="form-control select" aria-label
-                                                                class="form-label" id="faculty_name"
+                                                                class="form-label" id="faculty_name_1"
                                                                 name="faculty_name"required>
+                                            <option selected disabled value="">Choose...</option>
                                                                 
                                                             </select>
                                                             <span class="error-msg" id="dept-msg">
@@ -216,7 +217,7 @@
                                     <div class="row">
                                     <div class="form-group col-md-6 mt-4">
                                         <label class="form-label" for="department" class="form-label class="form-label"">Department*</label class="form-label">
-                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="department" name="department" required>
+                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="department_${i}" name="department" required onChange="getFacultyFromDept(${i})">
                                             <option selected disabled value="">Choose...</option>
                                             <option value="ETRX">ETRX</option>
                                             <option value="EXTC">EXTC</option>
@@ -229,15 +230,8 @@
                                     </div>
                                     <div class="form-group col-md-6 mt-4">
                                         <label class="form-label" for="faculty_name" class="form-label class="form-label"">Faculty Name</label class="form-label">
-                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="faculty_name" name="faculty_name"required>
+                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="faculty_name_${i}" name="faculty_name"required>
                                             <option selected disabled value="">Choose...</option>
-                                            <?php
-                                            $connection = mysqli_connect('localhost', 'root', '', 'laravel');
-                                            $sql = mysqli_query($connection, 'SELECT faculty_name FROM faculties');
-                                            while ($row = $sql->fetch_assoc()) {
-                                                echo "<option value=\"owner1\">" . $row['faculty_name'] . '</option>';
-                                            }
-                                            ?>  
                                         </select>
                                         <span class="error-msg" id="dept-msg">
                                         </span>
