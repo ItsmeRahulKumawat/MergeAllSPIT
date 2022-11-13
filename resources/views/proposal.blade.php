@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="https://www.spit.ac.in/wp-content/themes/spit-main/red.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{asset('css/proposal.css')}}" />
         
 </head>
 
@@ -42,9 +43,9 @@
                         <div class="mega-toggle-blocks-left">
                             <div class='mega-toggle-block mega-menu-toggle-block mega-toggle-block-1'
                                 id='mega-toggle-block-1' tabindex='0'>
-                                <span class='mega-toggle-label' role='button' aria-expanded='false'>
-                                    <span class='mega-toggle-label-closed'>MENU</span>
-                                    <span class='mega-toggle-label-open'>MENU</span>
+                                <span class='mega-toggle-label class="form-label"' role='button' aria-expanded='false'>
+                                    <span class='mega-toggle-label class="form-label"-closed'>MENU</span>
+                                    <span class='mega-toggle-label class="form-label"-open'>MENU</span>
                                 </span>
                             </div>
                         </div>
@@ -73,11 +74,15 @@
         </div><!-- End Nav -->
         @show
     </div>
-    <div id="wrapper">
-        <div id="main">
+    <section class="container">
+    <div id="wrapper" class="card m-5" style="border-radius: 10px;">
             <div class="content">
                 @section('content')
-                <h2>Proposal Submission</h2>
+                <div class="card-header">
+                    <h3>Proposal Submission</h3>
+                </div>
+                <div class="card-body">
+                <blockquote class="blockquote mb-0">
                 <div class="form" >
                     <form method="POST" action="{{url('/proposal')}}" enctype="multipart/form-data">
                         @csrf
@@ -90,186 +95,213 @@
                             </ul>
                         </div>
                             @endif
-                        <div class="form-group w-75 p-3">
-                            <label for="proposal_title">Title of Proposal</label>
+                        <div class="form-group">
+                            <label class="form-label" for="proposal_title">Title of Proposal</label class="form-label">
                             <input name="proposal_title" type="text" class="form-control" id="title-proposal" placeholder="Title of Proposal">
                         </div>
-                        <div class="form-group w-75 p-3">
-                            <label for="proposal_authorityOrOrganization[]">Authority/Organization</label>
-                            <select name="proposal_authorityOrOrganization[]" class="form-control" id="exampleFormControlSelect1">
-                                <option value="Authority">Authority</option>
-                                <option value="Organization">Organization</option>
-                            </select>
-                        </div>
-                        <div class="form-group w-75 p-3">
-                            <label for="proposal_numberOfFaculty">Number of Faculty</label>
-                            <select class="form-control select" aria-label="Default select example"  id="number_of_faculty" 
-                            name="number_of_faculty" onchange="return addFaculty()" required> 
-                                <option disabled value="">Choose...</option>
-                                <option selected value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select> 
+                        <div class="row">
+                            <div class="col-md-4 mt-4">
+                                <label class="form-label" for="proposal_authorityOrOrganization[]">Authority/Organization</label class="form-label">
+                                <select name="proposal_authorityOrOrganization[]" class="form-control" id="exampleFormControlSelect1">
+                                    <option value="Authority">Authority</option>
+                                    <option value="Organization">Organization</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-4 mt-4">
+                                <label class="form-label" for="proposal_govtPrivate[]">Govt./Private</label class="form-label">
+                                <select name="proposal_govtPrivate[]" class="form-control" id="exampleFormControlSelect1">
+                                    <option value="Govt">Govt</option>
+                                    <option value="Private">Private</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mt-4">
+                                <label class="form-label" for="proposal_numberOfFaculty">Number of Faculty</label class="form-label">
+
+                                <select class="form-control select" aria-label class="form-label"="Default select example"  id="number_of_faculty" 
+                                name="number_of_faculty" onchange="return addFaculty()" required> 
+                                    <option disabled value="">Choose...</option>
+                                    <option selected value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select> 
+                            </div>
+                            
                         </div>
                         <div id ="addFaculty">
-                            <div class="faculty-info">
-                                <div class="form-group col-md-6 mt-4">
-                                    <label for="department" class="form-label">Department*</label>
-                                    <select class="form-control select" aria-label="Default select example" id="department" name="department" onchange="return getGroupID()" required>
-                                        <option selected disabled value="">Choose...</option>
-                                        <option value="ETRX">ETRX</option>
-                                        <option value="EXTC">EXTC</option>
-                                        <option value="COMP">COMP</option>
-                                        <option value="IT">IT</option>
-                                        <option value="MCA">MCA</option>
-                                    </select>
-                                    <span class="error-msg" id="dept-msg">
-                                    </span>
+                            <div class='card mt-4'>
+                                <div class="card-header">
+                                    <h5>Faculty 1</h5>
                                 </div>
-                                <div class="form-group col-md-6 mt-4">
-                                    <label for="faculty_name" class="form-label">Faculty Name</label>
-                                    <select class="form-control select" aria-label="Default select example" id="faculty_name" name="faculty_name"required>
-                                        <option selected disabled value="">Choose...</option>
-                                        <?php 
-                                            $connection = mysqli_connect("localhost","root","","laravel");
-                                            $sql = mysqli_query($connection, "SELECT faculty_name FROM faculties");
-                                            while ($row = $sql->fetch_assoc()){
-                                            echo "<option value=\"owner1\">" . $row['faculty_name'] . "</option>";
-                                            }
-                                        ?>  
-                                    </select>
-                                    <span class="error-msg" id="dept-msg">
-                                    </span>
+                                <div class="faculty-info card-body">
+                                    <blockquote class='blockquote mb-0'>
+                                    <div class="row">
+                                    <div class="form-group col-md-6 mt-4">
+                                        <label class="form-label" for="department" class="form-label class="form-label"">Department*</label class="form-label">
+                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="department" name="department" onchange="return getGroupID()" required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <option value="ETRX">ETRX</option>
+                                            <option value="EXTC">EXTC</option>
+                                            <option value="COMP">COMP</option>
+                                            <option value="IT">IT</option>
+                                            <option value="MCA">MCA</option>
+                                        </select>
+                                        <span class="error-msg" id="dept-msg">
+                                        </span>
+                                    </div>
+                                    <div class="form-group col-md-6 mt-4">
+                                        <label class="form-label" for="faculty_name" class="form-label class="form-label"">Faculty Name</label class="form-label">
+                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="faculty_name" name="faculty_name"required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <?php 
+                                                $connection = mysqli_connect("localhost","root","","laravel");
+                                                $sql = mysqli_query($connection, "SELECT faculty_name FROM faculties");
+                                                while ($row = $sql->fetch_assoc()){
+                                                echo "<option value=\"owner1\">" . $row['faculty_name'] . "</option>";
+                                                }
+                                            ?>  
+                                        </select>
+                                        <span class="error-msg" id="dept-msg">
+                                        </span>
+                                    </div>
+                                    </div>
+                                    </blockquote>
                                 </div>
                             </div>
                         </div>
-                        
                         <script>
                             function addFaculty(){
+                                $("#addFaculty").empty();
                                 var facultyCount = document.getElementById("number_of_faculty").value;
                                 for(var i=1;i<=facultyCount;i++)
                                 {
-                                    $(`<div class="faculty-info">
-                                        <h3>Faculty ${i}</h3>
-                                        <div class="form-group col-md-6 mt-4">
-                                            <label for="department" class="form-label">Department*</label>
-                                            <select class="form-control select" aria-label="Default select example" id="department" name="department" onchange="return getGroupID()" required>
-                                                <option selected disabled value="">Choose...</option>
-                                                <option value="ETRX">ETRX</option>
-                                                <option value="EXTC">EXTC</option>
-                                                <option value="COMP">COMP</option>
-                                                <option value="IT">IT</option>
-                                                <option value="MCA">MCA</option>
-                                            </select>
-                                            <span class="error-msg" id="dept-msg">
-                                            </span>
-                                        </div>
-                                        <div class="form-group col-md-6 mt-4">
-                                            <label for="faculty_name" class="form-label">Faculty Name</label>
-                                            <select class="form-control select" aria-label="Default select example" id="faculty_name" name="faculty_name"required>
-                                                <option selected disabled value="">Choose...</option>
-                                                <?php 
-                                                    $connection = mysqli_connect("localhost","root","","laravel");
-                                                    $sql = mysqli_query($connection, "SELECT faculty_name FROM faculties");
-                                                    while ($row = $sql->fetch_assoc()){
-                                                    echo "<option value=\"owner1\">" . $row['faculty_name'] . "</option>";
-                                                    }
-                                                ?>  
-                                            </select>
-                                            <span class="error-msg" id="dept-msg">
-                                            </span>
-                                        </div>
-                                    </div>`).appendTo("#addFaculty");
+                                    $(` <div class='card mt-4'>
+                                <div class="card-header">
+                                    <h5>Faculty ${i}</h5>
+                                </div>
+                                <div class="faculty-info card-body">
+                                    <blockquote class='blockquote mb-0'>
+                                    <div class="row">
+                                    <div class="form-group col-md-6 mt-4">
+                                        <label class="form-label" for="department" class="form-label class="form-label"">Department*</label class="form-label">
+                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="department" name="department" onchange="return getGroupID()" required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <option value="ETRX">ETRX</option>
+                                            <option value="EXTC">EXTC</option>
+                                            <option value="COMP">COMP</option>
+                                            <option value="IT">IT</option>
+                                            <option value="MCA">MCA</option>
+                                        </select>
+                                        <span class="error-msg" id="dept-msg">
+                                        </span>
+                                    </div>
+                                    <div class="form-group col-md-6 mt-4">
+                                        <label class="form-label" for="faculty_name" class="form-label class="form-label"">Faculty Name</label class="form-label">
+                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="faculty_name" name="faculty_name"required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <?php 
+                                                $connection = mysqli_connect("localhost","root","","laravel");
+                                                $sql = mysqli_query($connection, "SELECT faculty_name FROM faculties");
+                                                while ($row = $sql->fetch_assoc()){
+                                                echo "<option value=\"owner1\">" . $row['faculty_name'] . "</option>";
+                                                }
+                                            ?>  
+                                        </select>
+                                        <span class="error-msg" id="dept-msg">
+                                        </span>
+                                    </div>
+                                    </div>
+                                    </blockquote>
+                                </div>
+                            </div>`).appendTo("#addFaculty");
                                 }
                             }
                         </script>
-                        <div class="form-group w-75 p-3">
-                            <label for="proposal_govtPrivate[]">Govt./Private</label>
-                            <select name="proposal_govtPrivate[]" class="form-control" id="exampleFormControlSelect1">
-                                <option value="Govt">Govt</option>
-                                <option value="Private">Private</option>
-                            </select>
-                        </div>
-                        <div class="form-group w-75 p-3">
-                            <label for="abstract">Abstract</label>
+                        <div class="form-group mt-4">
+                            <label class="form-label" for="abstract">Abstract</label class="form-label">
                             <textarea name="proposal_abstract" class="form-control" id="abstract" rows="3"></textarea>
                         </div>
-                        <div class="form-group w-75 p-3">
-                            <label for="proposal_fundingAmount">Funding amount applied for</label>
+                       <div class="row">
+
+                        <div class="form-group col-md-4 mt-4">
+                            <label class="form-label" for="proposal_fundingAmount">Funding amount applied for</label class="form-label">
                             <input name="proposal_fundingAmount" type="Number" class="form-control" id="amount" placeholder="Funding amount">
                         </div>
-                        <div class="form-group w-75 p-3">
+                        <div class="form-group col-md-4 mt-4">
                             <?php 
                                 $month = date('m');
                                 $day = date('d');
                                 $year = date('Y');
                                 $today = $year . '-' . $month . '-' . $day;
                             ?>
-                            <label for="amount">Date of Submission</label>
+                            <label class="form-label" for="amount">Date of Submission</label class="form-label">
                             <input name="proposal_submissionDate" type="date" class="form-control" 
                             id="submission-date" placeholder="Date of Submission"  value="<?php echo $today; ?>" max="<?php echo date("Y-m-d"); ?>">
                         </div>
-                        
-                        <div class="form-group w-75 p-3">
-                            <label for="proposal_file">Upload File</label>
+                       </div>
+                       
+                        <div class="form-group ">
+                            <label class="form-label" for="proposal_file">Upload File</label class="form-label">
                             <input type="file" name="proposal_file" accept="application/pdf" id="proposal_file" class="form-control" placeholder="" aria-describedby="">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
+                </blockquote>
                 @show
             </div>
 
-            <div class="footer">
-                @section('footer')
-                <p>
-                    <a href='http://www.spit.ac.in/'>Home</a> |
-                    <a href='http://www.aicte-india.org/' target='_blank'>AICTE</a> |
-                    <a href='http://www.mu.ac.in/' target='_blank'>Mumbai University</a> |
-                    <a href='http://www.dtemaharashtra.gov.in/' target='_blank'>DTE</a> |
-                    <a href='http://www.spit.ac.in/wp-content/uploads/SPITVirtualTour/SPIOT_Templates/SPIOTFL'
-                        target='_blank'>Campus Virtual Tour</a> |
-                    <a href='http://mail.spit.ac.in'>Webmail</a> |
-                    <a href='http://www.spit.ac.in/about/contact/'>Contact</a> |
-                </p>
-
-                <p>
-                    <a href='http://www.spit.ac.in/terms-conditions/'>Terms & Conditions</a> |
-                    <a href='http://www.spit.ac.in/privacy-policy/'>Privacy Policy</a> |
-                    <a href='http://www.spit.ac.in/refund-cancellation-policy/'>Refund/Cancellation Policy</a>
-                </p>
-
-                <p>Bharatiya Vidya Bhavans Sardar Patel Institute of Technology
-                    Munshi Nagar, Andheri (West), Mumbai 400 058</p>
-                <p>(91)-(022)-26707440, 26287250</p>
-
-                <p>
-                <ul id="" class="cnss-social-icon " style="text-align:center;">
-                    <li class="cn-fa-facebook cn-fa-icon " style="display:inline-block;"><a class="" target="_blank"
-                            href="https://www.facebook.com/SPITCOLLEGE/" title="Facebook"
-                            style="width:18px;height:18px;padding:3px 0;margin:2px;color: #ffffff;border-radius: 50%;"><i
-                                title="Facebook" style="font-size:12px;" class="fa fa-facebook"></i></a></li>
-                    <li class="cn-fa-twitter cn-fa-icon " style="display:inline-block;"><a class="" target="_blank"
-                            href="https://twitter.com/bvbspit" title="Twitter"
-                            style="width:18px;height:18px;padding:3px 0;margin:2px;color: #ffffff;border-radius: 50%;"><i
-                                title="Twitter" style="font-size:12px;" class="fa fa-twitter"></i></a></li>
-                    <li class="cn-fa-linkedin cn-fa-icon " style="display:inline-block;"><a class="" target="_blank"
-                            href="https://www.linkedin.com/school/bhartiya-vidya-bhavans-sardar-patel-institute-of-technology-munshi-nagar-andheri-mumbai/"
-                            title="LinkedIn"
-                            style="width:18px;height:18px;padding:3px 0;margin:2px;color: #ffffff;border-radius: 50%;"><i
-                                title="LinkedIn" style="font-size:12px;" class="fa fa-linkedin"></i></a></li>
-                </ul>
-                </p>
-                <script src="{{asset('js/bootstrap.js')}}"></script>
-                <script src="{{asset('js/app.js')}}"></script>
-                @show
-            </div>
+          
         </div>
+        
     </div>
+    </section>
+    <div class="footer">
+        @section('footer')
+        <p>
+            <a href='http://www.spit.ac.in/'>Home</a> |
+            <a href='http://www.aicte-india.org/' target='_blank'>AICTE</a> |
+            <a href='http://www.mu.ac.in/' target='_blank'>Mumbai University</a> |
+            <a href='http://www.dtemaharashtra.gov.in/' target='_blank'>DTE</a> |
+            <a href='http://www.spit.ac.in/wp-content/uploads/SPITVirtualTour/SPIOT_Templates/SPIOTFL'
+                target='_blank'>Campus Virtual Tour</a> |
+            <a href='http://mail.spit.ac.in'>Webmail</a> |
+            <a href='http://www.spit.ac.in/about/contact/'>Contact</a> |
+        </p>
 
+        <p>
+            <a href='http://www.spit.ac.in/terms-conditions/'>Terms & Conditions</a> |
+            <a href='http://www.spit.ac.in/privacy-policy/'>Privacy Policy</a> |
+            <a href='http://www.spit.ac.in/refund-cancellation-policy/'>Refund/Cancellation Policy</a>
+        </p>
 
+        <p>Bharatiya Vidya Bhavans Sardar Patel Institute of Technology
+            Munshi Nagar, Andheri (West), Mumbai 400 058</p>
+        <p>(91)-(022)-26707440, 26287250</p>
+
+        <p>
+        <ul id="" class="cnss-social-icon " style="text-align:center;">
+            <li class="cn-fa-facebook cn-fa-icon " style="display:inline-block;"><a class="" target="_blank"
+                    href="https://www.facebook.com/SPITCOLLEGE/" title="Facebook"
+                    style="width:18px;height:18px;padding:3px 0;margin:2px;color: #ffffff;border-radius: 50%;"><i
+                        title="Facebook" style="font-size:12px;" class="fa fa-facebook"></i></a></li>
+            <li class="cn-fa-twitter cn-fa-icon " style="display:inline-block;"><a class="" target="_blank"
+                    href="https://twitter.com/bvbspit" title="Twitter"
+                    style="width:18px;height:18px;padding:3px 0;margin:2px;color: #ffffff;border-radius: 50%;"><i
+                        title="Twitter" style="font-size:12px;" class="fa fa-twitter"></i></a></li>
+            <li class="cn-fa-linkedin cn-fa-icon " style="display:inline-block;"><a class="" target="_blank"
+                    href="https://www.linkedin.com/school/bhartiya-vidya-bhavans-sardar-patel-institute-of-technology-munshi-nagar-andheri-mumbai/"
+                    title="LinkedIn"
+                    style="width:18px;height:18px;padding:3px 0;margin:2px;color: #ffffff;border-radius: 50%;"><i
+                        title="LinkedIn" style="font-size:12px;" class="fa fa-linkedin"></i></a></li>
+        </ul>
+        </p>
+        <script src="{{asset('js/bootstrap.js')}}"></script>
+        <script src="{{asset('js/app.js')}}"></script>
+        @show
+    </div>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>

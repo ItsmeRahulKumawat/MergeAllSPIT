@@ -370,6 +370,7 @@ select:disabled {
     opacity: 1
 }
 
+
 [list]::-webkit-calendar-picker-indicator {
     display: none
 }
