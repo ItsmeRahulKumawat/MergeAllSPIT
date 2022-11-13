@@ -42,7 +42,7 @@ class ProposalController extends Controller
         ],
         );
         $title = $request->input('proposal_title');
-        $file = $request->proposal_file;
+        $file = $request->proposal_file;    
         $fileName = 'PDF_'.$title.'_'.time().'.'.$file->getClientOriginalExtension();
         $file->storeAs('public/proposal_files', $fileName);
 

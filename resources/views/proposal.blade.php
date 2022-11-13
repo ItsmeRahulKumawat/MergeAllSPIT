@@ -102,6 +102,42 @@
                             </select>
                         </div>
                         <div class="form-group w-75 p-3">
+                            {{-- number of faculty --}}
+                            <label for="proposal_numberOfFaculty">Number of Faculty</label>
+                            <input name="proposal_numberOfFaculty" type="number" class="form-control" id="number-of-faculty" placeholder="Number of Faculty">
+                        </div>
+                        <div id ="addFaculty">
+                            <div class="form-group col-md-6 mt-4">
+                                <label for="department" class="form-label">Department*</label>
+                                <select class="form-control select" aria-label="Default select example" id="department" name="department" onchange="return getGroupID()" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <option value="ETRX">ETRX</option>
+                                    <option value="EXTC">EXTC</option>
+                                    <option value="COMP">COMP</option>
+                                    <option value="IT">IT</option>
+                                    <option value="MCA">MCA</option>
+                                </select>
+                                <span class="error-msg" id="dept-msg">
+                                </span>
+                            </div>
+                            <div class="form-group col-md-6 mt-4">
+                                <label for="faculty_name" class="form-label">Faculty Name</label>
+                                <select class="form-control select" aria-label="Default select example" id="faculty_name" name="faculty_name"required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <?php 
+                                        $connection = mysqli_connect("localhost","root","","laravel");
+                                        $sql = mysqli_query($connection, "SELECT faculty_name FROM faculties");
+                                        while ($row = $sql->fetch_assoc()){
+                                        echo "<option value=\"owner1\">" . $row['faculty_name'] . "</option>";
+                                        }
+                                    ?>  
+                                </select>
+                                <span class="error-msg" id="dept-msg">
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group w-75 p-3">
                             <label for="proposal_govtPrivate[]">Govt./Private</label>
                             <select name="proposal_govtPrivate[]" class="form-control" id="exampleFormControlSelect1">
                                 <option value="Govt">Govt</option>
