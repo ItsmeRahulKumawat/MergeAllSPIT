@@ -54,8 +54,33 @@ class ProposalController extends Controller
         );
         $title = $request->input('proposal_title');
         $file = $request->proposal_file;    
-        $fileName = 'PDF_'.$title.'_'.time().'.'.$file->getClientOriginalExtension();
-        $file->storeAs('public/proposal_files', $fileName);
+        // create a new folder with submission date as name
+        $submission_date = $request->input('proposal_submissionDate');
+        $submission_date = str_replace('/', '-', $submission_date);
+        $year = date('Y', strtotime($submission_date));
+        $month = date('m', strtotime($submission_date));
+        $day = date('d', strtotime($submission_date));
+        $year_folder = 'public/'.$year;
+        // month in words
+        $monthNum  = $month;
+        $dateObj   = \DateTime::createFromFormat('!m', $monthNum);
+        $monthName = $dateObj->format('F');
+        $month_folder = $year_folder.'/'.$monthName;
+        $day_folder = 'public/'.$year.'/'.$monthName.'/'.$day;
+        if(!file_exists($year_folder)){
+            mkdir($year_folder, 0777, true);
+        }
+        if(!file_exists($month_folder)){
+            mkdir($month_folder, 0777, true);
+        }
+        if(!file_exists($day_folder)){
+            mkdir($day_folder, 0777, true);
+        }
+        // create a new folder with proposal title as name
+        $proposal_folder = 'public/'.$year.'/'.$monthName.'/'.$day;
+        $fileName = $title.'.'.$file->getClientOriginalExtension();
+        $file->storeAs($proposal_folder, $fileName);
+
 
         $proposal = new Proposal();
         $proposal->proposal_title = $request->input('proposal_title');
@@ -64,7 +89,8 @@ class ProposalController extends Controller
         $proposal->proposal_abstract = $request->input('proposal_abstract');
         $proposal->proposal_fundingAmount = $request->input('proposal_fundingAmount');
         $proposal->proposal_submissionDate = $request->input('proposal_submissionDate');
-        $proposal->proposal_file = $fileName;
+        $proposal->proposal_file = $proposal_folder.'/'.$fileName;
+
         $proposal->save();
         return view('proposal_submitted');
     }
