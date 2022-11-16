@@ -76,7 +76,7 @@
     </div>
     <section class="container">
         <div class="wrapper">
-            <form method="POST" action="{{ url('/addFaculty') }}">
+            <form method="POST" action="{{ url('/addFaculty') }}" novalidate>
                 @csrf
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -110,7 +110,11 @@
                     @endforeach
                 </table>
                 <div class="buttons">
-                    <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addFaculty()">Add
+                    {{-- give last row id +1 as id  --}}
+                    
+                    <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addFaculty(
+                        {{ $faculties->last()->id + 1 }}
+                    )">Add
                         Faculty</button>
                     <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" onclick="submit()">Submit</button>
                 </div>
@@ -123,12 +127,12 @@
                     event.preventDefault();
                 });
                 function removeFaculty(id) {
+                    console.log("here");
                     // remove from table
                     var table = document.querySelector('.add_faculty_table');
                     var row = document.querySelector('.row_' + id);
                     $(row).remove();
                     console.log(id,"removed");
-                    // table.removeChild(row);
                     $.ajax({
                         url: `/removeFaculty/${id}`,
                         type: 'POST',
@@ -144,10 +148,11 @@
 
                 }
 
-                function addFaculty() {
+                function addFaculty(newId) {
                     // add a new table row to add faculty name in input box
                     var table = document.getElementsByClassName("add_faculty_table")[0];
                     var row = table.insertRow(-1);
+                    row.classList.add("row_" + newId);
                     var cell0 = row.insertCell(0);
                     var cell1 = row.insertCell(1);
                     var cell2 = row.insertCell(2);
@@ -173,7 +178,7 @@
                                                                 <option value="MCA">MCA</option>
                                                             </select>
                     `
-                    cell5.innerHTML = "<button class='btn btn-primary'>Remove</button>";
+                    cell5.innerHTML = `<button class="btn btn-primary remove_${newId}" onclick="removeFaculty(${newId})">Remove</button>`;
                     // show submit button
                     document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
                 }
