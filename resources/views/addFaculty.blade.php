@@ -110,7 +110,7 @@
                 <div class="buttons">
                     <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addFaculty()">Add
                         Faculty</button>
-                    <button class="p-1 mt-2 btn btn-primary submit_faculty" onclick="submit()">Submit</button>
+                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" onclick="submit()">Submit</button> 
                 </div>
             </form>
             <script>
@@ -124,14 +124,14 @@
                     var cell4 = row.insertCell(3);
                     var cell5 = row.insertCell(4);
                     cell1.innerHTML =
-                        "<input type='text' class='form-control' placeholder='Faculty Name' name='faculty_name' required>";
+                        "<input type='text' class='form-control' placeholder='Faculty Name' name='faculty_name[]' required>";
                     cell2.innerHTML =
-                        "<input type='email' class='form-control' placeholder='Faculty Email' name='faculty_email' required>";
+                        "<input type='email' class='form-control' placeholder='Faculty Email' name='faculty_email[]' required>";
                     cell3.innerHTML =
-                        "<input type='text' class='form-control' placeholder='Faculty Contact' name='faculty_phone' required>";
+                        "<input type='text' class='form-control' placeholder='Faculty Contact' name='faculty_phone[]' required>";
                     cell4.innerHTML =`
                     <select class="form-control select" aria-label
-                                                                class="form-label faculty-department" id="department_1" name="faculty_department"
+                                                                class="form-label faculty-department" id="department_1" name="faculty_department[]"
                                                                 required onchange="getFacultyFromDept(1)">
                                                                 <option selected disabled value="">Choose...</option>
                                                                 <option value="ETRX">ETRX</option>
@@ -142,6 +142,8 @@
                                                             </select>
                     `
                     cell5.innerHTML = "<button class='btn btn-primary'>Remove</button>";
+                    // show submit button
+                    document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
                 }
             </script>
         </div>
