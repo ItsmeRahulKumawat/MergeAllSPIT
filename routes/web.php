@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FacultyController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProposalController;
 
@@ -33,9 +34,14 @@ Route::get('/register',function(){
 Route::get('/proposal_submitted',function(){
     return view('proposal_submitted');
 });
+Route::get('/addFaculty',function(){
+    return view('addFaculty');
+});
 
 // Route::get('/proposal', [ProposalController::class, 'index']);
 
 Route::post('/proposal', [ProposalController::class, 'store']);
 
 Route::post('/getDept', [ProposalController::class, 'getDept']);
+
+Route::post('/addFaculty', [FacultyController::class, 'store']);

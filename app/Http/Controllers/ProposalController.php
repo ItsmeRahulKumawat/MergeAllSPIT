@@ -12,7 +12,7 @@ class ProposalController extends Controller
         $num = $_POST['num'];
         $dept = $_POST['department'];
         $connection = mysqli_connect('localhost', 'root', '', 'laravel');
-        $sql = mysqli_query($connection, "SELECT faculty_name FROM faculties Where faculty_dept = '$dept'");
+        $sql = mysqli_query($connection, "SELECT faculty_name FROM faculties Where faculty_department = '$dept'");
         while ($row = $sql->fetch_assoc()) {
             // echo option with value 
             echo "<option value='" . $row['faculty_name'] . "'>" . $row['faculty_name'] . "</option>";

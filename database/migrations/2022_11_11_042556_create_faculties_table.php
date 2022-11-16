@@ -17,9 +17,11 @@ return new class extends Migration
             // auto increment id
             $table->id()->autoIncrement();
             $table->string('faculty_name');
-            $table->string('faculty_dept');
+            $table->string('faculty_department');
             $table->string('faculty_email');
-            $table->string('faculty_contact');
+            $table->string('faculty_phone');
+            $table->timestamps();
+
         });
     }
 

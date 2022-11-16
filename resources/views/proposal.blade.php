@@ -158,7 +158,7 @@
                                                                 <option selected disabled value="">Choose...</option>
                                                                 <option value="ETRX">ETRX</option>
                                                                 <option value="EXTC">EXTC</option>
-                                                                <option value="COMP">COMP</option>
+                                                                <option value="COMPS">COMPS</option>
                                                                 <option value="IT">IT</option>
                                                                 <option value="MCA">MCA</option>
                                                             </select>

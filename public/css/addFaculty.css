@@ -1,0 +1,27 @@
+table, th, td {
+    border: 1px solid black;
+    margin: 0 auto;
+}
+
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: center;
+}
+td {
+    padding: 5px;
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+}
+
+.add_faculty_button{
+    margin: 0 auto;
+    display: block;
+}
