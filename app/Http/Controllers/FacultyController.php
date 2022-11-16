@@ -82,6 +82,8 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        $faculty = Faculty::find($id);
+        $faculty->delete();
     }
 }

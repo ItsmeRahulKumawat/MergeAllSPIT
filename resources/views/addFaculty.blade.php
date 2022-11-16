@@ -79,57 +79,89 @@
             <form method="POST" action="{{ url('/addFaculty') }}">
                 @csrf
                 @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 @php
                     $faculties = DB::table('faculties')->get();
                 @endphp
                 <table class="add_faculty_table">
                     <tr>
+                        <th>Faculty id</th>
                         <th>Faculty Name</th>
                         <th>Faculty Email</th>
                         <th>Faculty Phone</th>
                         <th>Faculty Department</th>
                     </tr>
                     @foreach ($faculties as $faculty)
-                        <tr>
+                        <tr class="row_{{$faculty->id}}">
+                            <td>{{ $faculty->id }}</td>
                             <td>{{ $faculty->faculty_name }}</td>
                             <td>{{ $faculty->faculty_email }}</td>
                             <td>{{ $faculty->faculty_phone }}</td>
                             <td>{{ $faculty->faculty_department }}</td>
-                            <td><button class="btn btn-primary">Remove</button></td>
+                            <td><button class="btn btn-primary remove_{{$faculty->id}}" onclick="removeFaculty({{$faculty->id}})">Remove</button></td>
                         </tr>
                     @endforeach
                 </table>
                 <div class="buttons">
                     <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addFaculty()">Add
                         Faculty</button>
-                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" onclick="submit()">Submit</button> 
+                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" onclick="submit()">Submit</button>
                 </div>
             </form>
             <script>
+                // delete from database 
+                // stop form from submitting
+                var form = document.querySelector('form');
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                });
+                function removeFaculty(id) {
+                    // remove from table
+                    var table = document.querySelector('.add_faculty_table');
+                    var row = document.querySelector('.row_' + id);
+                    $(row).remove();
+                    console.log(id,"removed");
+                    // table.removeChild(row);
+                    $.ajax({
+                        url: `/removeFaculty/${id}`,
+                        type: 'POST',
+                        dataType: 'html',
+                        data: {
+                            id: id,
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(data) {
+                            console.log(data);
+                        }
+                    });
+
+                }
+
                 function addFaculty() {
                     // add a new table row to add faculty name in input box
                     var table = document.getElementsByClassName("add_faculty_table")[0];
                     var row = table.insertRow(-1);
-                    var cell1 = row.insertCell(0);
-                    var cell2 = row.insertCell(1);
-                    var cell3 = row.insertCell(2);
-                    var cell4 = row.insertCell(3);
-                    var cell5 = row.insertCell(4);
+                    var cell0 = row.insertCell(0);
+                    var cell1 = row.insertCell(1);
+                    var cell2 = row.insertCell(2);
+                    var cell3 = row.insertCell(3);
+                    var cell4 = row.insertCell(4);
+                    var cell5 = row.insertCell(5);
+                    cell0.innerHTML = "<input type='text' class='form-control' placeholder='Id' name='id[]' required>";
                     cell1.innerHTML =
                         "<input type='text' class='form-control' placeholder='Faculty Name' name='faculty_name[]' required>";
                     cell2.innerHTML =
                         "<input type='email' class='form-control' placeholder='Faculty Email' name='faculty_email[]' required>";
                     cell3.innerHTML =
                         "<input type='text' class='form-control' placeholder='Faculty Contact' name='faculty_phone[]' required>";
-                    cell4.innerHTML =`
+                    cell4.innerHTML = `
                     <select class="form-control select" aria-label
                                                                 class="form-label faculty-department" id="department_1" name="faculty_department[]"
                                                                 required onchange="getFacultyFromDept(1)">
