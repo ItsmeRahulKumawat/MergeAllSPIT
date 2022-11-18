@@ -15,8 +15,13 @@ use App\Http\Controllers\ProposalController;
 |
 */
 
+
 Route::get('/', function () {
     return view('homepage');
+});
+
+Route::get('/report',function(){
+    return view('report');
 });
 
 Route::get('/proposal',function(){

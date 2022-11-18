@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Add faculty</title>
+    <title>Report</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('css/proposal.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/addFaculty.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/report.css') }}" />
 </head>
 
 <body>
@@ -75,118 +76,61 @@
         @show
     </div>
     <section class="container">
-        <div>
-            <h1>Faculty Info</h1>
+        <div class="card-header">
+            <h3>Report</h3>
         </div>
-        <div class="wrapper">
-            <form method="POST" action="{{ url('/addFaculty') }}" novalidate>
-                @csrf
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+        <form>
+            <div class="row">
+                <div class="column" style="width:30%">
+                    <div class="btn-group" id="btn-group-a">
+                        <button type="button" class="selected date_btn btn btn-primary">Date</button>
+                        <button type="button" class="faculty_btn btn btn-primary">Faculty</button>
+                        <button type="button" class="dept_btn btn btn-primary">Department</button>
                     </div>
-                @endif
-                @php
-                    $faculties = DB::table('faculties')->get();
-                @endphp
-                <table class="add_faculty_table">
-                    <tr>
-                        <th>Faculty id</th>
-                        <th>Faculty Name</th>
-                        <th>Faculty Email</th>
-                        <th>Faculty Phone</th>
-                        <th>Faculty Department</th>
-                    </tr>
-                    @foreach ($faculties as $faculty)
-                        <tr class="row_{{$faculty->id}}">
-                            <td>{{ $faculty->id }}</td>
-                            <td>{{ $faculty->faculty_name }}</td>
-                            <td>{{ $faculty->faculty_email }}</td>
-                            <td>{{ $faculty->faculty_phone }}</td>
-                            <td>{{ $faculty->faculty_department }}</td>
-                            <td><button class="btn btn-primary remove_{{$faculty->id}}" onclick="removeFaculty({{$faculty->id}})">Remove</button></td>
-                        </tr>
-                    @endforeach
-                </table>
-                <div class="buttons">
-                    {{-- give last row id +1 as id  --}}
-                    
-                    <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addFaculty(
-                        {{ $faculties->last()->id + 1 }}
-                    )">Add
-                        Faculty</button>
-                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" onclick="submit()">Submit</button>
                 </div>
-            </form>
-            <script>
-                // delete from database 
-                // stop form from submitting
-                var form = document.querySelector('form');
-                form.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                });
-                function removeFaculty(id) {
-                    console.log("here");
-                    // remove from table
-                    var table = document.querySelector('.add_faculty_table');
-                    var row = document.querySelector('.row_' + id);
-                    $(row).remove();
-                    console.log(id,"removed");
-                    $.ajax({
-                        url: `/removeFaculty/${id}`,
-                        type: 'POST',
-                        dataType: 'html',
-                        data: {
-                            id: id,
-                            _token: '{{ csrf_token() }}',
-                        },
-                        success: function(data) {
-                            console.log(data);
-                        }
-                    });
+            </div>
+            
+            <div class="row date_selection" id="date_selection">
+                <div class="column" style="width:30%">
+                    <label class="form-label" for="start_date">Start Date</label>
+                    <input class="form-control" type="date" id="start_date" name="start_date">
+                </div>
+                <div class="column" style="width:30%">
+                    <label class="form-label" for="end_date">End Date</label>
+                    <input class="form-control" type="date" id="end_date" name="end_date">
+                </div>
+            </div>
 
-                }
-
-                function addFaculty(newId) {
-                    // add a new table row to add faculty name in input box
-                    var table = document.getElementsByClassName("add_faculty_table")[0];
-                    var row = table.insertRow(-1);
-                    row.classList.add("row_" + newId);
-                    var cell0 = row.insertCell(0);
-                    var cell1 = row.insertCell(1);
-                    var cell2 = row.insertCell(2);
-                    var cell3 = row.insertCell(3);
-                    var cell4 = row.insertCell(4);
-                    var cell5 = row.insertCell(5);
-                    cell0.innerHTML = "<input type='text' class='form-control' placeholder='Id' name='id[]' required>";
-                    cell1.innerHTML =
-                        "<input type='text' class='form-control' placeholder='Faculty Name' name='faculty_name[]' required>";
-                    cell2.innerHTML =
-                        "<input type='email' class='form-control' placeholder='Faculty Email' name='faculty_email[]' required>";
-                    cell3.innerHTML =
-                        "<input type='text' class='form-control' placeholder='Faculty Contact' name='faculty_phone[]' required>";
-                    cell4.innerHTML = `
+            @php
+                $faculties = DB::table('faculties')->get();
+            @endphp
+            <div class="row faculty_selection hidden" id="faculty_selection">
+                <div clas="column" style="width:30%">
+                    <label class="form-label" for="faculty_select">Faculty</label>
+                    <select class="form-control" id="faculty_select" name="faculty_select">
+                        <option value="0">Select Faculty</option>
+                        @foreach ($faculties as $faculty)
+                            <option value="{{ $faculty->id }}">{{ $faculty->faculty_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="row department_selection hidden" id="department_selection">
+                <div class="column" style="width:30%">
+                    <label class="form-label" for="department_select">Department</label>
                     <select class="form-control select" aria-label
-                                                                class="form-label faculty-department" id="department_1" name="faculty_department[]"
-                                                                required onchange="getFacultyFromDept(1)">
-                                                                <option selected disabled value="">Choose...</option>
-                                                                <option value="ETRX">ETRX</option>
-                                                                <option value="EXTC">EXTC</option>
-                                                                <option value="COMPS">COMPS</option>
-                                                                <option value="IT">IT</option>
-                                                                <option value="MCA">MCA</option>
-                                                            </select>
-                    `
-                    cell5.innerHTML = `<button class="btn btn-primary remove_${newId}" onclick="removeFaculty(${newId})">Remove</button>`;
-                    // show submit button
-                    document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
-                }
-            </script>
-        </div>
+                    class="form-label faculty-department" id="department_1" name="department"
+                    required onchange="getFacultyFromDept(1)">
+                    <option selected disabled value="">Choose...</option>
+                    <option value="ETRX">ETRX</option>
+                    <option value="EXTC">EXTC</option>
+                    <option value="COMPS">COMPS</option>
+                    <option value="IT">IT</option>
+                    <option value="MCA">MCA</option>
+                </select>
+            </div>
+        </form>
+    
     </section>
     <div class="footer">
         @section('footer')
@@ -232,6 +176,51 @@
             <script src="{{ asset('js/app.js') }}"></script>
         @show
     </div>
+    <script>
+        //    change selected button on click
+        const buttons = document.querySelectorAll('.btn-group button');
+        buttons.forEach(button => {
+            button.addEventListener('click', changeSelection, false);
+        });
+        function changeSelection() {
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            this.classList.add('selected');
+        }
+
+        // show date only on date select
+        const date_btn = document.querySelector('.date_btn');
+        const date_selection = document.querySelector('#date_selection');
+        const faculty_btn = document.querySelector('.faculty_btn');
+        const faculty_selection = document.querySelector('#faculty_selection');
+        const dept_btn = document.querySelector('.dept_btn');
+        const department_selection = document.querySelector('#department_selection');
+       
+        date_btn.addEventListener('click', showDate, false);
+        
+        function showDate() {
+            date_selection.classList.remove('hidden');
+            faculty_selection.classList.add('hidden');
+            department_selection.classList.add('hidden');
+        }
+
+        // show department only on department select
+        dept_btn.addEventListener('click', showDept, false);
+        function showDept() {
+            department_selection.classList.remove('hidden');
+            faculty_selection.classList.add('hidden');
+            date_selection.classList.add('hidden');
+        }
+
+        // show faculty only on faculty select
+
+        faculty_btn.addEventListener('click', showFaculty, false);
+        function showFaculty() {
+            faculty_selection.classList.remove('hidden');
+            date_selection.classList.add('hidden');
+            department_selection.classList.add('hidden');
+        }
+
+    </script>
 </body>
 
 </html>

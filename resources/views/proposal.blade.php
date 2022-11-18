@@ -264,7 +264,7 @@
                                             $year = date('Y');
                                             $today = $year . '-' . $month . '-' . $day;
                                             ?>
-                                            <label class="form-label" for="amount">Date of Submission</label
+                                            <label class="form-flabel" for="amount">Date of Submission</label
                                                 class="form-label">
                                             <input name="proposal_submissionDate" type="date" class="form-control"
                                                 id="submission-date" value="<?php echo $today; ?>"
