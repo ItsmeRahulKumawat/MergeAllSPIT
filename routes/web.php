@@ -3,6 +3,7 @@
 use App\Http\Controllers\FacultyController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,8 +44,9 @@ Route::get('/addFaculty',function(){
     return view('addFaculty');
 });
 
-// Route::get('/proposal', [ProposalController::class, 'index']);
+Route::post('/generateReport',[ReportController::class,'generateReport']);
 
+// Route::get('/proposal', [ProposalController::class, 'index']);
 Route::post('/proposal', [ProposalController::class, 'store']);
 
 Route::post('/getDept', [ProposalController::class, 'getDept']);

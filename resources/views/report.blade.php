@@ -79,7 +79,9 @@
         <div class="card-header">
             <h3>Report</h3>
         </div>
-        <form>
+        <div class="card-body">
+        <form action="{{url('/generateReport')}}" method="POST">
+            @csrf
             <div class="row">
                 <div class="column" style="width:30%">
                     <div class="btn-group" id="btn-group-a">
@@ -89,7 +91,6 @@
                     </div>
                 </div>
             </div>
-            
             <div class="row date_selection" id="date_selection">
                 <div class="column" style="width:30%">
                     <label class="form-label" for="start_date">Start Date</label>
@@ -100,7 +101,6 @@
                     <input class="form-control" type="date" id="end_date" name="end_date">
                 </div>
             </div>
-
             @php
                 $faculties = DB::table('faculties')->get();
             @endphp
@@ -118,9 +118,8 @@
             <div class="row department_selection hidden" id="department_selection">
                 <div class="column" style="width:30%">
                     <label class="form-label" for="department_select">Department</label>
-                    <select class="form-control select" aria-label
-                    class="form-label faculty-department" id="department_1" name="department"
-                    required onchange="getFacultyFromDept(1)">
+                    <select class="form-control" aria-label
+                    class="form-label faculty-department" id="department_1" name="department_select">
                     <option selected disabled value="">Choose...</option>
                     <option value="ETRX">ETRX</option>
                     <option value="EXTC">EXTC</option>
@@ -128,8 +127,25 @@
                     <option value="IT">IT</option>
                     <option value="MCA">MCA</option>
                 </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="column" style="width:30%">
+                    <button type="submit" class="btn btn-primary" id="generate_report">Generate Report</button>
+                </div>
             </div>
         </form>
+
+        <div class="report_table ">
+            <table>
+                <tr>
+                    <th>Proposal Name</th>
+                    <th>Propsal Date</th>
+                    <th>Proposal Amount</th>
+                </tr>
+            </table>
+        </div>
+        </div>
     
     </section>
     <div class="footer">

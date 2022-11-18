@@ -29,3 +29,6 @@ Route::post('/proposal', [ProposalController::class, 'store']);
 Route::post('/getDept', [ProposalController::class, 'getDept']);
 
 Route::post('/removeFaculty/{id}', [FacultyController::class, 'destroy']);
+
+
+Route::post('/generateReport', [FacultyController::class, 'generateReport']);
