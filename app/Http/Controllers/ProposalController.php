@@ -77,12 +77,14 @@ class ProposalController extends Controller
             mkdir($day_folder, 0777, true);
         }
         // create a new folder with proposal title as name
-        $proposal_folder = 'public/'.$year.'/'.$monthName.'/'.$day;
+        $proposal_folder = $year.'/'.$monthName.'/'.$day;
         $fileName = $title.'.'.$file->getClientOriginalExtension();
         $file->storeAs($proposal_folder, $fileName);
 
 
         $proposal = new Proposal();
+        // give random hash string as id
+        $proposal->proposal_id = md5(uniqid(rand(), true));
         $proposal->proposal_title = $request->input('proposal_title');
         $proposal->proposal_authorityOrOrganization = $request->proposal_authorityOrOrganization[0];
         $proposal->proposal_govtPrivate = $request->proposal_govtPrivate[0];
@@ -95,6 +97,15 @@ class ProposalController extends Controller
         return view('proposal_submitted');
     }
 
+    public function pdfStream(Request $request){
+        $proposal_id = $request->input('proposal_id');
+        $proposal = Proposal::where('proposal_id', $proposal_id)->first();
+        $file = $proposal->proposal_file;
+        $file = str_replace('public/', '', $file);
+        $file = storage_path('app/'.$file);
+        return response()->file($file);
+
+    }
     /**
      * Display the specified resource.
      *
@@ -103,7 +114,11 @@ class ProposalController extends Controller
      */
     public function show($id)
     {
-        //
+    
+        $proposal = Proposal::where('proposal_id', $id)->first();
+
+        // return response()->file(storage_path($proposal->proposal_file));
+        return view('proposal_details')->with('proposal', $proposal);
     }
 
     /**

@@ -139,10 +139,26 @@
         <div class="report_table ">
             <table>
                 <tr>
+                    <th>Proposal Id</th>
                     <th>Proposal Name</th>
                     <th>Propsal Date</th>
                     <th>Proposal Amount</th>
                 </tr>
+                {{-- show proposal data that is fetched from post request --}}
+                @if (isset($proposal))
+                    @foreach ($proposal as $proposal)
+                        <tr>
+                            <td>{{ $proposal->proposal_id }}</td>
+                            <td>{{ $proposal->proposal_title }}</td>
+                            <td>{{ $proposal->proposal_fundingAmount }}</td>
+                            <td>{{ $proposal->proposal_submissionDate }}</td>
+                            <td>
+                                <a href="{{ url('/proposal/' . $proposal->proposal_id) }}" class="btn btn-primary">View</a>
+                                {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
+
+                        </tr>
+                    @endforeach
+                @endif
             </table>
         </div>
         </div>

@@ -36,7 +36,6 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        print_r($id);
     }
 
     public function generateReport(Request $request){
@@ -45,7 +44,7 @@ class ReportController extends Controller
         $end_date = $request->end_date;
         $proposal = Proposal::whereBetween('proposal_submissionDate', [$start_date, $end_date])->get();
         
-        return $proposal;
+        return view('report', compact('proposal'));
         
     }
     /**

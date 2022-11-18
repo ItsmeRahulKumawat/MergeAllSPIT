@@ -54,3 +54,5 @@ Route::post('/getDept', [ProposalController::class, 'getDept']);
 Route::post('/addFaculty', [FacultyController::class, 'store']);
 
 Route::post('/removeFaculty/{id}', [FacultyController::class, 'destroy']);
+
+Route::get('/proposal/{id}', [ProposalController::class, 'show']);

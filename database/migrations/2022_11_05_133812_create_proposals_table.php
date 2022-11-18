@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('proposals', function (Blueprint $table) {
+            $table->string("proposal_id");
             $table->string('proposal_title')->primary();
             $table->string('proposal_authorityOrOrganization');
             $table->string('proposal_govtPrivate');

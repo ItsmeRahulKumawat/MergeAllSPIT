@@ -129,7 +129,7 @@
                                                 Faculty</label class="form-label">
 
                                             <select class="form-control select" aria-label
-                                                class="form-label"="Default select example" id="number_of_faculty"
+                                                class="form-label" id="number_of_faculty"
                                                 name="number_of_faculty" onchange="return addFaculty()" required>
                                                 <option disabled value="">Choose...</option>
                                                 <option selected value="1">1</option>
