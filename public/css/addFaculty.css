@@ -1,7 +1,11 @@
 table, th, td {
     border: 1px solid black;
     margin: 0 auto;
-    padding: 25px;
+    /* give padding equal to input box */
+}
+th{
+    padding: 50px;
+    margin:50px;
 }
 
 .hidden{

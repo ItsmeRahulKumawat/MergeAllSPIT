@@ -111,16 +111,57 @@
                             <td>{{ $faculty->faculty_phone }}</td>
                             <td>{{ $faculty->faculty_department }}</td>
                             <td><button class="btn btn-primary remove_{{$loop->iteration}}" onclick="removeFaculty({{$faculty->id}},{{$loop->iteration}})">Remove</button></td>
+                            <td><button class="btn btn-primary edit_{{$loop->iteration}}" onclick="editFaculty({{$faculty->id}},{{$loop->iteration}})">Edit</button></td>
                         </tr>
                     @endforeach
                 </table>
                 <div class="buttons">
                     <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
                         Faculty</button>
+                    
                     <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" onclick="submit()">Submit</button>
                 </div>
             </form>
             <script>
+                function editFaculty(id,i){
+                    // change td to input
+                    var faculty_name = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[1].innerHTML;
+                    var faculty_email = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[2].innerHTML;
+                    var faculty_phone = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[3].innerHTML;
+                    var faculty_department = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[4].innerHTML;
+                    document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[1].innerHTML = "<input type='text' name='faculty_name' value='"+faculty_name+"'>";
+                    document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[2].innerHTML = "<input type='text' name='faculty_email' value='"+faculty_email+"'>";
+                    document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[3].innerHTML = "<input type='text' name='faculty_phone' value='"+faculty_phone+"'>";
+                    document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[4].innerHTML = "<input type='text' name='faculty_department' value='"+faculty_department+"'>";
+                    // change edit button to update button
+                    document.getElementsByClassName("edit_"+i)[0].innerHTML = "Update";
+                    // submit on click update
+                    document.getElementsByClassName("edit_"+i)[0].setAttribute("onclick","updateFaculty("+id+","+i+")");
+                }
+                function updateFaculty(id,i){
+                    // submit on update
+                    var faculty_name = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[1].getElementsByTagName("input")[0].value;
+                    var faculty_email = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[2].getElementsByTagName("input")[0].value;
+                    var faculty_phone = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[3].getElementsByTagName("input")[0].value;
+                    var faculty_department = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[4].getElementsByTagName("input")[0].value;
+                    var data = {
+                        "_token": "{{ csrf_token() }}",
+                        "faculty_name": faculty_name,
+                        "faculty_email": faculty_email,
+                        "faculty_phone": faculty_phone,
+                        "faculty_department": faculty_department,
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "/updateFaculty/"+id,
+                        data: data,
+                        success: function (response) {
+                            console.log(response);
+                            location.reload();
+                        }
+                    });
+                    
+                }
                 function addRow(){
                         let lastRow = document.querySelector('.add_faculty_table tr:last-child');
                         // get last row number

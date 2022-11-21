@@ -4,6 +4,8 @@ use App\Http\Controllers\FacultyController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\ReportController;
+use App\Models\Faculty;
+use App\Models\Proposal;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,8 +53,10 @@ Route::post('/proposal', [ProposalController::class, 'store']);
 
 Route::post('/getDept', [ProposalController::class, 'getDept']);
 
-Route::post('/addFaculty', [FacultyController::class, 'store']);
 
 Route::post('/removeFaculty/{id}', [FacultyController::class, 'destroy']);
 
 Route::get('/proposal/{id}', [ProposalController::class, 'show']);
+
+Route::post('/addFaculty', [FacultyController::class, 'store']);
+Route::post('/updateFaculty/{id}',[FacultyController::class,'update']);

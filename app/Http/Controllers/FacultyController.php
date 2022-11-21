@@ -71,7 +71,26 @@ class FacultyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // update faculty with the request
+        $request->validate([
+            'faculty_name' => 'required|max:255',
+            'faculty_department' => 'required',
+            'faculty_email' => 'required',
+            'faculty_phone' => 'required',
+        ],[
+            'faculty_name.required' => 'Faculty Name is required',
+            'faculty_department.required' => 'Faculty Department is required',
+            'faculty_email.required' => 'Faculty Email is required',
+            'faculty_phone.required' => 'Faculty Phone is required',
+        ],
+        );
+        $faculty = Faculty::find($id);
+        $faculty->faculty_name = $request->input('faculty_name');
+        $faculty->faculty_department = $request->input('faculty_department');
+        $faculty->faculty_email = $request->input('faculty_email');
+        $faculty->faculty_phone = $request->input('faculty_phone');
+        $faculty->save();
+        return redirect()->back()->with('success', 'Faculty Updated Successfully');
     }
 
     /**

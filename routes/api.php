@@ -34,3 +34,5 @@ Route::post('/removeFaculty/{id}', [FacultyController::class, 'destroy']);
 Route::post('/generateReport', [FacultyController::class, 'generateReport']);
 
 Route::get('/proposal/{id}', [ProposalController::class, 'show']);
+
+Route::post('/updateFaculty/{id}',[FacultyController::class,'update']);
