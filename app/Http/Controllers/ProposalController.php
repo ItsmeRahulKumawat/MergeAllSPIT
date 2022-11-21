@@ -130,7 +130,7 @@ class ProposalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // update faculty
     }
 
     /**
