@@ -95,47 +95,55 @@
                 @endphp
                 <table class="add_faculty_table">
                     <tr>
-                        <th>Faculty id</th>
+                        <th>S. No</th>
                         <th>Faculty Name</th>
                         <th>Faculty Email</th>
                         <th>Faculty Phone</th>
                         <th>Faculty Department</th>
                     </tr>
+        
                     @foreach ($faculties as $faculty)
-                        <tr class="row_{{$faculty->id}}">
-                            <td>{{ $faculty->id }}</td>
+
+                        <tr class="row_{{$loop->iteration}}">
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $faculty->faculty_name }}</td>
                             <td>{{ $faculty->faculty_email }}</td>
                             <td>{{ $faculty->faculty_phone }}</td>
                             <td>{{ $faculty->faculty_department }}</td>
-                            <td><button class="btn btn-primary remove_{{$faculty->id}}" onclick="removeFaculty({{$faculty->id}})">Remove</button></td>
+                            <td><button class="btn btn-primary remove_{{$loop->iteration}}" onclick="removeFaculty({{$faculty->id}},{{$loop->iteration}})">Remove</button></td>
                         </tr>
                     @endforeach
                 </table>
                 <div class="buttons">
-                    {{-- give last row id +1 as id  --}}
-                    
-                    <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addFaculty(
-                        {{ $faculties->last()->id + 1 }}
-                    )">Add
+                    <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
                         Faculty</button>
                     <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" onclick="submit()">Submit</button>
                 </div>
             </form>
             <script>
+                function addRow(){
+                        let lastRow = document.querySelector('.add_faculty_table tr:last-child');
+                        // get last row number
+                        let lastRowNumber = lastRow.querySelector('td:first-child').innerText;
+                        // get last row number and increment it
+                        let newRowNumber = parseInt(lastRowNumber) + 1;
+                        addFaculty(newRowNumber);
+                }
                 // delete from database 
                 // stop form from submitting
                 var form = document.querySelector('form');
                 form.addEventListener('submit', function (event) {
                     event.preventDefault();
                 });
-                function removeFaculty(id) {
+                function removeFaculty(id,i) {
                     console.log("here");
                     // remove from table
                     var table = document.querySelector('.add_faculty_table');
-                    var row = document.querySelector('.row_' + id);
+                    var row = document.querySelector('.row_' + i);
                     $(row).remove();
                     console.log(id,"removed");
+                    // if id is present
+                    if(id){
                     $.ajax({
                         url: `/removeFaculty/${id}`,
                         type: 'POST',
@@ -148,6 +156,7 @@
                             console.log(data);
                         }
                     });
+                }
 
                 }
 
@@ -162,7 +171,7 @@
                     var cell3 = row.insertCell(3);
                     var cell4 = row.insertCell(4);
                     var cell5 = row.insertCell(5);
-                    cell0.innerHTML = "<input type='text' class='form-control' placeholder='Id' name='id[]' required>";
+                    cell0.innerHTML = newId;
                     cell1.innerHTML =
                         "<input type='text' class='form-control' placeholder='Faculty Name' name='faculty_name[]' required>";
                     cell2.innerHTML =
@@ -181,9 +190,11 @@
                                                                 <option value="MCA">MCA</option>
                                                             </select>
                     `
-                    cell5.innerHTML = `<button class="btn btn-primary remove_${newId}" onclick="removeFaculty(${newId})">Remove</button>`;
+                    cell5.innerHTML = `<button class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
                     // show submit button
                     document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
+                    
+                    newId++;
                 }
             </script>
         </div>
