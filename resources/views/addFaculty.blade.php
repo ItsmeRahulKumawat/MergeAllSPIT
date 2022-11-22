@@ -157,11 +157,21 @@
                         data: data,
                         success: function (response) {
                             console.log(response);
-                            location.reload();
+                            // change input to td
+                            document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[1].innerHTML = faculty_name;
+                            document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[2].innerHTML = faculty_email;
+                            document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[3].innerHTML = faculty_phone;
+                            document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[4].innerHTML = faculty_department;
+                            // change update button to edit button
+                            document.getElementsByClassName("edit_"+i)[0].innerHTML = "Edit";
+                            // submit on click edit
+                            document.getElementsByClassName("edit_"+i)[0].setAttribute("onclick","editFaculty("+id+","+i+")");
+                            
                         }
                     });
-                    
                 }
+
+                
                 function addRow(){
                         let lastRow = document.querySelector('.add_faculty_table tr:last-child');
                         // get last row number
