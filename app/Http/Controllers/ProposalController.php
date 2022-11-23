@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\FacultyGroup;
 use Illuminate\Http\Request;
 use App\Models\Proposal;
 
@@ -81,8 +82,33 @@ class ProposalController extends Controller
         $fileName = $title.'.'.$file->getClientOriginalExtension();
         $file->storeAs($proposal_folder, $fileName);
 
-
+        
         $proposal = new Proposal();
+        
+        $faculty_group = array();
+        $department_group = array();
+        for($i=1; $i<=5; $i++){
+            $faculty = $request->input('faculty_name_'.$i);
+            $department = $request->input('faculty_department_'.$i);
+            if($faculty != null){
+                array_push($faculty_group, $faculty);
+                array_push($department_group, $department);
+            }
+        }
+        $faculty_group = implode(',', $faculty_group);
+        $department_group = implode(',', $department_group);
+
+        $faculty_group_table = new FacultyGroup();
+        $faculty_group_table->faculty_group_name = $faculty_group;
+        $faculty_group_table->faculty_group_department = $department_group;
+        $faculty_group_table->save();
+
+        $faculty_group_id = FacultyGroup::where('faculty_group_name', $faculty_group)->first()->id;
+        $proposal->proposal_faculty_group_id = $faculty_group_id;
+
+        // $department = $request->input('proposal_department');
+        // $department = implode(',', $department);
+        
         // give random hash string as id
         $proposal->proposal_id = md5(uniqid(rand(), true));
         $proposal->proposal_title = $request->input('proposal_title');
@@ -92,9 +118,11 @@ class ProposalController extends Controller
         $proposal->proposal_fundingAmount = $request->input('proposal_fundingAmount');
         $proposal->proposal_submissionDate = $request->input('proposal_submissionDate');
         $proposal->proposal_file = $proposal_folder.'/'.$fileName;
-
         $proposal->save();
-        return view('proposal_submitted');
+        // send view with proposal id
+
+        return view('proposal_submitted', ['proposal_id' => $proposal->proposal_id]);
+        
     }
 
     public function pdfStream(Request $request){
