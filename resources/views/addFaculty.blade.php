@@ -118,11 +118,73 @@
                 <div class="buttons">
                     <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
                         Faculty</button>
-                    
                     <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" onclick="submit()">Submit</button>
                 </div>
             </form>
             <script>
+
+                function validateEmail(){
+                    var faculty_email = document.querySelector(".faculty_email").value;
+                    var faculty_email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                    // show error if email is not valid
+                    if(!faculty_email_regex.test(faculty_email)){
+                        document.querySelector(".faculty_email_error").innerHTML = "Please enter a valid email";
+                        return false;
+                    }
+                    else{
+                        document.querySelector(".faculty_email_error").innerHTML = "";
+                    }
+                }
+                function validatePhone(){
+                    console.log("here");
+                    var faculty_phone = document.querySelector(".faculty_phone").value;
+                    var faculty_phone_regex = /^[0-9]{10}$/;
+                    // show error if phone is not valid
+                    if(!faculty_phone_regex.test(faculty_phone)){
+                        document.querySelector(".faculty_phone_error").innerHTML = "Please enter a valid phone number";
+                        return false;
+                    }
+                    else{
+                        document.querySelector(".faculty_phone_error").innerHTML = "";
+                    }
+                }
+                // function submitData(){
+                //     var faculty_name = document.getElementsByClassName("faculty_name");
+                //     var faculty_email = document.getElementsByClassName("faculty_email");
+                //     var faculty_phone = document.getElementsByClassName("faculty_phone");
+                //     var faculty_department = document.getElementsByClassName("faculty_department");
+                //     var faculty_data = [];
+                //     for(var i=0;i<faculty_name.length;i++){
+                //         faculty_data.push({
+                //             "faculty_name":faculty_name[i].value,
+                //             "faculty_email":faculty_email[i].value,
+                //             "faculty_phone":faculty_phone[i].value,
+                //             "faculty_department":faculty_department[i].value,
+                //         });
+                //     }
+                //     console.log(faculty_data);
+                //     $.ajax({
+                //         type: "POST",
+                //         url: "/addFaculty",
+                //         data: {
+                //             "_token": "{{ csrf_token() }}",
+                //             "faculty_data": faculty_data
+                //         },
+                //         success: function (response) {
+                //             console.log(response);
+                //             swal.fire({
+                //                 title: "Success",
+                //                 text: "Faculty Added Successfully",
+                //                 icon: "success",
+                //                 confirmButtonText: "OK"
+                //             }).then(function () {
+                //                 // location.reload();
+                //             });
+                //         }
+                //     });
+
+                // }
+                    
                 function editFaculty(id,i){
                     // change td to input
                     var faculty_name = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[1].innerHTML;
@@ -166,7 +228,14 @@
                             document.getElementsByClassName("edit_"+i)[0].innerHTML = "Edit";
                             // submit on click edit
                             document.getElementsByClassName("edit_"+i)[0].setAttribute("onclick","editFaculty("+id+","+i+")");
-                            
+                            // give sweet alert on update
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Faculty Updated Successfully',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
                         }
                     });
                 }
@@ -180,7 +249,7 @@
                         let newRowNumber = parseInt(lastRowNumber) + 1;
                         addFaculty(newRowNumber);
                 }
-                // delete from database 
+                
                 // stop form from submitting
                 var form = document.querySelector('form');
                 form.addEventListener('submit', function (event) {
@@ -205,6 +274,14 @@
                         },
                         success: function(data) {
                             console.log(data);
+                            // sweet alert on delete
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Faculty Deleted Successfully',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
                         }
                     });
                 }
@@ -224,15 +301,18 @@
                     var cell5 = row.insertCell(5);
                     cell0.innerHTML = newId;
                     cell1.innerHTML =
-                        "<input type='text' class='form-control' placeholder='Faculty Name' name='faculty_name[]' required>";
+                        `<input type='text' class='form-control faculty_name'  placeholder='Faculty Name' name='faculty_name[]' required>
+                        <label class='faculty_name_error' style='color:red;'></label>`;
                     cell2.innerHTML =
-                        "<input type='email' class='form-control' placeholder='Faculty Email' name='faculty_email[]' required>";
+                        `<input type='email' class='form-control faculty_email' onchange='validateEmail()' placeholder='Faculty Email' name='faculty_email[]' required>
+                        <label class='faculty_email_error' style='color:red;'></label>`;
                     cell3.innerHTML =
-                        "<input type='text' class='form-control' placeholder='Faculty Contact' name='faculty_phone[]' required>";
+                        `<input type='text' class='form-control faculty_phone' onchange='validatePhone()' placeholder='Faculty Phone' name='faculty_phone[]' required>
+                        <label class='faculty_phone_error' style='color:red;'></label>`;
                     cell4.innerHTML = `
-                    <select class="form-control select" aria-label
+                    <select class="form-control select faculty_department" aria-label
                                                                 class="form-label faculty-department" id="department_1" name="faculty_department[]"
-                                                                required onchange="getFacultyFromDept(1)">
+                                                                required>
                                                                 <option selected disabled value="">Choose...</option>
                                                                 <option value="ETRX">ETRX</option>
                                                                 <option value="EXTC">EXTC</option>
@@ -244,7 +324,6 @@
                     cell5.innerHTML = `<button class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
                     // show submit button
                     document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
-                    
                     newId++;
                 }
             </script>
