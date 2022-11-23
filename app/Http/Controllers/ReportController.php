@@ -38,13 +38,37 @@ class ReportController extends Controller
     {
     }
 
+    
     public function generateReport(Request $request){
-        // show proposal by start date and end date
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
-        $proposal = Proposal::whereBetween('proposal_submissionDate', [$start_date, $end_date])->get();
+        // see what is selected
+        $selected = $request->reportType;
+        // if selected is proposal
+        if($selected == 'proposal'){
+            // show proposal by start date and end date
+            $start_date = $request->start_date;
+            $faculty = $request->faculty_select;
+            $department = $request->department_select;
+            if($start_date!=null){
+                $end_date = $request->end_date;
+                $proposal = Proposal::whereBetween('proposal_submissionDate', [$start_date, $end_date])->get();
+                // make report table visible 
+                $report = true;
+                return view('report', compact('proposal', 'report')); 
+            }else if($faculty!=null){
+                $proposal = Proposal::where('proposal_faculty', $faculty)->get();
+                // make report table visible 
+                $report = true;
+                return view('report', compact('proposal', 'report'));
+            }else if($department!=null){
+                
+                $report = true;
+                return view('report', compact('proposal', 'report'));
+            }
+            
+        }
         
-        return view('report', compact('proposal'));
+        
+
         
     }
     /**

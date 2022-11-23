@@ -82,6 +82,14 @@
         <div class="card-body">
         <form action="{{url('/generateReport')}}" method="POST">
             @csrf
+            {{-- select between proposal and outreach --}}
+            <div class="form-group">
+                <label for="reportType">Report Type</label>
+                <select class="form-control" id="reportType" name="reportType">
+                    <option value="proposal">Proposal</option>
+                    <option value="outreach">Outreach</option>
+                </select>
+            </div>
             <div class="row">
                 <div class="column" style="width:30%">
                     <div class="btn-group" id="btn-group-a">
@@ -98,7 +106,9 @@
                 </div>
                 <div class="column" style="width:30%">
                     <label class="form-label" for="end_date">End Date</label>
-                    <input class="form-control" type="date" id="end_date" name="end_date">
+                    {{-- input with todays date --}}
+                    <input class="form-control" type="date" id="end_date" name="end_date" value="{{date('Y-m-d')}}"
+                    max="<?php echo date('Y-m-d'); ?>" >
                 </div>
             </div>
             @php
@@ -119,7 +129,7 @@
                 <div class="column" style="width:30%">
                     <label class="form-label" for="department_select">Department</label>
                     <select class="form-control" aria-label
-                    class="form-label faculty-department" id="department_1" name="department_select">
+                    class="form-label faculty-department" id="department_select" name="department_select">
                     <option selected disabled value="">Choose...</option>
                     <option value="ETRX">ETRX</option>
                     <option value="EXTC">EXTC</option>
@@ -135,32 +145,34 @@
                 </div>
             </div>
         </form>
+        {{-- make report table visible is $report is true --}}
+        @if(isset($report))
+            <div class="report_table mt-5">
+                <table>
+                    <tr>
+                        <th>Proposal Id</th>
+                        <th>Proposal Name</th>
+                        <th>Propsal Date</th>
+                        <th>Proposal Amount</th>
+                    </tr>
+                    {{-- show proposal data that is fetched from post request --}}
+                    @if (isset($proposal))
+                        @foreach ($proposal as $proposal)
+                            <tr>
+                                <td>{{ $proposal->proposal_id }}</td>
+                                <td>{{ $proposal->proposal_title }}</td>
+                                <td>{{ $proposal->proposal_fundingAmount }}</td>
+                                <td>{{ $proposal->proposal_submissionDate }}</td>
+                                <td>
+                                    <a href="{{ url('/proposal/' . $proposal->proposal_id) }}" class="btn btn-primary">View</a>
+                                    {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
 
-        <div class="report_table ">
-            <table>
-                <tr>
-                    <th>Proposal Id</th>
-                    <th>Proposal Name</th>
-                    <th>Propsal Date</th>
-                    <th>Proposal Amount</th>
-                </tr>
-                {{-- show proposal data that is fetched from post request --}}
-                @if (isset($proposal))
-                    @foreach ($proposal as $proposal)
-                        <tr>
-                            <td>{{ $proposal->proposal_id }}</td>
-                            <td>{{ $proposal->proposal_title }}</td>
-                            <td>{{ $proposal->proposal_fundingAmount }}</td>
-                            <td>{{ $proposal->proposal_submissionDate }}</td>
-                            <td>
-                                <a href="{{ url('/proposal/' . $proposal->proposal_id) }}" class="btn btn-primary">View</a>
-                                {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
-
-                        </tr>
-                    @endforeach
-                @endif
-            </table>
-        </div>
+                            </tr>
+                        @endforeach
+                    @endif
+                </table>
+            </div>
+            @endif
         </div>
     
     </section>

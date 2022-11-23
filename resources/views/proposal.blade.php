@@ -146,14 +146,14 @@
                                             <div class="card-header">
                                                 <h5>Faculty 1</h5>
                                             </div>
-                                            <div class="faculty-info card-body">
+                                            <div class="faculty_info card-body">
                                                 <blockquote class='blockquote mb-0'>
                                                     <div class="row">
                                                         <div class="form-group col-md-6 mt-4">
-                                                            <label class="form-label" for="department"
+                                                            <label class="form-label" for="faculty_department_1"
                                                                 class="form-label">Department*</label>
                                                             <select class="form-control select" aria-label
-                                                                class="form-label faculty-department" id="department_1" name="department"
+                                                                class="form-label faculty_department_1" id="faculty_department_1" name="faculty_department_1"
                                                                 required onchange="getFacultyFromDept(1)">
                                                                 <option selected disabled value="">Choose...</option>
                                                                 <option value="ETRX">ETRX</option>
@@ -171,7 +171,7 @@
                                                             });
 
                                                             function getFacultyFromDept(i) {
-                                                                var selected = $(`#department_${i}`).val();
+                                                                var selected = $(`#faculty_department_${i}`).val();
                                                                 console.log(selected);
                                                                 $.ajax({
                                                                     url: '/getDept',
@@ -214,12 +214,12 @@
                                 <div class="card-header">
                                     <h5>Faculty ${i}</h5>
                                 </div>
-                                <div class="faculty-info card-body">
+                                <div class="faculty_info card-body">
                                     <blockquote class='blockquote mb-0'>
                                     <div class="row">
                                     <div class="form-group col-md-6 mt-4">
-                                        <label class="form-label" for="department" class="form-label class="form-label"">Department*</label class="form-label">
-                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="department_${i}" name="department" required onChange="getFacultyFromDept(${i})">
+                                        <label class="form-label" for="faculty_department_${i}" class="form-label class="form-label"">Department*</label class="form-label">
+                                        <select class="form-control select" aria-label class="form-label" id="faculty_department_${i}" name="faculty_department_${i}=" required onChange="getFacultyFromDept(${i})">
                                             <option selected disabled value="">Choose...</option>
                                             <option value="ETRX">ETRX</option>
                                             <option value="EXTC">EXTC</option>
@@ -232,7 +232,7 @@
                                     </div>
                                     <div class="form-group col-md-6 mt-4">
                                         <label class="form-label" for="faculty_name" class="form-label class="form-label"">Faculty Name</label class="form-label">
-                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="faculty_name_${i}" name="faculty_name"required>
+                                        <select class="form-control select" aria-label class="form-label"="Default select example" id="faculty_name_${i}" name="faculty_name_${i}" required>
                                             <option selected disabled value="">Choose...</option>
                                         </select>
                                         <span class="error-msg" id="dept-msg">

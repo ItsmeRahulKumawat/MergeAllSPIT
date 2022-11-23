@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('proposal_fundingAmount');
             $table->string('proposal_submissionDate');
             $table->string('proposal_file');
+            $table->string('proposal_faculty_group_id');
             $table->timestamps();
         });
     }
