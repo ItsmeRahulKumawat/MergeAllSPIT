@@ -97,7 +97,8 @@ class ProposalController extends Controller
         }
         $faculty_group = implode(',', $faculty_group);
         $department_group = implode(',', $department_group);
-
+        // log faculty group in console
+        echo "<script>console.log('faculty_group: " . $faculty_group . "');</script>";
         $faculty_group_table = new FacultyGroup();
         $faculty_group_table->faculty_group_name = $faculty_group;
         $faculty_group_table->faculty_group_department = $department_group;

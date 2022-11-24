@@ -189,11 +189,11 @@
                                                             }
                                                         </script>
                                                         <div class="form-group col-md-6 mt-4">
-                                                            <label class="form-label" for="faculty_name"
+                                                            <label class="form-label" for="faculty_name_1"
                                                                 class="form-label">Faculty Name</label>
                                                             <select class="form-control select" aria-label
                                                                 class="form-label" id="faculty_name_1"
-                                                                name="faculty_name"required>
+                                                                name="faculty_name_1"required>
                                                                 <option selected disabled value="">Choose...</option>
 
                                                             </select>
