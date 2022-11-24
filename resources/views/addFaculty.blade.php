@@ -118,35 +118,58 @@
                 <div class="buttons">
                     <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
                         Faculty</button>
-                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" onclick="submit()">Submit</button>
+                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" type="submit" onclick="submitForm()">Submit</button>
                 </div>
             </form>
             <script>
+                document.querySelector(".submit_faculty").disabled = true;
+                // stop form from submitting
+                document.querySelector("form").addEventListener("submit", function (stop) {
+                    stop.preventDefault();
+                });
 
+                function submitForm(){
+                    document.querySelector(".submit_faculty").disabled = false;
+                    document.querySelector("form").submit();
+
+                }
                 function validateEmail(){
                     var faculty_email = document.querySelector(".faculty_email").value;
                     var faculty_email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
                     // show error if email is not valid
                     if(!faculty_email_regex.test(faculty_email)){
                         document.querySelector(".faculty_email_error").innerHTML = "Please enter a valid email";
-                        return false;
                     }
                     else{
                         document.querySelector(".faculty_email_error").innerHTML = "";
                     }
+                    enableSubmit();
+
+                }
+                function validateDepartment(){
+                    console.log("here")
+                    // disable if department is not selected
+                    var faculty_department = document.querySelector(".faculty_department").value;
+                    if(faculty_department == "Choose..."){
+                        document.querySelector(".faculty_department_error").innerHTML = "Please select a department";
+                    }
+                    else{
+                        document.querySelector(".faculty_department_error").innerHTML = "";
+                    }
+                    enableSubmit();                    
                 }
                 function validatePhone(){
-                    console.log("here");
+                    
                     var faculty_phone = document.querySelector(".faculty_phone").value;
                     var faculty_phone_regex = /^[0-9]{10}$/;
                     // show error if phone is not valid
                     if(!faculty_phone_regex.test(faculty_phone)){
                         document.querySelector(".faculty_phone_error").innerHTML = "Please enter a valid phone number";
-                        return false;
                     }
                     else{
                         document.querySelector(".faculty_phone_error").innerHTML = "";
                     }
+                    enableSubmit();
                 }
                 // function submitData(){
                 //     var faculty_name = document.getElementsByClassName("faculty_name");
@@ -240,7 +263,27 @@
                     });
                 }
 
-                
+                // enable submit only after all values have been entered
+                function enableSubmit(){
+
+                    var faculty_name = document.getElementsByClassName("faculty_name");
+                    var faculty_email = document.getElementsByClassName("faculty_email");
+                    var faculty_phone = document.getElementsByClassName("faculty_phone");
+                    var faculty_department = document.getElementsByClassName("faculty_department");
+                    var flag = 0;
+                    for(var i=0;i<faculty_name.length;i++){
+                        if(faculty_name[i].value == "" || faculty_email[i].value == "" || faculty_phone[i].value == "" || faculty_department[i].value == ""){
+                            flag = 1;
+                        }
+                    }
+                    if(flag == 0){
+                        document.querySelector(".submit_faculty").disabled = false;
+                    }
+                    else{
+                        document.querySelector(".submit_faculty").disabled = true;
+
+                    }
+                }
                 function addRow(){
                         let lastRow = document.querySelector('.add_faculty_table tr:last-child');
                         // get last row number
@@ -250,11 +293,7 @@
                         addFaculty(newRowNumber);
                 }
                 
-                // stop form from submitting
-                var form = document.querySelector('form');
-                form.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                });
+           
                 function removeFaculty(id,i) {
                     console.log("here");
                     // remove from table
@@ -264,30 +303,30 @@
                     console.log(id,"removed");
                     // if id is present
                     if(id){
-                    $.ajax({
-                        url: `/removeFaculty/${id}`,
-                        type: 'POST',
-                        dataType: 'html',
-                        data: {
-                            id: id,
-                            _token: '{{ csrf_token() }}',
-                        },
-                        success: function(data) {
-                            console.log(data);
-                            // sweet alert on delete
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: 'Faculty Deleted Successfully',
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                        }
-                    });
-                }
+                        $.ajax({
+                            url: `/removeFaculty/${id}`,
+                            type: 'POST',
+                            dataType: 'html',
+                            data: {
+                                id: id,
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(data) {
+                                console.log(data);
+                                // sweet alert on delete
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Faculty Deleted Successfully',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            }
+                        });
+                  }
 
                 }
-
+                
                 function addFaculty(newId) {
                     // add a new table row to add faculty name in input box
                     var table = document.getElementsByClassName("add_faculty_table")[0];
@@ -312,6 +351,7 @@
                     cell4.innerHTML = `
                     <select class="form-control select faculty_department" aria-label
                                                                 class="form-label faculty-department" id="department_1" name="faculty_department[]"
+                                                                onchange="validateDepartment()" required>
                                                                 required>
                                                                 <option selected disabled value="">Choose...</option>
                                                                 <option value="ETRX">ETRX</option>
@@ -320,6 +360,7 @@
                                                                 <option value="IT">IT</option>
                                                                 <option value="MCA">MCA</option>
                                                             </select>
+                    <label class='faculty_department_error' style='color:red;'></label>
                     `
                     cell5.innerHTML = `<button class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
                     // show submit button
