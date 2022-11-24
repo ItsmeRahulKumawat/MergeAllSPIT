@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\FacultyGroup;
 use App\Models\Proposal;
@@ -58,14 +59,14 @@ class ReportController extends Controller
             }else if($faculty_id!=null){
                 // find faculty id by searching faculty name
                 // find faculty name from faculty id
-                $faculty = Faculty::where('id', $faculty_id)->first();
+                $faculty = Faculty::where('faculty_id', $faculty_id)->first();
                 // find faculty group id by searching faculty name
                 // search faculty name with like clause
                 $faculty_group = FacultyGroup::where('faculty_group_name', 'like', '%'.$faculty->faculty_name.'%')->get();
                 // find proposal by searching faculty group id
                 $proposal_array=[];
                 for($i=0; $i<count($faculty_group); $i++){
-                    $proposal = Proposal::where('proposal_faculty_group_id', $faculty_group[$i]->id)->get();
+                    $proposal = Proposal::where('proposal_faculty_group_id', $faculty_group[$i]->faculty_group_id)->get();
                     for($j=0; $j<count($proposal); $j++){
                         array_push($proposal_array, $proposal[$j]);
                     }
@@ -74,8 +75,9 @@ class ReportController extends Controller
                 $report = true;
                 return view('report', compact('proposal', 'report'));
             }else if($department!=null){
-                // find faculty group id by searching department
-                // $faculty_group = FacultyGroup::where('faculty_group_department', $department)->get();
+                // find department id by searching department name
+                // $department = Department::where('department_name', $department)->first();
+                // find faculty group id by searching department id
                 $report = true;
                 return view('report', compact('proposal', 'report'));
             }

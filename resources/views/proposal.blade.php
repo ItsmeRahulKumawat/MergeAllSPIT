@@ -219,7 +219,7 @@
                                     <div class="row">
                                     <div class="form-group col-md-6 mt-4">
                                         <label class="form-label" for="faculty_department_${i}" class="form-label class="form-label"">Department*</label class="form-label">
-                                        <select class="form-control select" aria-label class="form-label" id="faculty_department_${i}" name="faculty_department_${i}=" required onChange="getFacultyFromDept(${i})">
+                                        <select class="form-control select" aria-label class="form-label" id="faculty_department_${i}" name="faculty_department_${i}" required onChange="getFacultyFromDept(${i})">
                                             <option selected disabled value="">Choose...</option>
                                             <option value="ETRX">ETRX</option>
                                             <option value="EXTC">EXTC</option>

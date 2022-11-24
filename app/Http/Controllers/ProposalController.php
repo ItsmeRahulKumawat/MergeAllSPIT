@@ -99,12 +99,14 @@ class ProposalController extends Controller
         $department_group = implode(',', $department_group);
         // log faculty group in console
         echo "<script>console.log('faculty_group: " . $faculty_group . "');</script>";
+        echo "<script>console.log('department_group: " . $department_group . "');</script>";
+
         $faculty_group_table = new FacultyGroup();
         $faculty_group_table->faculty_group_name = $faculty_group;
         $faculty_group_table->faculty_group_department = $department_group;
         $faculty_group_table->save();
 
-        $faculty_group_id = FacultyGroup::where('faculty_group_name', $faculty_group)->first()->id;
+        $faculty_group_id = FacultyGroup::where('faculty_group_name', $faculty_group)->first()->faculty_group_id;
         $proposal->proposal_faculty_group_id = $faculty_group_id;
 
         // $department = $request->input('proposal_department');

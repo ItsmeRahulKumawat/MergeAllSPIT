@@ -110,8 +110,8 @@
                             <td>{{ $faculty->faculty_email }}</td>
                             <td>{{ $faculty->faculty_phone }}</td>
                             <td>{{ $faculty->faculty_department }}</td>
-                            <td><button class="btn btn-primary remove_{{$loop->iteration}}" onclick="removeFaculty({{$faculty->id}},{{$loop->iteration}})">Remove</button></td>
-                            <td><button class="btn btn-primary edit_{{$loop->iteration}}" onclick="editFaculty({{$faculty->id}},{{$loop->iteration}})">Edit</button></td>
+                            <td><button class="btn btn-primary remove_{{$loop->iteration}}" onclick="removeFaculty({{$faculty->faculty_id}},{{$loop->iteration}})">Remove</button></td>
+                            <td><button class="btn btn-primary edit_{{$loop->iteration}}" onclick="editFaculty({{$faculty->faculty_id}},{{$loop->iteration}})">Edit</button></td>
                         </tr>
                     @endforeach
                 </table>

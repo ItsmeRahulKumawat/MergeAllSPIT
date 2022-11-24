@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('faculty_groups', function (Blueprint $table) {
-            $table->id('faculty_group_id');
-            $table->string('faculty_group_name');
-            $table->string('faculty_group_department');
+        Schema::create('departments', function (Blueprint $table) {
+            $table->id('department_id');
+            $table->string('department_name');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('faculty_group');
+        Schema::dropIfExists('department');
     }
 };

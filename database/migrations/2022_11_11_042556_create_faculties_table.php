@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('faculties', function (Blueprint $table) {
             // auto increment id
-            $table->id()->autoIncrement();
+            $table->id('faculty_id')->autoIncrement();
             $table->string('faculty_name');
             $table->string('faculty_department');
             $table->string('faculty_email');
