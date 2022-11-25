@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProposalController;
@@ -45,6 +46,9 @@ Route::get('/proposal_submitted',function(){
 Route::get('/faculty',function(){
     return view('faculty');
 });
+Route::get('/department', function () {
+    return view('department');
+});
 
 Route::post('/report',[ReportController::class,'generateReport']);
 
@@ -60,3 +64,8 @@ Route::get('/proposal/{id}', [ProposalController::class, 'show']);
 
 Route::post('/faculty', [FacultyController::class, 'store']);
 Route::post('/updateFaculty/{id}',[FacultyController::class,'update']);
+
+Route::post('/department',[DepartmentController::class,'store']);
+
+Route::delete('/department/{id}', [DepartmentController::class, 'destroy']);
+Route::put('/department/{department_id}', [DepartmentController::class, 'update']);

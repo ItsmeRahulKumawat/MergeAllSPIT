@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ProposalController;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/proposal', [ProposalController::class, 'index']);
 
 
+Route::post('/department',[DepartmentController::class,'store']);
 Route::post('/proposal', [ProposalController::class, 'store']);
 
 Route::post('/getDept', [ProposalController::class, 'getDept']);
@@ -36,3 +38,7 @@ Route::post('/report', [FacultyController::class, 'generateReport']);
 Route::get('/proposal/{id}', [ProposalController::class, 'show']);
 
 Route::post('/updateFaculty/{id}',[FacultyController::class,'update']);
+
+Route::delete('/department/{id}', [DepartmentController::class, 'destroy']);
+
+Route::put('/department/{department_id}', [DepartmentController::class, 'update']);

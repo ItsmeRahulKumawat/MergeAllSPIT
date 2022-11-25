@@ -75,10 +75,11 @@
         @show
     </div>
     <section class="container">
-        <div>
+        <div id="wrapper" class="card m-5" style="border-radius: 10px;">
+        <div class="card-header">
             <h1>Faculty Info</h1>
         </div>
-        <div class="wrapper">
+        <div class="card-body">
             <form method="POST" action="{{ url('/faculty') }}" novalidate>
                 @csrf
                 @if ($errors->any())
@@ -93,15 +94,18 @@
                 @php
                     $faculties = DB::table('faculties')->get();
                 @endphp
-                <table class="add_faculty_table">
-                    <tr>
+                <table class="add_faculty_table table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
                         <th>S. No</th>
                         <th>Faculty Name</th>
                         <th>Faculty Email</th>
                         <th>Faculty Phone</th>
                         <th>Faculty Department</th>
-                    </tr>
-
+                        <th colspan="2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     @foreach ($faculties as $faculty)
                         <tr class="row_{{ $loop->iteration }}">
                             <td>{{ $loop->iteration }}</td>
@@ -109,7 +113,7 @@
                             <td>{{ $faculty->faculty_email }}</td>
                             <td>{{ $faculty->faculty_phone }}</td>
                             <td>{{ $faculty->faculty_department }}</td>
-                            <td><button class="btn btn-primary remove_{{ $loop->iteration }}"
+                            <td><button class="btn btn-danger remove_{{ $loop->iteration }}"
                                     onclick="removeFaculty({{ $faculty->faculty_id }},{{ $loop->iteration }})">Remove</button>
                             </td>
                             <td><button class="btn btn-primary edit_{{ $loop->iteration }}"
@@ -117,6 +121,7 @@
                             </td>
                         </tr>
                     @endforeach
+                    </tbody>
                 </table>
                 <div class="buttons">
                     <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
@@ -409,6 +414,7 @@
                     newId++;
                 }
             </script>
+        </div>
         </div>
     </section>
     <div class="footer">
