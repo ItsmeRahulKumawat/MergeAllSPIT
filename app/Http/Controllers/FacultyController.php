@@ -84,12 +84,13 @@ class FacultyController extends Controller
             'faculty_phone.required' => 'Faculty Phone is required',
         ],
         );
-        $faculty = Faculty::find($id);
-        $faculty->faculty_name = $request->input('faculty_name');
-        $faculty->faculty_department = $request->input('faculty_department');
-        $faculty->faculty_email = $request->input('faculty_email');
-        $faculty->faculty_phone = $request->input('faculty_phone');
-        $faculty->save();
+        $faculty = Faculty::where('faculty_id', $id);
+        $faculty->update([
+            'faculty_name' => $request->faculty_name,
+            'faculty_department' => $request->faculty_department,
+            'faculty_email' => $request->faculty_email,
+            'faculty_phone' => $request->faculty_phone,
+        ]);
         return redirect()->back()->with('success', 'Faculty Updated Successfully');
     }
 
@@ -101,8 +102,8 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
-        
-        $faculty = Faculty::find($id);
-        $faculty->delete();
+        // delete faculty with the id
+        $faculty = Faculty::where('faculty_id', $id)->delete();
+        return redirect()->back()->with('success', 'Faculty Deleted Successfully');
     }
 }

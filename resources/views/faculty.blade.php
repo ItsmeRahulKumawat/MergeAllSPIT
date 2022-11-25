@@ -79,7 +79,7 @@
             <h1>Faculty Info</h1>
         </div>
         <div class="wrapper">
-            <form method="POST" action="{{ url('/addFaculty') }}" novalidate>
+            <form method="POST" action="{{ url('/faculty') }}" novalidate>
                 @csrf
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -219,13 +219,31 @@
                     var faculty_phone = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[3].innerHTML;
                     var faculty_department = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4].innerHTML;
                     document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML =
-                        "<input type='text' name='faculty_name' value='" + faculty_name + "'>";
+                    `<input type='text' class='form-control faculty_name' placeholder='Faculty Name' name='faculty_name[]' required value=${faculty_name}>
+                    <label class='faculty_name_error' style='color:red;'></label>`;
                     document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[2].innerHTML =
-                        "<input type='text' name='faculty_email' value='" + faculty_email + "'>";
+                    `<input type='email' value = "${faculty_email}" class='form-control faculty_email' onchange='validateEmail()' placeholder='Faculty Email' name='faculty_email[]' required>
+                        <label class='faculty_email_error' style='color:red;'></label>`;
                     document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[3].innerHTML =
-                        "<input type='text' name='faculty_phone' value='" + faculty_phone + "'>";
+                    `<input type='text' value="${faculty_phone}" class='form-control faculty_phone' onchange='validatePhone()' placeholder='Faculty Phone' name='faculty_phone[]' required>
+                        <label class='faculty_phone_error' style='color:red;'></label>`;
                     document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4].innerHTML =
-                        "<input type='text' name='faculty_department' value='" + faculty_department + "'>";
+                       `<select class="form-control select faculty_department" aria-label
+                                                                class="form-label faculty-department" id="department_1" name="faculty_department[]"
+                                                                onchange="validateDepartment()" required>
+                                                                required>
+                                                                <option selected value="${faculty_department}">${faculty_department}</option>
+                                                        
+                                                                // get all departments
+                                                                <?php
+                                                                $departments = DB::table('departments')->get();
+                                                                foreach ($departments as $department) {
+                                                                    echo "<option value='$department->department_name'>$department->department_name</option>";
+                                                                }
+                                                                ?>
+                                                                // select department
+                                                            </select>
+                    <label class='faculty_department_error' style='color:red;'></label>`
                     // change edit button to update button
                     document.getElementsByClassName("edit_" + i)[0].innerHTML = "Update";
                     // submit on click update
@@ -240,8 +258,9 @@
                         .getElementsByTagName("input")[0].value;
                     var faculty_phone = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[3]
                         .getElementsByTagName("input")[0].value;
+                    // get value from select
                     var faculty_department = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4]
-                        .getElementsByTagName("input")[0].value;
+                        .getElementsByTagName("select")[0].value;
                     var data = {
                         "_token": "{{ csrf_token() }}",
                         "faculty_name": faculty_name,
@@ -314,7 +333,7 @@
 
 
                 function removeFaculty(id, i) {
-                    console.log("here");
+                    console.log("here",id,i);
                     // remove from table
                     var table = document.querySelector('.add_faculty_table');
                     var row = document.querySelector('.row_' + i);
@@ -327,7 +346,7 @@
                             type: 'POST',
                             dataType: 'html',
                             data: {
-                                id: id,
+                                faculty_id: id,
                                 _token: '{{ csrf_token() }}',
                             },
                             success: function(data) {

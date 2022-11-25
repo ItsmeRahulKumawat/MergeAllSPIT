@@ -20,7 +20,7 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/proposal.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/addFaculty.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/faculty.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/report.css') }}" />
 </head>
 

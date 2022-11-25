@@ -42,8 +42,8 @@ Route::get('/register',function(){
 Route::get('/proposal_submitted',function(){
     return view('proposal_submitted');
 });
-Route::get('/addFaculty',function(){
-    return view('addFaculty');
+Route::get('/faculty',function(){
+    return view('faculty');
 });
 
 Route::post('/report',[ReportController::class,'generateReport']);
@@ -58,5 +58,5 @@ Route::post('/removeFaculty/{id}', [FacultyController::class, 'destroy']);
 
 Route::get('/proposal/{id}', [ProposalController::class, 'show']);
 
-Route::post('/addFaculty', [FacultyController::class, 'store']);
+Route::post('/faculty', [FacultyController::class, 'store']);
 Route::post('/updateFaculty/{id}',[FacultyController::class,'update']);
