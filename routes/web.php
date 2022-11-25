@@ -46,7 +46,7 @@ Route::get('/addFaculty',function(){
     return view('addFaculty');
 });
 
-Route::post('/generateReport',[ReportController::class,'generateReport']);
+Route::post('/report',[ReportController::class,'generateReport']);
 
 // Route::get('/proposal', [ProposalController::class, 'index']);
 Route::post('/proposal', [ProposalController::class, 'store']);

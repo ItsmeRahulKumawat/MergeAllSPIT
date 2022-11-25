@@ -80,7 +80,7 @@
             <h3>Report</h3>
         </div>
         <div class="card-body">
-        <form action="{{url('/generateReport')}}" method="POST">
+        <form action="{{url('/report')}}" method="POST">
             @csrf
             {{-- select between proposal and outreach --}}
             <div class="form-group">
@@ -161,6 +161,12 @@
                     </tr>
                     {{-- show proposal data that is fetched from post request --}}
                     @if (isset($proposal))
+                    {{-- if proposal size is 0 --}}
+                    @if (count($proposal) == 0)
+                    <tr>
+                        <td colspan="4" class="text-center">No Data Found</td>
+                    </tr>
+                    @else
                         @foreach ($proposal as $proposal)
                             <tr>
                                 <td>{{ $proposal->proposal_id }}</td>
@@ -173,11 +179,14 @@
 
                             </tr>
                         @endforeach
+                    
                     @endif
+                    @endif
+                    {{-- show outreach data that is fetched from post request --}}
+                    
                 </table>
             </div>
-            @endif
-        </div>
+        @endif
     
     </section>
     <div class="footer">
