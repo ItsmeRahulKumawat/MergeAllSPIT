@@ -86,7 +86,8 @@
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
                             <div class="form">
-                                <form   autocomplete="off" method="POST" action="{{ url('/proposal') }}" enctype="multipart/form-data">
+                                <form autocomplete="off" method="POST" action="{{ url('/proposal') }}"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     @if ($errors->any())
                                         <div class="alert alert-danger">
@@ -128,9 +129,9 @@
                                             <label class="form-label" for="proposal_numberOfFaculty">Number of
                                                 Faculty</label class="form-label">
 
-                                            <select class="form-control select" aria-label
-                                                class="form-label" id="number_of_faculty"
-                                                name="number_of_faculty" onchange="return addFaculty()" required>
+                                            <select class="form-control select" aria-label class="form-label"
+                                                id="number_of_faculty" name="number_of_faculty"
+                                                onchange="return addFaculty()" required>
                                                 <option disabled value="">Choose...</option>
                                                 <option selected value="1">1</option>
                                                 <option value="2">2</option>
@@ -153,14 +154,17 @@
                                                             <label class="form-label" for="faculty_department_1"
                                                                 class="form-label">Department*</label>
                                                             <select class="form-control select" aria-label
-                                                                class="form-label faculty_department_1" id="faculty_department_1" name="faculty_department_1"
+                                                                class="form-label faculty_department_1"
+                                                                id="faculty_department_1" name="faculty_department_1"
                                                                 required onchange="getFacultyFromDept(1)">
                                                                 <option selected disabled value="">Choose...</option>
-                                                                <option value="ETRX">ETRX</option>
-                                                                <option value="EXTC">EXTC</option>
-                                                                <option value="COMPS">COMPS</option>
-                                                                <option value="IT">IT</option>
-                                                                <option value="MCA">MCA</option>
+                                                                {{-- get all departments --}}
+                                                                <?php
+                                                                $departments = DB::table('departments')->get();
+                                                                foreach ($departments as $department) {
+                                                                    echo "<option value='$department->department_name'>$department->department_name</option>";
+                                                                }
+                                                                ?>
                                                             </select>
                                                             <span class="error-msg" id="dept-msg">
                                                             </span>
@@ -221,11 +225,13 @@
                                         <label class="form-label" for="faculty_department_${i}" class="form-label class="form-label"">Department*</label class="form-label">
                                         <select class="form-control select" aria-label class="form-label" id="faculty_department_${i}" name="faculty_department_${i}" required onChange="getFacultyFromDept(${i})">
                                             <option selected disabled value="">Choose...</option>
-                                            <option value="ETRX">ETRX</option>
-                                            <option value="EXTC">EXTC</option>
-                                            <option value="COMP">COMP</option>
-                                            <option value="IT">IT</option>
-                                            <option value="MCA">MCA</option>
+                                            // get all departments
+                                                                <?php
+                                                                $departments = DB::table('departments')->get();
+                                                                foreach ($departments as $department) {
+                                                                    echo "<option value='$department->department_name'>$department->department_name</option>";
+                                                                }
+                                                                ?>
                                         </select>
                                         <span class="error-msg" id="dept-msg">
                                         </span>

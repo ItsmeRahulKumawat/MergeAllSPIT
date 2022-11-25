@@ -50,13 +50,16 @@ class ReportController extends Controller
             // show proposal by start date and end date
             $start_date = $request->start_date;
             $faculty_id = $request->faculty_select;
-            $department = $request->department_select;
+            $department_id = $request->department_select;
+            echo "<script>console.log('faculty id: ".$faculty_id."')</script>";
+            echo "<script>console.log('department id: ".$department_id."')</script>";
+            echo "<script>console.log('start date: ".$start_date."')</script>";
             if($start_date!=null){
                 $end_date = $request->end_date;
                 $proposal = Proposal::whereBetween('proposal_submissionDate', [$start_date, $end_date])->get();
                 $report = true;
                 return view('report', compact('proposal', 'report')); 
-            }else if($faculty_id!=null){
+            }else if($faculty_id!='0'){
                 // find faculty id by searching faculty name
                 // find faculty name from faculty id
                 $faculty = Faculty::where('faculty_id', $faculty_id)->first();
@@ -74,10 +77,18 @@ class ReportController extends Controller
                 $proposal = $proposal_array;
                 $report = true;
                 return view('report', compact('proposal', 'report'));
-            }else if($department!=null){
-                // find department id by searching department name
-                // $department = Department::where('department_name', $department)->first();
-                // find faculty group id by searching department id
+            }else if($department_id!='0'){
+                $department = Department::where('department_id', $department_id)->first();
+                echo "<script>console.log('department name: ".$department->department_name."')</script>";
+                $faculty_group = FacultyGroup::where('faculty_group_department', 'like', '%'.$department->department_name.'%')->get();
+                $proposal_array=[];
+                for($i=0; $i<count($faculty_group); $i++){
+                    $proposal = Proposal::where('proposal_faculty_group_id', $faculty_group[$i]->faculty_group_id)->get();
+                    for($j=0; $j<count($proposal); $j++){
+                        array_push($proposal_array, $proposal[$j]);
+                    }
+                }
+                $proposal = $proposal_array;
                 $report = true;
                 return view('report', compact('proposal', 'report'));
             }

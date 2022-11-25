@@ -101,72 +101,76 @@
                         <th>Faculty Phone</th>
                         <th>Faculty Department</th>
                     </tr>
-        
-                    @foreach ($faculties as $faculty)
 
-                        <tr class="row_{{$loop->iteration}}">
+                    @foreach ($faculties as $faculty)
+                        <tr class="row_{{ $loop->iteration }}">
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $faculty->faculty_name }}</td>
                             <td>{{ $faculty->faculty_email }}</td>
                             <td>{{ $faculty->faculty_phone }}</td>
                             <td>{{ $faculty->faculty_department }}</td>
-                            <td><button class="btn btn-primary remove_{{$loop->iteration}}" onclick="removeFaculty({{$faculty->faculty_id}},{{$loop->iteration}})">Remove</button></td>
-                            <td><button class="btn btn-primary edit_{{$loop->iteration}}" onclick="editFaculty({{$faculty->faculty_id}},{{$loop->iteration}})">Edit</button></td>
+                            <td><button class="btn btn-primary remove_{{ $loop->iteration }}"
+                                    onclick="removeFaculty({{ $faculty->faculty_id }},{{ $loop->iteration }})">Remove</button>
+                            </td>
+                            <td><button class="btn btn-primary edit_{{ $loop->iteration }}"
+                                    onclick="editFaculty({{ $faculty->faculty_id }},{{ $loop->iteration }})">Edit</button>
+                            </td>
                         </tr>
                     @endforeach
                 </table>
                 <div class="buttons">
                     <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
                         Faculty</button>
-                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" type="submit" onclick="submitForm()">Submit</button>
+                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" type="submit"
+                        onclick="submitForm()">Submit</button>
                 </div>
             </form>
             <script>
                 document.querySelector(".submit_faculty").disabled = true;
                 // stop form from submitting
-                document.querySelector("form").addEventListener("submit", function (stop) {
+                document.querySelector("form").addEventListener("submit", function(stop) {
                     stop.preventDefault();
                 });
 
-                function submitForm(){
+                function submitForm() {
                     document.querySelector(".submit_faculty").disabled = false;
                     document.querySelector("form").submit();
 
                 }
-                function validateEmail(){
+
+                function validateEmail() {
                     var faculty_email = document.querySelector(".faculty_email").value;
                     var faculty_email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
                     // show error if email is not valid
-                    if(!faculty_email_regex.test(faculty_email)){
+                    if (!faculty_email_regex.test(faculty_email)) {
                         document.querySelector(".faculty_email_error").innerHTML = "Please enter a valid email";
-                    }
-                    else{
+                    } else {
                         document.querySelector(".faculty_email_error").innerHTML = "";
                     }
                     enableSubmit();
 
                 }
-                function validateDepartment(){
+
+                function validateDepartment() {
                     console.log("here")
                     // disable if department is not selected
                     var faculty_department = document.querySelector(".faculty_department").value;
-                    if(faculty_department == "Choose..."){
+                    if (faculty_department == "Choose...") {
                         document.querySelector(".faculty_department_error").innerHTML = "Please select a department";
-                    }
-                    else{
+                    } else {
                         document.querySelector(".faculty_department_error").innerHTML = "";
                     }
-                    enableSubmit();                    
+                    enableSubmit();
                 }
-                function validatePhone(){
-                    
+
+                function validatePhone() {
+
                     var faculty_phone = document.querySelector(".faculty_phone").value;
                     var faculty_phone_regex = /^[0-9]{10}$/;
                     // show error if phone is not valid
-                    if(!faculty_phone_regex.test(faculty_phone)){
+                    if (!faculty_phone_regex.test(faculty_phone)) {
                         document.querySelector(".faculty_phone_error").innerHTML = "Please enter a valid phone number";
-                    }
-                    else{
+                    } else {
                         document.querySelector(".faculty_phone_error").innerHTML = "";
                     }
                     enableSubmit();
@@ -207,28 +211,37 @@
                 //     });
 
                 // }
-                    
-                function editFaculty(id,i){
+
+                function editFaculty(id, i) {
                     // change td to input
-                    var faculty_name = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[1].innerHTML;
-                    var faculty_email = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[2].innerHTML;
-                    var faculty_phone = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[3].innerHTML;
-                    var faculty_department = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[4].innerHTML;
-                    document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[1].innerHTML = "<input type='text' name='faculty_name' value='"+faculty_name+"'>";
-                    document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[2].innerHTML = "<input type='text' name='faculty_email' value='"+faculty_email+"'>";
-                    document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[3].innerHTML = "<input type='text' name='faculty_phone' value='"+faculty_phone+"'>";
-                    document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[4].innerHTML = "<input type='text' name='faculty_department' value='"+faculty_department+"'>";
+                    var faculty_name = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML;
+                    var faculty_email = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[2].innerHTML;
+                    var faculty_phone = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[3].innerHTML;
+                    var faculty_department = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4].innerHTML;
+                    document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML =
+                        "<input type='text' name='faculty_name' value='" + faculty_name + "'>";
+                    document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[2].innerHTML =
+                        "<input type='text' name='faculty_email' value='" + faculty_email + "'>";
+                    document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[3].innerHTML =
+                        "<input type='text' name='faculty_phone' value='" + faculty_phone + "'>";
+                    document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4].innerHTML =
+                        "<input type='text' name='faculty_department' value='" + faculty_department + "'>";
                     // change edit button to update button
-                    document.getElementsByClassName("edit_"+i)[0].innerHTML = "Update";
+                    document.getElementsByClassName("edit_" + i)[0].innerHTML = "Update";
                     // submit on click update
-                    document.getElementsByClassName("edit_"+i)[0].setAttribute("onclick","updateFaculty("+id+","+i+")");
+                    document.getElementsByClassName("edit_" + i)[0].setAttribute("onclick", "updateFaculty(" + id + "," + i + ")");
                 }
-                function updateFaculty(id,i){
+
+                function updateFaculty(id, i) {
                     // submit on update
-                    var faculty_name = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[1].getElementsByTagName("input")[0].value;
-                    var faculty_email = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[2].getElementsByTagName("input")[0].value;
-                    var faculty_phone = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[3].getElementsByTagName("input")[0].value;
-                    var faculty_department = document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[4].getElementsByTagName("input")[0].value;
+                    var faculty_name = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1]
+                        .getElementsByTagName("input")[0].value;
+                    var faculty_email = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[2]
+                        .getElementsByTagName("input")[0].value;
+                    var faculty_phone = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[3]
+                        .getElementsByTagName("input")[0].value;
+                    var faculty_department = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4]
+                        .getElementsByTagName("input")[0].value;
                     var data = {
                         "_token": "{{ csrf_token() }}",
                         "faculty_name": faculty_name,
@@ -238,19 +251,24 @@
                     };
                     $.ajax({
                         type: "POST",
-                        url: "/updateFaculty/"+id,
+                        url: "/updateFaculty/" + id,
                         data: data,
-                        success: function (response) {
+                        success: function(response) {
                             console.log(response);
                             // change input to td
-                            document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[1].innerHTML = faculty_name;
-                            document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[2].innerHTML = faculty_email;
-                            document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[3].innerHTML = faculty_phone;
-                            document.getElementsByClassName("row_"+i)[0].getElementsByTagName("td")[4].innerHTML = faculty_department;
+                            document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML =
+                                faculty_name;
+                            document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[2].innerHTML =
+                                faculty_email;
+                            document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[3].innerHTML =
+                                faculty_phone;
+                            document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4].innerHTML =
+                                faculty_department;
                             // change update button to edit button
-                            document.getElementsByClassName("edit_"+i)[0].innerHTML = "Edit";
+                            document.getElementsByClassName("edit_" + i)[0].innerHTML = "Edit";
                             // submit on click edit
-                            document.getElementsByClassName("edit_"+i)[0].setAttribute("onclick","editFaculty("+id+","+i+")");
+                            document.getElementsByClassName("edit_" + i)[0].setAttribute("onclick", "editFaculty(" +
+                                id + "," + i + ")");
                             // give sweet alert on update
                             Swal.fire({
                                 position: 'center',
@@ -264,45 +282,46 @@
                 }
 
                 // enable submit only after all values have been entered
-                function enableSubmit(){
+                function enableSubmit() {
 
                     var faculty_name = document.getElementsByClassName("faculty_name");
                     var faculty_email = document.getElementsByClassName("faculty_email");
                     var faculty_phone = document.getElementsByClassName("faculty_phone");
                     var faculty_department = document.getElementsByClassName("faculty_department");
                     var flag = 0;
-                    for(var i=0;i<faculty_name.length;i++){
-                        if(faculty_name[i].value == "" || faculty_email[i].value == "" || faculty_phone[i].value == "" || faculty_department[i].value == ""){
+                    for (var i = 0; i < faculty_name.length; i++) {
+                        if (faculty_name[i].value == "" || faculty_email[i].value == "" || faculty_phone[i].value == "" ||
+                            faculty_department[i].value == "") {
                             flag = 1;
                         }
                     }
-                    if(flag == 0){
+                    if (flag == 0) {
                         document.querySelector(".submit_faculty").disabled = false;
-                    }
-                    else{
+                    } else {
                         document.querySelector(".submit_faculty").disabled = true;
 
                     }
                 }
-                function addRow(){
-                        let lastRow = document.querySelector('.add_faculty_table tr:last-child');
-                        // get last row number
-                        let lastRowNumber = lastRow.querySelector('td:first-child').innerText;
-                        // get last row number and increment it
-                        let newRowNumber = parseInt(lastRowNumber) + 1;
-                        addFaculty(newRowNumber);
+
+                function addRow() {
+                    let lastRow = document.querySelector('.add_faculty_table tr:last-child');
+                    // get last row number
+                    let lastRowNumber = lastRow.querySelector('td:first-child').innerText;
+                    // get last row number and increment it
+                    let newRowNumber = parseInt(lastRowNumber) + 1;
+                    addFaculty(newRowNumber);
                 }
-                
-           
-                function removeFaculty(id,i) {
+
+
+                function removeFaculty(id, i) {
                     console.log("here");
                     // remove from table
                     var table = document.querySelector('.add_faculty_table');
                     var row = document.querySelector('.row_' + i);
                     $(row).remove();
-                    console.log(id,"removed");
+                    console.log(id, "removed");
                     // if id is present
-                    if(id){
+                    if (id) {
                         $.ajax({
                             url: `/removeFaculty/${id}`,
                             type: 'POST',
@@ -323,10 +342,10 @@
                                 })
                             }
                         });
-                  }
+                    }
 
                 }
-                
+
                 function addFaculty(newId) {
                     // add a new table row to add faculty name in input box
                     var table = document.getElementsByClassName("add_faculty_table")[0];
@@ -354,15 +373,18 @@
                                                                 onchange="validateDepartment()" required>
                                                                 required>
                                                                 <option selected disabled value="">Choose...</option>
-                                                                <option value="ETRX">ETRX</option>
-                                                                <option value="EXTC">EXTC</option>
-                                                                <option value="COMPS">COMPS</option>
-                                                                <option value="IT">IT</option>
-                                                                <option value="MCA">MCA</option>
+                                                                // get all departments
+                                                                <?php
+                                                                $departments = DB::table('departments')->get();
+                                                                foreach ($departments as $department) {
+                                                                    echo "<option value='$department->department_name'>$department->department_name</option>";
+                                                                }
+                                                                ?>
                                                             </select>
                     <label class='faculty_department_error' style='color:red;'></label>
                     `
-                    cell5.innerHTML = `<button class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
+                    cell5.innerHTML =
+                        `<button class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
                     // show submit button
                     document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
                     newId++;

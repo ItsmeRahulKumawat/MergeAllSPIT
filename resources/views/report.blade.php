@@ -112,16 +112,18 @@
                 </div>
             </div>
             @php
-                $faculties = DB::table('faculties')->get();
             @endphp
             <div class="row faculty_selection hidden" id="faculty_selection">
                 <div clas="column" style="width:30%">
                     <label class="form-label" for="faculty_select">Faculty</label>
                     <select class="form-control" id="faculty_select" name="faculty_select">
-                        <option value="0">Select Faculty</option>
-                        @foreach ($faculties as $faculty)
-                            <option value="{{ $faculty->id }}">{{ $faculty->faculty_name }}</option>
-                        @endforeach
+                        <option selected value="0" >Select Faculty</option>
+                        <?php
+                            $faculties = DB::table('faculties')->get();
+                            foreach($faculties as $faculty){
+                                echo "<option value='$faculty->faculty_id'>$faculty->faculty_name</option>";
+                            }
+                        ?>
                     </select>
                 </div>
             </div>
@@ -130,12 +132,14 @@
                     <label class="form-label" for="department_select">Department</label>
                     <select class="form-control" aria-label
                     class="form-label faculty-department" id="department_select" name="department_select">
-                    <option selected disabled value="">Choose...</option>
-                    <option value="ETRX">ETRX</option>
-                    <option value="EXTC">EXTC</option>
-                    <option value="COMPS">COMPS</option>
-                    <option value="IT">IT</option>
-                    <option value="MCA">MCA</option>
+                    <option selected disabled value="0">Choose...</option>
+                    {{-- // get all departments --}}
+                    <?php
+                    $departments = DB::table('departments')->get();
+                    foreach ($departments as $department) {
+                        echo "<option value='$department->department_id'>$department->department_name</option>";
+                    }
+                    ?>
                 </select>
                 </div>
             </div>
