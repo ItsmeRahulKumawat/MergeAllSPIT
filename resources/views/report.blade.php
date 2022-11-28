@@ -152,13 +152,16 @@
         {{-- make report table visible is $report is true --}}
         @if(isset($report))
             <div class="report_table mt-5">
-                <table>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
                     <tr>
                         <th>Proposal Id</th>
                         <th>Proposal Name</th>
                         <th>Propsal Date</th>
                         <th>Proposal Amount</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     {{-- show proposal data that is fetched from post request --}}
                     @if (isset($proposal))
                     {{-- if proposal size is 0 --}}
@@ -183,7 +186,7 @@
                     @endif
                     @endif
                     {{-- show outreach data that is fetched from post request --}}
-                    
+                    </tbody>
                 </table>
             </div>
         @endif

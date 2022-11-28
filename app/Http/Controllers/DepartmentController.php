@@ -25,12 +25,27 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
+        try{
         // store in department database
         $department = new Department();
         $department->department_name = $request->department_name;
+        // if department name is duplicated and request 
         $department->save();
         
-        return response()->json($department->department_id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Department created successfully',
+            'data' => $department
+        ], 200);
+        }catch(\Exception $e){
+            if($e->getCode() == 23000){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Department name already exists',
+                    'data' => null
+                ], 400);
+            }
+        }
     }
 
     /**

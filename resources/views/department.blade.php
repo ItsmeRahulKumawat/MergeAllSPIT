@@ -194,50 +194,54 @@
                     $.ajax({
                         url: "/department",
                         type: "POST",
-                        dataType: 'html',
+                        dataType: 'json',
                         data: {
                             department_name: department_name,
                             _token: "{{ csrf_token() }}"
                         },
                         success: function(response) {
                             if (response) {
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'success',
-                                    title: 'Department added successfully',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                                department_id = response;
-                                console.log(response);
-                                // if response has message show the message
-                                if (response.message) {
+                                if (response["status"] == "success") {
                                     Swal.fire({
                                         position: 'center',
                                         icon: 'success',
-                                        title: response.message,
+                                        title: 'Department added successfully',
                                         showConfirmButton: false,
                                         timer: 1500
                                     })
-                                }else{
+                                    department_id = response["data"]["department_id"];
                                     changeInputToRow(department_id, department_name);
-                                }
+                                } 
                             }
                         },
+                        error: function(response) {
+                            console.log(response);
+                            if (response.responseJSON["status"]) {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'error',
+                                        title: 'Department already exists',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                
+                            }
+                        }
                     });
                 }
 
                 function changeInputToRow(department_id, department_name) {
                     var table = document.querySelector("table");
                     var row = table.insertRow(-1);
+                    row.setAttribute("id", department_id);
                     var cell1 = row.insertCell(0);
                     var cell2 = row.insertCell(1);
                     var cell3 = row.insertCell(2);
                     cell1.innerHTML = department_id;
                     cell2.innerHTML = department_name;
-                    cell3.innerHTML = ` <button class="btn btn-primary mr-1" onclick="editDepartment('{{ $department->department_id }}','{{ $department->department_name }}')">Edit</a>
+                    cell3.innerHTML = ` <button class="btn btn-primary mr-1" onclick="editDepartment('${department_id}','${department_name}')">Edit</a>
                                         <button type="button" class="btn btn-danger" data-toggle="modal"
-                                        onclick="deleteDepartment('{{ $department->department_id }}','{{ $department->department_name }}')">
+                                        onclick="deleteDepartment('${department_id}','${department_name}')">
                                         Delete</button>`;
                     // clear form
                     $('#department_id').val('');
@@ -245,7 +249,7 @@
                     // hide the form
                     $('#addDepartment').addClass('hidden');
                     // show error in unique key error
-            
+
                 }
                 // function addNewDepartmentInput() {
                 //     // add new department form multiple times

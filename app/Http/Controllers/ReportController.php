@@ -92,7 +92,13 @@ class ReportController extends Controller
                 $report = true;
                 return view('report', compact('proposal', 'report'));
             }
-            
+            // else 
+            // show all proposal
+            else{
+                $proposal = Proposal::all();
+                $report = true;
+                return view('report', compact('proposal', 'report'));
+            }
         }
         
         
