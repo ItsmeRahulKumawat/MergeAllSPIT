@@ -30,7 +30,7 @@ class DepartmentController extends Controller
         $department->department_name = $request->department_name;
         $department->save();
         
-        return response()->json($department->id);
+        return response()->json($department->department_id);
     }
 
     /**
@@ -74,6 +74,12 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         //
-        $department=Department::where('department_id',$id)->delete();
+        $department=Department::where('department_id',$id);
+        $department->delete();
+        // if department count is 0 then return 0
+        if(Department::count()==0){
+            echo "<script>alert('No Department Found')</script>";
+            Department::truncate();
+        }
     }
 }

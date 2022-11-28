@@ -187,7 +187,13 @@
                                                                         num: i
                                                                     },
                                                                     success: function(data) {
-                                                                        $(`#faculty_name_${i}`).html(data);
+                                                                        
+                                                                        if(data==""){
+                                                                            $(`#faculty_name_${i}`).html(
+                                                                                "<option selected disabled value=''>No faculty found in this department</option>"
+                                                                            );
+                                                                        }
+                                                                        else $(`#faculty_name_${i}`).html(data);
                                                                     }
                                                                 });
                                                             }

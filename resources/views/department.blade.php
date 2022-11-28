@@ -95,6 +95,7 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             @foreach ($departments as $department)
                                 <tr class="department_info" id="{{ $department->department_id }}">
                                     <td>{{ $department->department_id }}</td>
@@ -102,19 +103,25 @@
                                     <td>
 
                                         {{-- edit button --}}
-                                        <button class="btn btn-primary mr-1" onclick="editDepartment('{{$department->department_id}}','{{ $department->department_name }}')">Edit</a>
+                                        <button class="btn btn-primary mr-1"
+                                            onclick="editDepartment('{{ $department->department_id }}','{{ $department->department_name }}')">Edit</a>
 
                                             <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                onclick="deleteDepartment('{{$department->department_id}}','{{ $department->department_name }}')">
+                                                onclick="deleteDepartment('{{ $department->department_id }}','{{ $department->department_name }}')">
                                                 Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
-                            <tr id="addDepartment" class="hidden">
+                            {{-- <tr id="addDepartment" class="hidden">
                                 <td>
-                                    {{-- id will be previous +1 --}}
+                                    @if ($departments->count() == 0)
+                                        <input type="text" name="department_id" id="department_id" value="1" readonly>
+                                    @else
                                     <input type="text" name="department_id" id="department_id"
                                         class="form-control" value="{{ $department->department_id + 1 }}" readonly>
+                                    @endif
+                                    
+                                    
                                 </td>
                                 <td>
                                     <input type="text" name="department_name" id="department_name"
@@ -123,7 +130,7 @@
                                 <td>
                                     <button class="btn btn-success" onclick="addDepartment()">Add</button>
                                 </td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                     {{-- add new department button --}}
@@ -137,11 +144,11 @@
                 $('form').submit(function(e) {
                     e.preventDefault();
                 });
-                
-                function deleteDepartment(department_id,department_name){
+
+                function deleteDepartment(department_id, department_name) {
                     Swal.fire({
                         title: 'Are you sure',
-                        html:'<p>Do you want to delete this department?</p>',
+                        html: '<p>Do you want to delete this department?</p>',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -151,16 +158,17 @@
                         if (result.isConfirmed) {
                             Swal.fire(
                                 title = 'Deleted!',
-                                html = '<p>Department <b>'+department_name+'</b> has been deleted.</p>',
+                                html = '<p>Department <b>' + department_name + '</b> has been deleted.</p>',
                                 icon = 'success',
                                 showConfirmButton = false,
                                 timer = 1500
                             );
-                            deleteDepartmentFromDB(department_id,department_name);
+                            deleteDepartmentFromDB(department_id, department_name);
                         }
                     });
                 }
-                function deleteDepartmentFromDB(department_id,department_name){
+
+                function deleteDepartmentFromDB(department_id, department_name) {
                     // delete department from db
                     // send post request to delete
                     $.ajax({
@@ -178,6 +186,7 @@
                     });
 
                 }
+
                 function addDepartment(department_name) {
                     // get values from form
                     console.log(department_name);
@@ -200,13 +209,25 @@
                                     timer: 1500
                                 })
                                 department_id = response;
-                                changeInputToRow(department_id,department_name);
+                                console.log(response);
+                                // if response has message show the message
+                                if (response.message) {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'success',
+                                        title: response.message,
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                }else{
+                                    changeInputToRow(department_id, department_name);
+                                }
                             }
                         },
                     });
                 }
 
-                function changeInputToRow(department_id,department_name) {
+                function changeInputToRow(department_id, department_name) {
                     var table = document.querySelector("table");
                     var row = table.insertRow(-1);
                     var cell1 = row.insertCell(0);
@@ -214,14 +235,17 @@
                     var cell3 = row.insertCell(2);
                     cell1.innerHTML = department_id;
                     cell2.innerHTML = department_name;
-                    cell3.innerHTML = `<button class="btn btn-primary mr-1">Edit</a>
-                                <button type="button" class="btn btn-danger" data-toggle="modal">
-                                    Delete</button>`;
+                    cell3.innerHTML = ` <button class="btn btn-primary mr-1" onclick="editDepartment('{{ $department->department_id }}','{{ $department->department_name }}')">Edit</a>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        onclick="deleteDepartment('{{ $department->department_id }}','{{ $department->department_name }}')">
+                                        Delete</button>`;
                     // clear form
                     $('#department_id').val('');
                     $('#department_name').val('');
                     // hide the form
                     $('#addDepartment').addClass('hidden');
+                    // show error in unique key error
+            
                 }
                 // function addNewDepartmentInput() {
                 //     // add new department form multiple times
@@ -262,7 +286,7 @@
                     })
                 }
 
-                function editDepartment(department_id,department_name) {
+                function editDepartment(department_id, department_name) {
                     // edit department
                     Swal.fire({
                         title: 'Edit Department',
@@ -284,11 +308,12 @@
                                 timer: 1500
                             });
                             console.log(result);
-                            editDepartmentInDb(department_id,result.value.department_name);
+                            editDepartmentInDb(department_id, result.value.department_name);
                         }
                     });
                 }
-                function editDepartmentInDb(department_id,department_name){
+
+                function editDepartmentInDb(department_id, department_name) {
                     // edit department in db
                     // send post request to edit
                     $.ajax({
