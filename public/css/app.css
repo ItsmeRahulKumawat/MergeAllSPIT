@@ -370,6 +370,7 @@ select:disabled {
     opacity: 1
 }
 
+
 [list]::-webkit-calendar-picker-indicator {
     display: none
 }
@@ -10562,3 +10563,5 @@ fieldset:disabled .btn {
 
 
 /*# sourceMappingURL=bootstrap.min.css.map */
+
+

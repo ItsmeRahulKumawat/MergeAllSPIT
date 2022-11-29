@@ -1,0 +1,53 @@
+body {
+	padding: 5em;
+	text-align: center;
+	background: #56aa6f;
+}
+.circle {
+	background-color: #fff;
+	position: relative;
+	display: inline-block;
+	border-radius: 50%;
+	width: 12em;
+	height: 12em;
+}
+.checkmark:after {
+	border-radius: 5px;
+	animation-duration: 3000ms;
+	animation-timing-function: ease;
+	animation-name: checkmark;
+	animation-iteration-count: infinite;
+	transform: scaleX(-1) rotate(135deg);
+	opacity: 1;
+	height: 6.6666666667em;
+	width: 2.6666666667em;
+	transform-origin: left top;
+	border-right: 10px solid #56aa6f;
+	border-top: 10px solid #56aa6f;
+	content: '';
+	left: 2.5714285714em;
+	top: 6.6666666667em;
+	position: absolute;
+}
+@keyframes checkmark {
+	0% {
+		height: 0;
+		width: 0;
+		opacity: 1;
+   }
+	10% {
+		height: 0;
+		width: 2.6666666667em;
+		opacity: 1;
+   }
+	20% {
+		height: 6.6666666667em;
+		width: 2.6666666667em;
+		opacity: 1;
+   }
+	50% {
+		height: 6.6666666667em;
+		width: 2.6666666667em;
+		opacity: 1;
+   }
+}

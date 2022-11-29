@@ -1,0 +1,42 @@
+
+#container{
+   font-family: "Poppins", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    font-weight: normal;
+    color: gray;
+}
+label {
+    color: #999;
+}
+.form-label{
+    font-weight: 500;
+    font-size: medium;
+    color: gray;
+}
+.form-control:focus{
+    border: 2px solid #000;
+    box-shadow: none;
+}
+option{
+    color:black;
+    font-weight: 700;
+    font-size: medium;
+    color: black;
+}
+.form-control{
+    font-weight: 600;
+    height: 50px !important;
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 14px;
+    border-radius: 0px;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #000;
+    color: black;
+}
+.form-control::placeholder{
+    color: #999;
+}
