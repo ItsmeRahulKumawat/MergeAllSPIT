@@ -93,21 +93,21 @@
                 <div class="row">
                     <div class="column" style="width:30%">
                         <div class="btn-group" id="btn-group-a">
-                            <button type="button" class="selected date_btn btn btn-primary">Date</button>
-                            <button type="button" class="faculty_btn btn btn-primary">Faculty</button>
-                            <button type="button" class="dept_btn btn btn-primary">Department</button>
+                            <button onclick="disableButton()" type="button" class="selected date_btn btn btn-primary">Date</button>
+                            <button onclick="disableButton()" type="button" class="faculty_btn btn btn-primary">Faculty</button>
+                            <button onclick="disableButton()" type="button" class="dept_btn btn btn-primary">Department</button>
                         </div>
                     </div>
                 </div>
                 <div class="row date_selection" id="date_selection">
                     <div class="column" style="width:30%">
                         <label class="form-label" for="start_date">Start Date</label>
-                        <input class="form-control" type="date" id="start_date" name="start_date">
+                        <input class="form-control" type="date" id="start_date" name="start_date" onchange="checkDate()">
                     </div>
                     <div class="column" style="width:30%">
                         <label class="form-label" for="end_date">End Date</label>
                         {{-- input with todays date --}}
-                        <input class="form-control" type="date" id="end_date" name="end_date"
+                        <input onchange="checkDate()" class="form-control" type="date" id="end_date" name="end_date"
                             value="{{ date('Y-m-d') }}" max="<?php echo date('Y-m-d'); ?>">
                     </div>
                 </div>
@@ -149,7 +149,7 @@
                                         console.log(data);
                                         if (data == "") {
                                             $(`#faculty_select`).html(
-                                                "<option selected disabled value=''>No faculty found in this department</option>"
+                                                "<option  selected disabled value=''>No faculty found in this department</option>"
                                             );
                                         } else $(`#faculty_select`).html(data);
                                     }
@@ -159,7 +159,7 @@
                         <div class="form-group">
                             <label class="form-label" for="faculty_select" class="form-label">Faculty Name</label>
                             <select class="form-control select" aria-label class="form-label" id="faculty_select"
-                                name="faculty_select"required>
+                                name="faculty_select" onchange="checkFaculty()" required>
                                 <option selected disabled value="">Choose...</option>
                             </select>
                             <span class="error-msg" id="dept-msg">
@@ -180,7 +180,7 @@
                 <div class="row department_selection hidden" id="department_selection">
                     <div class="column" style="width:30%">
                         <label class="form-label" for="department_select">Department</label>
-                        <select class="form-control" aria-label class="form-label faculty-department"
+                        <select onchange="checkDepartment()" class="form-control" aria-label class="form-label faculty-department"
                             id="department_select" name="department_select">
                             <option selected disabled value="0">Choose...</option>
                             <?php
@@ -194,7 +194,7 @@
                 </div>
                 <div class="row mt-2">
                     <div class="column" style="width:30%">
-                        <button type="submit" class="btn btn-primary" id="generate_report">Generate Report</button>
+                        <button disabled type="submit" class="btn btn-primary" id="generate_report">Generate Report</button>
                     </div>
                 </div>
             </form>
@@ -208,6 +208,8 @@
                                 <th>Proposal Name</th>
                                 <th>Propsal Date</th>
                                 <th>Proposal Amount</th>
+                                <th>Authority/Organization</th>
+                                <th> Govt/Private</th>
                                 <th>Faculty Name</th>
                                 <th>Department Name</th>
                             </tr>
@@ -223,10 +225,17 @@
                                 @else
                                     @foreach ($proposal as $proposal)
                                         <tr>
-                                            <td>{{ $proposal->proposal_id }}</td>
+                                            {{-- {{-- reduce size of id --}}
+                                            @php
+                                                $id = $proposal->proposal_id;
+                                                $id = substr($id, 0, 5) . '...' . substr($id, -5);
+                                            @endphp
+                                            <td >{{$id }}</td>
                                             <td>{{ $proposal->proposal_title }}</td>
                                             <td>{{ $proposal->proposal_submissionDate }}</td>
                                             <td>{{ $proposal->proposal_fundingAmount }}</td>
+                                            <td>{{ $proposal->proposal_authorityOrOrganization }}</td>
+                                            <td>{{ $proposal->proposal_govtPrivate }}</td>
                                             {{-- show faculty by getting faculty name from faculty group id --}}
                                             {{-- hide this --}}
                                             <?php
@@ -318,12 +327,46 @@
 
         date_btn.addEventListener('click', showDate, false);
 
+        function checkAll(){
+            checkDate();
+            checkFaculty();
+            checkDepartment();
+        }
         function showDate() {
             date_selection.classList.remove('hidden');
             faculty_selection.classList.add('hidden');
             department_selection.classList.add('hidden');
         }
 
+        var generate_report_btn = document.querySelector('#generate_report');
+        function checkDepartment(){
+            // enable button if department is selected
+            var department_select= document.getElementById('department_select');
+            if(department_select.value != 'Choose..'){
+                generate_report_btn.disabled = false;
+            }
+        }
+        function checkFaculty(){
+            // enable button if faculty is selected
+            var faculty_select= document.getElementById('faculty_select');
+            if(faculty_select.value != 'Choose..'){
+                generate_report_btn.disabled = false;
+            }
+        }
+        function checkDate(){
+            var start_date = document.getElementById('start_date');
+            var end_date = document.getElementById('end_date');
+            // end date cannot be less than start date
+            console.log(start_date.value);
+            console.log(end_date.value);
+
+            if(start_date.value != '' && end_date.value != ''){
+                generate_report_btn.disabled = false;
+            }
+            if(start_date.value > end_date.value){
+                generate_report_btn.disabled = true;
+            }
+        }
         // show department only on department select
         dept_btn.addEventListener('click', showDept, false);
 
@@ -333,7 +376,25 @@
             date_selection.classList.add('hidden');
         }
 
-        // show faculty only on faculty select
+        
+        function disableButton(){
+            generate_report_btn.disabled = true;
+            // clear date 
+            var start_date = document.getElementById('start_date');
+            var end_date = document.getElementById('end_date');
+            start_date.value = '';
+            end_date.value = '';
+            // clear faculty
+            var faculty_select= document.getElementById('faculty_select');
+            // clear department
+            var department_select= document.getElementById('department_select');
+            // select option 0
+
+            // if date is not empty
+            // checkDate();
+            // checkFaculty();
+            // checkDepartment();
+        }
 
         faculty_btn.addEventListener('click', showFaculty, false);
 
