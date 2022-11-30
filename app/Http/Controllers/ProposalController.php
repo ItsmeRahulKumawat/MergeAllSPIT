@@ -77,10 +77,11 @@ class ProposalController extends Controller
             mkdir($day_folder, 0777, true);
         }
         // create a new folder with proposal title as name
-        $proposal_folder = 'proposal/'.$year.'/'.$monthName.'/'.$day;
+        $proposal_folder = 'public/proposal/'.$year.'/'.$monthName.'/'.$day;
+
         $fileName = $title.'.'.$file->getClientOriginalExtension();
         $file->storeAs($proposal_folder, $fileName);
-
+        $proposal_folder = 'proposal/'.$year.'/'.$monthName.'/'.$day;
         
         $proposal = new Proposal();
         
