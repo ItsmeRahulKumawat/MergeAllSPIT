@@ -174,8 +174,8 @@
                             <tr>
                                 <td>{{ $proposal->proposal_id }}</td>
                                 <td>{{ $proposal->proposal_title }}</td>
-                                <td>{{ $proposal->proposal_fundingAmount }}</td>
                                 <td>{{ $proposal->proposal_submissionDate }}</td>
+                                <td>{{ $proposal->proposal_fundingAmount }}</td>
                                 <td>
                                     <a href="{{ url('/proposal/' . $proposal->proposal_id) }}" class="btn btn-primary">View</a>
                                     {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}

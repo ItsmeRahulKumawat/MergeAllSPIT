@@ -18,7 +18,8 @@ return new class extends Migration
             $table->id('faculty_id')->autoIncrement();
             $table->string('faculty_name');
             $table->string('faculty_department');
-            $table->string('faculty_email');
+            $table->string('faculty_email')->unique();
+            $table->string('faculty_password');
             $table->string('faculty_phone');
             $table->timestamps();
 
