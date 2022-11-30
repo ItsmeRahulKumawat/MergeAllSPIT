@@ -80,117 +80,177 @@
             <h3>Report</h3>
         </div>
         <div class="card-body">
-        <form action="{{url('/report')}}" method="POST">
-            @csrf
-            {{-- select between proposal and outreach --}}
-            <div class="form-group">
-                <label for="reportType">Report Type</label>
-                <select class="form-control" id="reportType" name="reportType">
-                    <option value="proposal">Proposal</option>
-                    <option value="outreach">Outreach</option>
-                </select>
-            </div>
-            <div class="row">
-                <div class="column" style="width:30%">
-                    <div class="btn-group" id="btn-group-a">
-                        <button type="button" class="selected date_btn btn btn-primary">Date</button>
-                        <button type="button" class="faculty_btn btn btn-primary">Faculty</button>
-                        <button type="button" class="dept_btn btn btn-primary">Department</button>
+            <form action="{{ url('/report') }}" method="POST" novalidate>
+                @csrf
+                {{-- select between proposal and outreach --}}
+                <div class="form-group">
+                    <label for="reportType">Report Type</label>
+                    <select class="form-control" id="reportType" name="reportType">
+                        <option value="proposal">Proposal</option>
+                        <option value="outreach">Outreach</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="column" style="width:30%">
+                        <div class="btn-group" id="btn-group-a">
+                            <button type="button" class="selected date_btn btn btn-primary">Date</button>
+                            <button type="button" class="faculty_btn btn btn-primary">Faculty</button>
+                            <button type="button" class="dept_btn btn btn-primary">Department</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row date_selection" id="date_selection">
-                <div class="column" style="width:30%">
-                    <label class="form-label" for="start_date">Start Date</label>
-                    <input class="form-control" type="date" id="start_date" name="start_date">
+                <div class="row date_selection" id="date_selection">
+                    <div class="column" style="width:30%">
+                        <label class="form-label" for="start_date">Start Date</label>
+                        <input class="form-control" type="date" id="start_date" name="start_date">
+                    </div>
+                    <div class="column" style="width:30%">
+                        <label class="form-label" for="end_date">End Date</label>
+                        {{-- input with todays date --}}
+                        <input class="form-control" type="date" id="end_date" name="end_date"
+                            value="{{ date('Y-m-d') }}" max="<?php echo date('Y-m-d'); ?>">
+                    </div>
                 </div>
-                <div class="column" style="width:30%">
-                    <label class="form-label" for="end_date">End Date</label>
-                    {{-- input with todays date --}}
-                    <input class="form-control" type="date" id="end_date" name="end_date" value="{{date('Y-m-d')}}"
-                    max="<?php echo date('Y-m-d'); ?>" >
-                </div>
-            </div>
-            @php
-            @endphp
-            <div class="row faculty_selection hidden" id="faculty_selection">
-                <div clas="column" style="width:30%">
-                    <label class="form-label" for="faculty_select">Faculty</label>
+                @php
+                @endphp
+                <div class="row faculty_selection hidden" id="faculty_selection">
+                    <div clas="column">
+                        <label class="form-label" for="faculty_department_1" class="form-label">Department*</label>
+                        <select class="form-control select" aria-label class="form-label faculty_department_1"
+                            id="faculty_department_1" name="faculty_department_1" required
+                            onchange="getFacultyFromDept(1)">
+                            <option selected disabled value="">Choose...</option>
+                            {{-- get all departments --}}
+                            <?php
+                            $departments = DB::table('departments')->get();
+                            foreach ($departments as $department) {
+                                echo "<option value='$department->department_name'>$department->department_name</option>";
+                            }
+                            ?>
+                        </select>
+                        <script>
+                            $(document).ready(function() {
+                                getFacultyFromDept(1);
+                            });
+
+                            function getFacultyFromDept(i) {
+                                var selected = $(`#faculty_department_${i}`).val();
+                                console.log(selected);
+                                $.ajax({
+                                    url: '/getDept',
+                                    type: 'POST',
+                                    dataType: 'html',
+                                    data: {
+                                        department: selected,
+                                        _token: '{{ csrf_token() }}',
+                                        num: i
+                                    },
+                                    success: function(data) {
+                                        console.log(data);
+                                        if (data == "") {
+                                            $(`#faculty_select`).html(
+                                                "<option selected disabled value=''>No faculty found in this department</option>"
+                                            );
+                                        } else $(`#faculty_select`).html(data);
+                                    }
+                                });
+                            }
+                        </script>
+                        <div class="form-group">
+                            <label class="form-label" for="faculty_select" class="form-label">Faculty Name</label>
+                            <select class="form-control select" aria-label class="form-label" id="faculty_select"
+                                name="faculty_select"required>
+                                <option selected disabled value="">Choose...</option>
+                            </select>
+                            <span class="error-msg" id="dept-msg">
+                            </span>
+                        </div>
+                        {{-- <label class="form-label" for="faculty_select">Faculty</label>
                     <select class="form-control" id="faculty_select" name="faculty_select">
                         <option selected value="0" >Select Faculty</option>
                         <?php
-                            $faculties = DB::table('faculties')->get();
-                            foreach($faculties as $faculty){
-                                echo "<option value='$faculty->faculty_id'>$faculty->faculty_name</option>";
-                            }
+                        $faculties = DB::table('faculties')->get();
+                        foreach ($faculties as $faculty) {
+                            echo "<option value='$faculty->faculty_id'>$faculty->faculty_name</option>";
+                        }
                         ?>
-                    </select>
+                    </select> --}}
+                    </div>
                 </div>
-            </div>
-            <div class="row department_selection hidden" id="department_selection">
-                <div class="column" style="width:30%">
-                    <label class="form-label" for="department_select">Department</label>
-                    <select class="form-control" aria-label
-                    class="form-label faculty-department" id="department_select" name="department_select">
-                    <option selected disabled value="0">Choose...</option>
-                    {{-- // get all departments --}}
-                    <?php
-                    $departments = DB::table('departments')->get();
-                    foreach ($departments as $department) {
-                        echo "<option value='$department->department_id'>$department->department_name</option>";
-                    }
-                    ?>
-                </select>
+                <div class="row department_selection hidden" id="department_selection">
+                    <div class="column" style="width:30%">
+                        <label class="form-label" for="department_select">Department</label>
+                        <select class="form-control" aria-label class="form-label faculty-department"
+                            id="department_select" name="department_select">
+                            <option selected disabled value="0">Choose...</option>
+                            <?php
+                            $departments = DB::table('departments')->get();
+                            foreach ($departments as $department) {
+                                echo "<option value='$department->department_id'>$department->department_name</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="row mt-2">
-                <div class="column" style="width:30%">
-                    <button type="submit" class="btn btn-primary" id="generate_report">Generate Report</button>
+                <div class="row mt-2">
+                    <div class="column" style="width:30%">
+                        <button type="submit" class="btn btn-primary" id="generate_report">Generate Report</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-        {{-- make report table visible is $report is true --}}
-        @if(isset($report))
-            <div class="report_table mt-5">
-                <table class="table table-striped table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>Proposal Id</th>
-                        <th>Proposal Name</th>
-                        <th>Propsal Date</th>
-                        <th>Proposal Amount</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {{-- show proposal data that is fetched from post request --}}
-                    @if (isset($proposal))
-                    {{-- if proposal size is 0 --}}
-                    @if (count($proposal) == 0)
-                    <tr>
-                        <td colspan="4" class="text-center">No Data Found</td>
-                    </tr>
-                    @else
-                        @foreach ($proposal as $proposal)
+            </form>
+            {{-- make report table visible is $report is true --}}
+            @if (isset($report))
+                <div class="report_table mt-5">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
                             <tr>
-                                <td>{{ $proposal->proposal_id }}</td>
-                                <td>{{ $proposal->proposal_title }}</td>
-                                <td>{{ $proposal->proposal_submissionDate }}</td>
-                                <td>{{ $proposal->proposal_fundingAmount }}</td>
-                                <td>
-                                    <a href="{{ url('/proposal/' . $proposal->proposal_id) }}" class="btn btn-primary">View</a>
-                                    {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
-
+                                <th>Proposal Id</th>
+                                <th>Proposal Name</th>
+                                <th>Propsal Date</th>
+                                <th>Proposal Amount</th>
+                                <th>Faculty Name</th>
+                                <th>Department Name</th>
                             </tr>
-                        @endforeach
-                    
-                    @endif
-                    @endif
-                    {{-- show outreach data that is fetched from post request --}}
-                    </tbody>
-                </table>
-            </div>
-        @endif
-    
+                        </thead>
+                        <tbody>
+                            {{-- show proposal data that is fetched from post request --}}
+                            @if (isset($proposal))
+                                {{-- if proposal size is 0 --}}
+                                @if (count($proposal) == 0)
+                                    <tr>
+                                        <td colspan="4" class="text-center">No Data Found</td>
+                                    </tr>
+                                @else
+                                    @foreach ($proposal as $proposal)
+                                        <tr>
+                                            <td>{{ $proposal->proposal_id }}</td>
+                                            <td>{{ $proposal->proposal_title }}</td>
+                                            <td>{{ $proposal->proposal_submissionDate }}</td>
+                                            <td>{{ $proposal->proposal_fundingAmount }}</td>
+                                            {{-- show faculty by getting faculty name from faculty group id --}}
+                                            {{-- hide this --}}
+                                            <?php
+                                                $faculty_names=DB::table('faculty_groups')->where('faculty_group_id', $proposal->proposal_faculty_group_id)->get()
+                                            ?>
+                                            <td>{{ $faculty_names[0]->faculty_group_name }}</td>
+                                            <td>{{$faculty_names[0]->faculty_group_department}}</td>
+
+                                            <td>
+                                                <a href="{{ url('/proposal/' . $proposal->proposal_id) }}"
+                                                    class="btn btn-primary">View</a>
+                                                {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
+
+                                        </tr>
+                                    @endforeach
+
+                                @endif
+                            @endif
+                            {{-- show outreach data that is fetched from post request --}}
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+
     </section>
     <div class="footer">
         @section('footer')
@@ -242,6 +302,7 @@
         buttons.forEach(button => {
             button.addEventListener('click', changeSelection, false);
         });
+
         function changeSelection() {
             buttons.forEach(btn => btn.classList.remove('selected'));
             this.classList.add('selected');
@@ -254,9 +315,9 @@
         const faculty_selection = document.querySelector('#faculty_selection');
         const dept_btn = document.querySelector('.dept_btn');
         const department_selection = document.querySelector('#department_selection');
-       
+
         date_btn.addEventListener('click', showDate, false);
-        
+
         function showDate() {
             date_selection.classList.remove('hidden');
             faculty_selection.classList.add('hidden');
@@ -265,6 +326,7 @@
 
         // show department only on department select
         dept_btn.addEventListener('click', showDept, false);
+
         function showDept() {
             department_selection.classList.remove('hidden');
             faculty_selection.classList.add('hidden');
@@ -274,12 +336,12 @@
         // show faculty only on faculty select
 
         faculty_btn.addEventListener('click', showFaculty, false);
+
         function showFaculty() {
             faculty_selection.classList.remove('hidden');
             date_selection.classList.add('hidden');
             department_selection.classList.add('hidden');
         }
-
     </script>
 </body>
 

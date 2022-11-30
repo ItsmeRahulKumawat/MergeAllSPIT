@@ -59,7 +59,7 @@ class ReportController extends Controller
                 $proposal = Proposal::whereBetween('proposal_submissionDate', [$start_date, $end_date])->get();
                 $report = true;
                 return view('report', compact('proposal', 'report')); 
-            }else if($faculty_id!='0'){
+            }else if($faculty_id!=null){
                 // find faculty id by searching faculty name
                 // find faculty name from faculty id
                 $faculty = Faculty::where('faculty_id', $faculty_id)->first();
