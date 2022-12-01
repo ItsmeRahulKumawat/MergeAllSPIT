@@ -10565,3 +10565,16 @@ fieldset:disabled .btn {
 /*# sourceMappingURL=bootstrap.min.css.map */
 
 
+
+.dropdown-user-menu>a {
+    /* important     */
+    color: black !important;
+    background: white !important;
+}
+
+.dropdown-user-menu>a:hover {
+    /* hover on menu */
+    color: black !important;
+    /* /*  grey on hover bootstrap color */
+    background: #ababab !important; 
+}

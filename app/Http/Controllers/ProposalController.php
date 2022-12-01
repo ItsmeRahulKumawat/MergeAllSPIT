@@ -9,6 +9,10 @@ use App\Models\Proposal;
 class ProposalController extends Controller
 {
 
+
+    public function submitted(){
+        return view('proposal_submitted');
+    }
     public function getDept(){
         $num = $_POST['num'];
         $dept = $_POST['department'];
@@ -25,7 +29,7 @@ class ProposalController extends Controller
      */
     public function index()
     {
-        return Proposal::all();
+        return view('proposal');
     }
 
     /**
