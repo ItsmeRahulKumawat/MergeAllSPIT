@@ -7,6 +7,7 @@ use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\ReportController;
 use App\Models\Faculty;
 use App\Models\Proposal;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,13 +25,6 @@ Route::get('/', function () {
     return view('homepage');
 });
 
-Route::get('/report',function(){
-    return view('report');
-});
-
-Route::get('/proposal',function(){
-    return view('proposal');
-});
 
 Route::get('/login',function(){
     return view('login');
@@ -40,32 +34,44 @@ Route::get('/register',function(){
     return view('register');
 });
 
-Route::get('/proposal_submitted',function(){
-    return view('proposal_submitted');
+
+
+Route::middleware(['auth','isUser'])->group(function(){
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
+    Route::get('/proposal', [ProposalController::class, 'index']);
+    Route::get('/proposal_submitted', [ProposalController::class, 'submitted']);
+
 });
-Route::get('/faculty',function(){
-    return view('faculty');
-});
-Route::get('/department', function () {
-    return view('department');
+// make protected routes that user can access
+// admin
+Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
+    Route::get('/proposal', [ProposalController::class, 'index']);
+    Route::get('/proposal_submitted', [ProposalController::class, 'submitted']);
+    
+    Route::get('/faculty', [FacultyController::class, 'index']);
+    Route::post('/faculty', [FacultyController::class, 'store']);
+    Route::post('/removeFaculty/{id}', [FacultyController::class, 'destroy']);
+    Route::post('/updateFaculty/{id}',[FacultyController::class,'update']);
+
+    Route::get('/department',[DepartmentController::class,'index']);
+    Route::post('/department',[DepartmentController::class,'store']);
+    Route::delete('/department/{id}', [DepartmentController::class, 'destroy']);
+    Route::put('/department/{department_id}', [DepartmentController::class, 'update']);
+    
+    Route::get('/report',[ReportController::class,'index']);    
+    Route::post('/report',[ReportController::class,'generateReport']);
 });
 
-Route::post('/report',[ReportController::class,'generateReport']);
-
-// Route::get('/proposal', [ProposalController::class, 'index']);
 Route::post('/proposal', [ProposalController::class, 'store']);
-
+Route::get('/proposal/{id}', [ProposalController::class, 'show']);
 Route::post('/getDept', [ProposalController::class, 'getDept']);
 
+Auth::routes();
 
-Route::post('/removeFaculty/{id}', [FacultyController::class, 'destroy']);
-
-Route::get('/proposal/{id}', [ProposalController::class, 'show']);
-
-Route::post('/faculty', [FacultyController::class, 'store']);
-Route::post('/updateFaculty/{id}',[FacultyController::class,'update']);
-
-Route::post('/department',[DepartmentController::class,'store']);
-
-Route::delete('/department/{id}', [DepartmentController::class, 'destroy']);
-Route::put('/department/{department_id}', [DepartmentController::class, 'update']);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

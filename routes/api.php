@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/proposal', [ProposalController::class, 'index']);
+// Route::get('/proposal', [ProposalController::class, 'index']);
 
 
 Route::post('/department',[DepartmentController::class,'store']);

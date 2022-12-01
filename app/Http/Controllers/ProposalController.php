@@ -9,14 +9,17 @@ use App\Models\Proposal;
 class ProposalController extends Controller
 {
 
+
+    public function submitted(){
+        return view('proposal_submitted');
+    }
     public function getDept(){
         $num = $_POST['num'];
         $dept = $_POST['department'];
         $connection = mysqli_connect('localhost', 'root', '', 'laravel');
-        $sql = mysqli_query($connection, "SELECT faculty_name FROM faculties Where faculty_department = '$dept'");
+        $sql = mysqli_query($connection, "SELECT faculty_name,faculty_id FROM faculties Where faculty_department = '$dept'");
         while ($row = $sql->fetch_assoc()) {
-            // echo option with value 
-            echo "<option value='" . $row['faculty_name'] . "'>" . $row['faculty_name'] . "</option>";
+            echo "<option value='" . $row['faculty_id'] . "'>" . $row['faculty_name'] . "</option>";
         }
     }
     /**
@@ -26,7 +29,7 @@ class ProposalController extends Controller
      */
     public function index()
     {
-        return Proposal::all();
+        return view('proposal');
     }
 
     /**
@@ -61,13 +64,13 @@ class ProposalController extends Controller
         $year = date('Y', strtotime($submission_date));
         $month = date('m', strtotime($submission_date));
         $day = date('d', strtotime($submission_date));
-        $year_folder = 'public/'.$year;
+        $year_folder = $year;
         // month in words
         $monthNum  = $month;
         $dateObj   = \DateTime::createFromFormat('!m', $monthNum);
         $monthName = $dateObj->format('F');
         $month_folder = $year_folder.'/'.$monthName;
-        $day_folder = 'public/'.$year.'/'.$monthName.'/'.$day;
+        $day_folder = $year.'/'.$monthName.'/'.$day;
         if(!file_exists($year_folder)){
             mkdir($year_folder, 0777, true);
         }
@@ -78,10 +81,11 @@ class ProposalController extends Controller
             mkdir($day_folder, 0777, true);
         }
         // create a new folder with proposal title as name
-        $proposal_folder = $year.'/'.$monthName.'/'.$day;
+        $proposal_folder = 'public/proposal/'.$year.'/'.$monthName.'/'.$day;
+
         $fileName = $title.'.'.$file->getClientOriginalExtension();
         $file->storeAs($proposal_folder, $fileName);
-
+        $proposal_folder = 'proposal/'.$year.'/'.$monthName.'/'.$day;
         
         $proposal = new Proposal();
         
@@ -128,15 +132,7 @@ class ProposalController extends Controller
         
     }
 
-    public function pdfStream(Request $request){
-        $proposal_id = $request->input('proposal_id');
-        $proposal = Proposal::where('proposal_id', $proposal_id)->first();
-        $file = $proposal->proposal_file;
-        $file = str_replace('public/', '', $file);
-        $file = storage_path('app/'.$file);
-        return response()->file($file);
 
-    }
     /**
      * Display the specified resource.
      *
