@@ -114,7 +114,7 @@
                 <h3>Report</h3>
             </div>
             <div class="card-body">
-                <form action="{{ url('/report') }}" method="POST" novalidate>
+                <form action="{{ url('admin/report') }}" method="POST" novalidate>
                     @csrf
                     {{-- select between proposal and outreach --}}
                     <div class="form-group">

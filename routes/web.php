@@ -62,7 +62,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
     Route::delete('/department/{id}', [DepartmentController::class, 'destroy']);
     Route::put('/department/{department_id}', [DepartmentController::class, 'update']);
     
-    Route::get('/report',[ReportController::class,'index']);    
+    Route::get('/report',[ReportController::class,'index'])->name('report');;    
     Route::post('/report',[ReportController::class,'generateReport']);
 });
 
