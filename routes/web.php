@@ -21,18 +21,18 @@ use Illuminate\Support\Facades\Auth;
 */
 
 
-// Route::get('/', function () {
-//     return view('homepage');
-// });
+Route::get('/', function () {
+    return view('homepage');
+});
 
 
-// Route::get('/login',function(){
-//     return view('login');
-// });
+Route::get('/login',function(){
+    return view('login');
+});
 
-// Route::get('/register',function(){
-//     return view('register');
-// });
+Route::get('/register',function(){
+    return view('register');
+});
 
 
 
@@ -68,7 +68,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
 
 
 Route::post('/proposal', [ProposalController::class, 'store']);
-Route::get('/proposal/{id}', [ProposalController::class, 'show']);
+Route::get('/proposal/{id}', [ProposalController::class, 'show'])->name('proposal');
 Route::post('/getDept', [ProposalController::class, 'getDept']);
 
 Auth::routes();
