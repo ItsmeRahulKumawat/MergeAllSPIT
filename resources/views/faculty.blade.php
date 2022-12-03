@@ -64,7 +64,15 @@
                             data-breakpoint="600" data-unbind="true" data-hover-intent-timeout="300"
                             data-hover-intent-interval="100">
                            
-                          
+                            <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
+                                <a class=" mega-menu-link nav-link" href="{{ route('admin.department') }}">Department</a>
+                            </li>
+                            <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
+                                <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
+                            </li>
+                            <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
+                                <a class=" mega-menu-link nav-link" href="{{ route('admin.report') }}">Report</a>
+                            </li>
                             @guest
                             @if (Route::has('login'))
                                 <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
@@ -107,7 +115,7 @@
             <h1>Faculty Info</h1>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ url('/faculty') }}" novalidate>
+            <form method="POST" action="{{ url('admin/faculty') }}" novalidate>
                 @csrf
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -140,10 +148,10 @@
                             <td>{{ $faculty->faculty_email }}</td>
                             <td>{{ $faculty->faculty_phone }}</td>
                             <td>{{ $faculty->faculty_department }}</td>
-                            <td><button class="btn btn-danger remove_{{ $loop->iteration }}"
+                            <td><button type="button" class="btn btn-danger remove_{{ $loop->iteration }}"
                                     onclick="removeFaculty({{ $faculty->faculty_id }},{{ $loop->iteration }})">Remove</button>
                             </td>
-                            <td><button class="btn btn-primary edit_{{ $loop->iteration }}"
+                            <td><button type="button" class="btn btn-primary edit_{{ $loop->iteration }}"
                                     onclick="editFaculty({{ $faculty->faculty_id }},{{ $loop->iteration }})">Edit</button>
                             </td>
                         </tr>
@@ -151,25 +159,113 @@
                     </tbody>
                 </table>
                 <div class="buttons">
-                    <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
+                    <button type="button" class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
                         Faculty</button>
-                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" type="submit"
-                        onclick="submitForm()">Submit</button>
+                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" type="button" 
+                    onclick="addFacultyInDB()">Submit</button>
                 </div>
             </form>
             <script>
+                // prevent buttons from submitting
+                
                 document.querySelector(".submit_faculty").disabled = true;
                 // stop form from submitting
                 document.querySelector("form").addEventListener("submit", function(stop) {
                     stop.preventDefault();
                 });
 
-                function submitForm() {
-                    document.querySelector(".submit_faculty").disabled = false;
-                    document.querySelector("form").submit();
-
+                
+                function addFacultyInDB(){
+                    // store data for many  input fields
+                    var faculty_name = [];
+                    var faculty_email = [];
+                    var faculty_phone = [];
+                    var faculty_department = [];
+                    // get all input fields
+                    var faculty_name_input = document.querySelectorAll(".faculty_name");
+                    var faculty_email_input = document.querySelectorAll(".faculty_email");
+                    var faculty_phone_input = document.querySelectorAll(".faculty_phone");
+                    var faculty_department_input = document.querySelectorAll(".faculty_department");
+                    // store data in array
+                    for (var i = 0; i < faculty_name_input.length; i++) {
+                        faculty_name.push(faculty_name_input[i].value);
+                        faculty_email.push(faculty_email_input[i].value);
+                        faculty_phone.push(faculty_phone_input[i].value);
+                        faculty_department.push(faculty_department_input[i].value);
+                    }
+                    // send data to server
+                    $.ajax({
+                        url: `{{route('admin.faculty')}}`,
+                        type: "POST",
+                        data: {
+                            faculty_name: faculty_name,
+                            faculty_email: faculty_email,
+                            faculty_phone: faculty_phone,
+                            faculty_department: faculty_department,
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            // if success then reload page
+                            if (response) {
+                                if (response["status"] == "success") {
+                                    Swal.fire({
+                                        title: 'Success',
+                                        text: 'Faculty Added Successfully',
+                                        icon: 'success',
+                                        confirmButtonText: 'Ok'
+                                    })
+                                    // var faculty_name = response["data"]["faculty_name"];
+                                    // var faculty_email = response["data"]["faculty_email"];
+                                    // var faculty_phone = response["data"]["faculty_phone"];
+                                    // var faculty_department = response["data"]["faculty_department"];
+                                    data = response["data"];
+                                    changeInputToRow(data)
+                                }
+                            }
+                        },
+                    });
                 }
 
+                function changeInputToRow(data){
+                    // remove input fields
+                    var faculty_name_input = document.querySelectorAll(".faculty_name");
+                    var faculty_email_input = document.querySelectorAll(".faculty_email");
+                    var faculty_phone_input = document.querySelectorAll(".faculty_phone");
+                    var faculty_department_input = document.querySelectorAll(".faculty_department");
+                    
+                    // for (var i = 0; i < faculty_name_input.length; i++) {
+                    //     faculty_name_input[i].remove();
+                    //     faculty_email_input[i].remove();
+                    //     faculty_phone_input[i].remove();
+                    //     faculty_department_input[i].remove();
+                    // }
+                    // replace input fields 
+                    var input_tr = document.querySelectorAll(".input-tr");
+                    var faculty_name_td = document.querySelectorAll(".input-tr td input.faculty_name");
+                    var faculty_email_td = document.querySelectorAll(".input-tr td input.faculty_email");
+                    var faculty_phone_td = document.querySelectorAll(".input-tr td input.faculty_phone");
+                    var faculty_department_td = document.querySelectorAll(".input-tr td select.faculty_department");
+                    var s_no = document.querySelectorAll(".input-tr td:nth-child(1)");
+                    var remove_td = document.querySelectorAll(".input-tr td button");
+                    
+                    
+                    for (var i = 0; i < faculty_name_td.length; i++) {
+                        var edit_td = document.createElement("td");
+                        faculty_name_td[i].parentElement.innerHTML = data[i]["faculty_name"];
+                        faculty_email_td[i].parentElement.innerHTML = data[i]["faculty_email"];
+                        faculty_phone_td[i].parentElement.innerHTML = data[i]["faculty_phone"];
+                        faculty_department_td[i].parentElement.innerHTML = data[i]["faculty_department"];
+                        remove_td[i].parentElement.innerHTML = `<button type="button" class="btn btn-danger remove_${s_no[i].innerHTML}" onclick="removeFaculty(${data[i]["faculty_id"]},${s_no[i].innerHTML})">Remove</button>`;
+                        edit_td.innerHTML = `<button type="button" class="btn btn-primary edit_${s_no[i].innerHTML}" onclick="editFaculty(${data[i]["faculty_id"]},${s_no[i].innerHTML})">Edit</button>`;
+                        input_tr[i].appendChild(edit_td);
+                        faculty_name_td[i].remove();
+                        faculty_email_td[i].remove();
+                        faculty_phone_td[i].remove();
+                        faculty_department_td[i].remove();
+                        
+                    }
+                }
                 function validateEmail() {
                     var faculty_email = document.querySelector(".faculty_email").value;
                     var faculty_email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -207,44 +303,11 @@
                     }
                     enableSubmit();
                 }
-                // function submitData(){
-                //     var faculty_name = document.getElementsByClassName("faculty_name");
-                //     var faculty_email = document.getElementsByClassName("faculty_email");
-                //     var faculty_phone = document.getElementsByClassName("faculty_phone");
-                //     var faculty_department = document.getElementsByClassName("faculty_department");
-                //     var faculty_data = [];
-                //     for(var i=0;i<faculty_name.length;i++){
-                //         faculty_data.push({
-                //             "faculty_name":faculty_name[i].value,
-                //             "faculty_email":faculty_email[i].value,
-                //             "faculty_phone":faculty_phone[i].value,
-                //             "faculty_department":faculty_department[i].value,
-                //         });
-                //     }
-                //     console.log(faculty_data);
-                //     $.ajax({
-                //         type: "POST",
-                //         url: "/addFaculty",
-                //         data: {
-                //             "_token": "{{ csrf_token() }}",
-                //             "faculty_data": faculty_data
-                //         },
-                //         success: function (response) {
-                //             console.log(response);
-                //             swal.fire({
-                //                 title: "Success",
-                //                 text: "Faculty Added Successfully",
-                //                 icon: "success",
-                //                 confirmButtonText: "OK"
-                //             }).then(function () {
-                //                 // location.reload();
-                //             });
-                //         }
-                //     });
-
-                // }
-
+               
+                
                 function editFaculty(id, i) {
+                    // stop submit
+                    event.preventDefault();
                     // change td to input
                     var faculty_name = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML;
                     var faculty_email = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[2].innerHTML;
@@ -283,6 +346,8 @@
                 }
 
                 function updateFaculty(id, i) {
+                    // stop submit
+                    event.preventDefault();
                     // submit on update
                     var faculty_name = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1]
                         .getElementsByTagName("input")[0].value;
@@ -301,8 +366,8 @@
                         "faculty_department": faculty_department,
                     };
                     $.ajax({
-                        type: "POST",
-                        url: "/updateFaculty/" + id,
+                        type: "PUT",
+                        url: "{{route('admin.faculty')}}" + "/" +id,
                         data: data,
                         success: function(response) {
                             console.log(response);
@@ -355,7 +420,9 @@
                 }
 
                 function addRow() {
-                    let lastRow = document.querySelector('.add_faculty_table tr:last-child');
+                    // dont send request
+                    event.preventDefault();
+                    let lastRow = document.querySelector('.add_faculty_table tbody tr:last-child');
                     // get last row number
                     let lastRowNumber = lastRow.querySelector('td:first-child').innerText;
                     // get last row number and increment it
@@ -363,8 +430,33 @@
                     addFaculty(newRowNumber);
                 }
 
-
-                function removeFaculty(id, i) {
+                function removeFaculty(id,i){
+                    var faculty_name = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML;
+                    var faculty_department = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4].innerHTML;
+                    Swal.fire({
+                        title: 'Are you sure',
+                        html: `<p>Do you want to delete this faculty ?</p>
+                                <p>Faculty Name : <b>${faculty_name}</b></p>
+                                <p>Faculty Department : <b>${faculty_department}</b></p>`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                                title = 'Deleted!',
+                                html = '<p>Faculty <b>' + faculty_name + '</b> has been deleted.</p>',
+                                icon = 'success',
+                                showConfirmButton = false,
+                                timer = 1500
+                            );
+                            removeFacultyFromDB(id, i);
+                        }
+                    });
+                }
+                function removeFacultyFromDB(id, i) {
                     console.log("here",id,i);
                     // remove from table
                     var table = document.querySelector('.add_faculty_table');
@@ -374,9 +466,9 @@
                     // if id is present
                     if (id) {
                         $.ajax({
-                            url: `/removeFaculty/${id}`,
-                            type: 'POST',
-                            dataType: 'html',
+                            url: "{{route('admin.faculty')}}" + "/" +id,
+                            type: 'DELETE',
+                            dataType: 'json',
                             data: {
                                 faculty_id: id,
                                 _token: '{{ csrf_token() }}',
@@ -384,13 +476,13 @@
                             success: function(data) {
                                 console.log(data);
                                 // sweet alert on delete
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'success',
-                                    title: 'Faculty Deleted Successfully',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
+                                // Swal.fire({
+                                //     position: 'center',
+                                //     icon: 'success',
+                                //     title: 'Faculty Deleted Successfully',
+                                //     showConfirmButton: false,
+                                //     timer: 1500
+                                // })
                             }
                         });
                     }
@@ -402,6 +494,7 @@
                     var table = document.getElementsByClassName("add_faculty_table")[0];
                     var row = table.insertRow(-1);
                     row.classList.add("row_" + newId);
+                    row.classList.add("input-tr");
                     var cell0 = row.insertCell(0);
                     var cell1 = row.insertCell(1);
                     var cell2 = row.insertCell(2);
@@ -435,7 +528,7 @@
                     <label class='faculty_department_error' style='color:red;'></label>
                     `
                     cell5.innerHTML =
-                        `<button class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
+                        `<button type="button" class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
                     // show submit button
                     document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
                     newId++;
