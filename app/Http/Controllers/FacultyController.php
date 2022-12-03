@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class FacultyController extends Controller
 {
@@ -28,29 +29,51 @@ class FacultyController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-            'faculty_name' => 'required|unique:faculties|max:255',
-            'faculty_department' => 'required',
-            'faculty_email' => 'required',
-            'faculty_phone' => 'required',
-        ],[
-            'faculty_name.required' => 'Faculty Name is required',
-            'faculty_name.unique' => 'Faculty Name already exists',
-            'faculty_department.required' => 'Faculty Department is required',
-            'faculty_email.required' => 'Faculty Email is required',
-            'faculty_phone.required' => 'Faculty Phone is required',
-        ],
-        );
-        foreach($request->faculty_name as $key => $value){
-            $data = array(
-                'faculty_name' => $request->faculty_name[$key],
-                'faculty_department' => $request->faculty_department[$key],
-                'faculty_email' => $request->faculty_email[$key],
-                'faculty_phone' => $request->faculty_phone[$key],
+        try{
+            $request->validate([
+                'faculty_name' => 'required|unique:faculties|max:255',
+                'faculty_department' => 'required',
+                'faculty_email' => 'required',
+                'faculty_phone' => 'required',
+            ],[
+                'faculty_name.required' => 'Faculty Name is required',
+                'faculty_name.unique' => 'Faculty Name already exists',
+                'faculty_department.required' => 'Faculty Department is required',
+                'faculty_email.required' => 'Faculty Email is required',
+                'faculty_phone.required' => 'Faculty Phone is required',
+            ],
             );
-            Faculty::create($data);
+            // store data in an array
+            $temp = array();
+            foreach($request->faculty_name as $key => $value){
+                $data = array(
+                    'faculty_name' => $request->faculty_name[$key],
+                    'faculty_department' => $request->faculty_department[$key],
+                    'faculty_email' => $request->faculty_email[$key],
+                    'faculty_phone' => $request->faculty_phone[$key],
+                );
+                Faculty::create($data);
+                $faculty_id = Faculty::insertGetId($data);
+                $data['faculty_id'] = $faculty_id;
+                array_push($temp, $data);
+                
+            }
+            // send the array as response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Faculty added successfully',
+                'data' => $temp
+            ], 200);
+            }catch(\Exception $e){
+                if($e->getCode() == 23000){
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Faculty already exists',
+                        'data' => null
+                    ], 400);
+                }
         }
-        return redirect()->back()->with('success', 'Faculty Added Successfully');
+    
     }
 
     /**

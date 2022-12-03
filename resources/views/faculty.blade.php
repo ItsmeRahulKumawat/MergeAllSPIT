@@ -161,17 +161,13 @@
                 <div class="buttons">
                     <button type="button" class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
                         Faculty</button>
-                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" type="submit"
-                        onclick="submitForm()">Submit</button>
+                    <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" type="button" 
+                    onclick="addFacultyInDB()">Submit</button>
                 </div>
             </form>
             <script>
                 // prevent buttons from submitting
-                document.querySelectorAll('button').forEach(button => {
-                    button.addEventListener('click', e => {
-                        e.preventDefault();
-                    });
-                });
+                
                 document.querySelector(".submit_faculty").disabled = true;
                 // stop form from submitting
                 document.querySelector("form").addEventListener("submit", function(stop) {
@@ -179,12 +175,97 @@
                 });
 
                 
-                function submitForm() {
-                    document.querySelector(".submit_faculty").disabled = false;
-                    document.querySelector("form").submit();
-
+                function addFacultyInDB(){
+                    // store data for many  input fields
+                    var faculty_name = [];
+                    var faculty_email = [];
+                    var faculty_phone = [];
+                    var faculty_department = [];
+                    // get all input fields
+                    var faculty_name_input = document.querySelectorAll(".faculty_name");
+                    var faculty_email_input = document.querySelectorAll(".faculty_email");
+                    var faculty_phone_input = document.querySelectorAll(".faculty_phone");
+                    var faculty_department_input = document.querySelectorAll(".faculty_department");
+                    // store data in array
+                    for (var i = 0; i < faculty_name_input.length; i++) {
+                        faculty_name.push(faculty_name_input[i].value);
+                        faculty_email.push(faculty_email_input[i].value);
+                        faculty_phone.push(faculty_phone_input[i].value);
+                        faculty_department.push(faculty_department_input[i].value);
+                    }
+                    // send data to server
+                    $.ajax({
+                        url: `{{route('admin.faculty')}}`,
+                        type: "POST",
+                        data: {
+                            faculty_name: faculty_name,
+                            faculty_email: faculty_email,
+                            faculty_phone: faculty_phone,
+                            faculty_department: faculty_department,
+                            _token: "{{ csrf_token() }}",
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            // if success then reload page
+                            if (response) {
+                                if (response["status"] == "success") {
+                                    Swal.fire({
+                                        title: 'Success',
+                                        text: 'Faculty Added Successfully',
+                                        icon: 'success',
+                                        confirmButtonText: 'Ok'
+                                    })
+                                    // var faculty_name = response["data"]["faculty_name"];
+                                    // var faculty_email = response["data"]["faculty_email"];
+                                    // var faculty_phone = response["data"]["faculty_phone"];
+                                    // var faculty_department = response["data"]["faculty_department"];
+                                    data = response["data"];
+                                    changeInputToRow(data)
+                                }
+                            }
+                        },
+                    });
                 }
 
+                function changeInputToRow(data){
+                    // remove input fields
+                    var faculty_name_input = document.querySelectorAll(".faculty_name");
+                    var faculty_email_input = document.querySelectorAll(".faculty_email");
+                    var faculty_phone_input = document.querySelectorAll(".faculty_phone");
+                    var faculty_department_input = document.querySelectorAll(".faculty_department");
+                    
+                    // for (var i = 0; i < faculty_name_input.length; i++) {
+                    //     faculty_name_input[i].remove();
+                    //     faculty_email_input[i].remove();
+                    //     faculty_phone_input[i].remove();
+                    //     faculty_department_input[i].remove();
+                    // }
+                    // replace input fields 
+                    var input_tr = document.querySelectorAll(".input-tr");
+                    var faculty_name_td = document.querySelectorAll(".input-tr td input.faculty_name");
+                    var faculty_email_td = document.querySelectorAll(".input-tr td input.faculty_email");
+                    var faculty_phone_td = document.querySelectorAll(".input-tr td input.faculty_phone");
+                    var faculty_department_td = document.querySelectorAll(".input-tr td select.faculty_department");
+                    var s_no = document.querySelectorAll(".input-tr td:nth-child(1)");
+                    var remove_td = document.querySelectorAll(".input-tr td button");
+                    
+                    
+                    for (var i = 0; i < faculty_name_td.length; i++) {
+                        var edit_td = document.createElement("td");
+                        faculty_name_td[i].parentElement.innerHTML = data[i]["faculty_name"];
+                        faculty_email_td[i].parentElement.innerHTML = data[i]["faculty_email"];
+                        faculty_phone_td[i].parentElement.innerHTML = data[i]["faculty_phone"];
+                        faculty_department_td[i].parentElement.innerHTML = data[i]["faculty_department"];
+                        remove_td[i].parentElement.innerHTML = `<button type="button" class="btn btn-danger remove_${s_no[i].innerHTML}" onclick="removeFaculty(${data[i]["faculty_id"]},${s_no[i].innerHTML})">Remove</button>`;
+                        edit_td.innerHTML = `<button type="button" class="btn btn-primary edit_${s_no[i].innerHTML}" onclick="editFaculty(${data[i]["faculty_id"]},${s_no[i].innerHTML})">Edit</button>`;
+                        input_tr[i].appendChild(edit_td);
+                        faculty_name_td[i].remove();
+                        faculty_email_td[i].remove();
+                        faculty_phone_td[i].remove();
+                        faculty_department_td[i].remove();
+                        
+                    }
+                }
                 function validateEmail() {
                     var faculty_email = document.querySelector(".faculty_email").value;
                     var faculty_email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -413,6 +494,7 @@
                     var table = document.getElementsByClassName("add_faculty_table")[0];
                     var row = table.insertRow(-1);
                     row.classList.add("row_" + newId);
+                    row.classList.add("input-tr");
                     var cell0 = row.insertCell(0);
                     var cell1 = row.insertCell(1);
                     var cell2 = row.insertCell(2);
