@@ -38,8 +38,9 @@ Route::get('/register',function(){
 
 Route::middleware(['auth','isUser'])->group(function(){
     
-    Route::get('/proposal', [ProposalController::class, 'index']);
+    Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal');;
     Route::get('/proposal_submitted', [ProposalController::class, 'submitted']);
+    Route::post('/proposal', [ProposalController::class, 'store']);
 
 });
 
@@ -64,11 +65,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
     
     Route::get('/report',[ReportController::class,'index'])->name('report');;    
     Route::post('/report',[ReportController::class,'generateReport']);
+
+    Route::get('/proposal/{id}', [ProposalController::class, 'show']);
+
 });
 
 
-Route::post('/proposal', [ProposalController::class, 'store']);
-Route::get('/proposal/{id}', [ProposalController::class, 'show'])->name('proposal');
 Route::post('/getDept', [ProposalController::class, 'getDept']);
 
 Auth::routes();
