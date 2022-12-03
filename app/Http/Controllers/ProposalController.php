@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Faculty;
 use App\Models\FacultyGroup;
 use Illuminate\Http\Request;
 use App\Models\Proposal;
@@ -92,10 +93,12 @@ class ProposalController extends Controller
         $faculty_group = array();
         $department_group = array();
         for($i=1; $i<=5; $i++){
-            $faculty = $request->input('faculty_name_'.$i);
+            $faculty_id = $request->input('faculty_name_'.$i);
+            // find faculty name from faculty id
+            $faculty = Faculty::where('faculty_id', $faculty_id)->first();
             $department = $request->input('faculty_department_'.$i);
             if($faculty != null){
-                array_push($faculty_group, $faculty);
+                array_push($faculty_group, $faculty->faculty_name);
                 array_push($department_group, $department);
             }
         }
