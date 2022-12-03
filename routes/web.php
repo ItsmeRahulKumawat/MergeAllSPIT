@@ -21,45 +21,43 @@ use Illuminate\Support\Facades\Auth;
 */
 
 
-Route::get('/', function () {
-    return view('homepage');
-});
+// Route::get('/', function () {
+//     return view('homepage');
+// });
 
 
-Route::get('/login',function(){
-    return view('login');
-});
+// Route::get('/login',function(){
+//     return view('login');
+// });
 
-Route::get('/register',function(){
-    return view('register');
-});
+// Route::get('/register',function(){
+//     return view('register');
+// });
 
 
 
 Route::middleware(['auth','isUser'])->group(function(){
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
+    
     Route::get('/proposal', [ProposalController::class, 'index']);
     Route::get('/proposal_submitted', [ProposalController::class, 'submitted']);
 
 });
+
+// Route::get('/department',[DepartmentController::class,'index']);
 // make protected routes that user can access
 // admin
-Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
-    Route::get('/proposal', [ProposalController::class, 'index']);
+    
+    Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal');
     Route::get('/proposal_submitted', [ProposalController::class, 'submitted']);
     
-    Route::get('/faculty', [FacultyController::class, 'index']);
+    Route::get('/faculty', [FacultyController::class, 'index'])->name('faculty');
     Route::post('/faculty', [FacultyController::class, 'store']);
-    Route::post('/removeFaculty/{id}', [FacultyController::class, 'destroy']);
-    Route::post('/updateFaculty/{id}',[FacultyController::class,'update']);
+    Route::delete('/faculty/{id}', [FacultyController::class, 'destroy']);
+    Route::put('/faculty/{id}', [FacultyController::class, 'update']);
 
-    Route::get('/department',[DepartmentController::class,'index']);
+    Route::get('/department',[DepartmentController::class,'index'])->name('department');
     Route::post('/department',[DepartmentController::class,'store']);
     Route::delete('/department/{id}', [DepartmentController::class, 'destroy']);
     Route::put('/department/{department_id}', [DepartmentController::class, 'update']);
@@ -67,6 +65,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function () {
     Route::get('/report',[ReportController::class,'index']);    
     Route::post('/report',[ReportController::class,'generateReport']);
 });
+
 
 Route::post('/proposal', [ProposalController::class, 'store']);
 Route::get('/proposal/{id}', [ProposalController::class, 'show']);

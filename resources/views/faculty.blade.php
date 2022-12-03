@@ -107,7 +107,7 @@
             <h1>Faculty Info</h1>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ url('/faculty') }}" novalidate>
+            <form method="POST" action="{{ url('admin/faculty') }}" novalidate>
                 @csrf
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -140,10 +140,10 @@
                             <td>{{ $faculty->faculty_email }}</td>
                             <td>{{ $faculty->faculty_phone }}</td>
                             <td>{{ $faculty->faculty_department }}</td>
-                            <td><button class="btn btn-danger remove_{{ $loop->iteration }}"
+                            <td><button type="button" class="btn btn-danger remove_{{ $loop->iteration }}"
                                     onclick="removeFaculty({{ $faculty->faculty_id }},{{ $loop->iteration }})">Remove</button>
                             </td>
-                            <td><button class="btn btn-primary edit_{{ $loop->iteration }}"
+                            <td><button type="button" class="btn btn-primary edit_{{ $loop->iteration }}"
                                     onclick="editFaculty({{ $faculty->faculty_id }},{{ $loop->iteration }})">Edit</button>
                             </td>
                         </tr>
@@ -151,19 +151,26 @@
                     </tbody>
                 </table>
                 <div class="buttons">
-                    <button class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
+                    <button type="button" class="p-1 mt-2 btn btn-primary add_faculty_button" onclick="addRow()">Add
                         Faculty</button>
                     <button class="p-1 mt-2 btn btn-primary submit_faculty hidden" type="submit"
                         onclick="submitForm()">Submit</button>
                 </div>
             </form>
             <script>
+                // prevent buttons from submitting
+                document.querySelectorAll('button').forEach(button => {
+                    button.addEventListener('click', e => {
+                        e.preventDefault();
+                    });
+                });
                 document.querySelector(".submit_faculty").disabled = true;
                 // stop form from submitting
                 document.querySelector("form").addEventListener("submit", function(stop) {
                     stop.preventDefault();
                 });
 
+                
                 function submitForm() {
                     document.querySelector(".submit_faculty").disabled = false;
                     document.querySelector("form").submit();
@@ -207,44 +214,11 @@
                     }
                     enableSubmit();
                 }
-                // function submitData(){
-                //     var faculty_name = document.getElementsByClassName("faculty_name");
-                //     var faculty_email = document.getElementsByClassName("faculty_email");
-                //     var faculty_phone = document.getElementsByClassName("faculty_phone");
-                //     var faculty_department = document.getElementsByClassName("faculty_department");
-                //     var faculty_data = [];
-                //     for(var i=0;i<faculty_name.length;i++){
-                //         faculty_data.push({
-                //             "faculty_name":faculty_name[i].value,
-                //             "faculty_email":faculty_email[i].value,
-                //             "faculty_phone":faculty_phone[i].value,
-                //             "faculty_department":faculty_department[i].value,
-                //         });
-                //     }
-                //     console.log(faculty_data);
-                //     $.ajax({
-                //         type: "POST",
-                //         url: "/addFaculty",
-                //         data: {
-                //             "_token": "{{ csrf_token() }}",
-                //             "faculty_data": faculty_data
-                //         },
-                //         success: function (response) {
-                //             console.log(response);
-                //             swal.fire({
-                //                 title: "Success",
-                //                 text: "Faculty Added Successfully",
-                //                 icon: "success",
-                //                 confirmButtonText: "OK"
-                //             }).then(function () {
-                //                 // location.reload();
-                //             });
-                //         }
-                //     });
-
-                // }
-
+               
+                
                 function editFaculty(id, i) {
+                    // stop submit
+                    event.preventDefault();
                     // change td to input
                     var faculty_name = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML;
                     var faculty_email = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[2].innerHTML;
@@ -283,6 +257,8 @@
                 }
 
                 function updateFaculty(id, i) {
+                    // stop submit
+                    event.preventDefault();
                     // submit on update
                     var faculty_name = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1]
                         .getElementsByTagName("input")[0].value;
@@ -301,8 +277,8 @@
                         "faculty_department": faculty_department,
                     };
                     $.ajax({
-                        type: "POST",
-                        url: "/updateFaculty/" + id,
+                        type: "PUT",
+                        url: "{{route('admin.faculty')}}" + "/" +id,
                         data: data,
                         success: function(response) {
                             console.log(response);
@@ -355,7 +331,9 @@
                 }
 
                 function addRow() {
-                    let lastRow = document.querySelector('.add_faculty_table tr:last-child');
+                    // dont send request
+                    event.preventDefault();
+                    let lastRow = document.querySelector('.add_faculty_table tbody tr:last-child');
                     // get last row number
                     let lastRowNumber = lastRow.querySelector('td:first-child').innerText;
                     // get last row number and increment it
@@ -363,8 +341,33 @@
                     addFaculty(newRowNumber);
                 }
 
-
-                function removeFaculty(id, i) {
+                function removeFaculty(id,i){
+                    var faculty_name = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML;
+                    var faculty_department = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4].innerHTML;
+                    Swal.fire({
+                        title: 'Are you sure',
+                        html: `<p>Do you want to delete this faculty ?</p>
+                                <p>Faculty Name : <b>${faculty_name}</b></p>
+                                <p>Faculty Department : <b>${faculty_department}</b></p>`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                                title = 'Deleted!',
+                                html = '<p>Faculty <b>' + faculty_name + '</b> has been deleted.</p>',
+                                icon = 'success',
+                                showConfirmButton = false,
+                                timer = 1500
+                            );
+                            removeFacultyFromDB(id, i);
+                        }
+                    });
+                }
+                function removeFacultyFromDB(id, i) {
                     console.log("here",id,i);
                     // remove from table
                     var table = document.querySelector('.add_faculty_table');
@@ -374,9 +377,9 @@
                     // if id is present
                     if (id) {
                         $.ajax({
-                            url: `/removeFaculty/${id}`,
-                            type: 'POST',
-                            dataType: 'html',
+                            url: "{{route('admin.faculty')}}" + "/" +id,
+                            type: 'DELETE',
+                            dataType: 'json',
                             data: {
                                 faculty_id: id,
                                 _token: '{{ csrf_token() }}',
@@ -384,13 +387,13 @@
                             success: function(data) {
                                 console.log(data);
                                 // sweet alert on delete
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'success',
-                                    title: 'Faculty Deleted Successfully',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
+                                // Swal.fire({
+                                //     position: 'center',
+                                //     icon: 'success',
+                                //     title: 'Faculty Deleted Successfully',
+                                //     showConfirmButton: false,
+                                //     timer: 1500
+                                // })
                             }
                         });
                     }
@@ -435,7 +438,7 @@
                     <label class='faculty_department_error' style='color:red;'></label>
                     `
                     cell5.innerHTML =
-                        `<button class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
+                        `<button type="button" class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
                     // show submit button
                     document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
                     newId++;

@@ -93,7 +93,7 @@ class FacultyController extends Controller
             'faculty_email' => $request->faculty_email,
             'faculty_phone' => $request->faculty_phone,
         ]);
-        return redirect()->back()->with('success', 'Faculty Updated Successfully');
+        return response()->json(['success', 'Faculty Updated Successfully']);
     }
 
     /**
@@ -106,6 +106,6 @@ class FacultyController extends Controller
     {
         // delete faculty with the id
         $faculty = Faculty::where('faculty_id', $id)->delete();
-        return redirect()->back()->with('success', 'Faculty Deleted Successfully');
+        return response()->json(['success' => 'Faculty Deleted Successfully']);
     }
 }

@@ -108,7 +108,7 @@
             </div>
             <div class="wrapper card-body">
 
-                <form method="POST" action="{{ url('/department') }}" novalidate>
+                <form method="POST" action="{{ url('admin/department') }}" novalidate>
                     @csrf
                     <?php
                     $departments = DB::table('departments')->get();
@@ -130,7 +130,7 @@
                                     <td>
 
                                         {{-- edit button --}}
-                                        <button class="btn btn-primary mr-1"
+                                        <button type="button" class="btn btn-primary mr-1"
                                             onclick="editDepartment('{{ $department->department_id }}','{{ $department->department_name }}')">Edit</a>
 
                                             <button type="button" class="btn btn-danger" data-toggle="modal"
@@ -200,7 +200,7 @@
                     // send post request to delete
                     $.ajax({
                         type: "DELETE",
-                        url: '/department/' + department_id,
+                        url: "{{route('admin.department')}}" + "/" +department_id,
                         data: {
                             department_id: department_id,
                             department_name: department_name,
@@ -219,7 +219,7 @@
                     console.log(department_name);
                     // send ajax request
                     $.ajax({
-                        url: "/department",
+                        url: "{{route('admin.department')}}",
                         type: "POST",
                         dataType: 'json',
                         data: {
@@ -278,20 +278,7 @@
                     // show error in unique key error
 
                 }
-                // function addNewDepartmentInput() {
-                //     // add new department form multiple times
-                //     var addDepartment = document.getElementById("addDepartment");
-                //     if (addDepartment.classList.contains("hidden")) {
-                //         addDepartment.classList.remove("hidden");
-                //         document.querySelector(".addNewDepartmentBtn").innerHTML = "Cancel";
-                //     } else {
-                //         addDepartment.classList.add("hidden");
-                //         document.querySelector(".addNewDepartmentBtn").innerHTML = "Add New Department";
-
-                //     }
-
-
-                // }
+                
                 function addNewDepartmentInput() {
                     Swal.fire({
                         title: 'New Department Name',
@@ -349,7 +336,7 @@
                     // send post request to edit
                     $.ajax({
                         type: "PUT",
-                        url: '/department/' + department_id,
+                        url: "{{route('admin.department')}}" + "/" +department_id,
                         data: {
                             department_id: department_id,
                             department_name: department_name,
