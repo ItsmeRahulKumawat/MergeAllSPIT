@@ -334,7 +334,6 @@
                     `
                     cell5.innerHTML = `<input onkeyup="validate()" class="form-control faculty_password" type="password" name="faculty_password[]" value="" >
                     <label class='faculty_password_error' style='color:red;'></label>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="showPassword(this)">Show</button>
                     `;
                     cell6.innerHTML =
                         `<button type="button" class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
@@ -422,15 +421,6 @@
                     });
                 }
 
-                function showPassword(paassword){
-                    var password = paassword.parentElement.getElementsByClassName("faculty_password")[0];
-                    if (password.type === "password") {
-                        password.type = "text";
-                    } else {
-                        password.type = "password";
-                    }
-
-                }
                 function changeInputToRow(data){
                     // remove input fields
                     var faculty_name_input = document.querySelectorAll(".faculty_name");
@@ -510,8 +500,7 @@
                     <label class='faculty_department_error' style='color:red;'></label>`
                     document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[5].innerHTML =
                     `<input type='password' value="${faculty_password}" class='form-control faculty_password'  placeholder='Faculty Password' name='faculty_password[]' required>
-                        <label class='faculty_password_error' style='color:red;'></label>
-                        <button type="button" class="btn btn-primary btn-sm" onclick="showPassword(this)">Show</button>`;
+                        <label class='faculty_password_error' style='color:red;'></label>`;
                     // change edit button to update button
                     document.getElementsByClassName("edit_" + i)[0].innerHTML = "Update";
                     // submit on click update

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faculty;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class FacultyController extends Controller
 {
@@ -46,6 +48,13 @@ class FacultyController extends Controller
                 $faculty_id = Faculty::insertGetId($data);
                 $data['faculty_id'] = $faculty_id;
                 array_push($temp, $data);
+                // create a user for each faculty
+                $user = new User();
+                $user->name = $request->faculty_name[$key];
+                $user->email = $request->faculty_email[$key];
+                $user->password = Hash::make($request->faculty_password[$key]);
+                $user->role = '0';
+                $user->save();
                 
             }
             // send the array as response
@@ -123,8 +132,15 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
+        
         // delete faculty with the id
-        $faculty = Faculty::where('faculty_id', $id)->delete();
-        return response()->json(['success' => 'Faculty Deleted Successfully']);
+        $faculty = Faculty::where('faculty_id', $id);
+        $temp = Faculty::where('faculty_id', $id)->first();
+        $faculty->delete();
+        $email = $temp->faculty_email;
+        print_r($email);
+        // delete user
+        $user = User::where('email', $email)->delete();
+        return response()->json(['success', 'Faculty Deleted Successfully']);
     }
 }
