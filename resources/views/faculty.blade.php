@@ -170,13 +170,160 @@
             <script>
                 // prevent buttons from submitting
                 
-                document.querySelector(".submit_faculty").disabled = false;
+                document.querySelector(".submit_faculty").disabled = true;
                 // stop form from submitting
                 document.querySelector("form").addEventListener("submit", function(stop) {
                     stop.preventDefault();
                 });
 
+                // function checkValidity(){
+                //     var email  = document.getElementById('faculty_email').value;
+                //     var phone  = document.getElementById('faculty_phone').value;
+                //     var password  = document.getElementById('faculty_password').value;
+                //     var name  = document.getElementById('faculty_name').value;
+                //     var department  = document.getElementById('faculty_department').value;
+                //     validateEmail();
+                //     validatePhone();
+                //     validateDepartment();
+                // }
+                function validate(cnt){
+                    var submit_btn = document.querySelector(".submit_faculty");
+                    var val_email = validateEmail();
+                    var val_phone = validatePhone();
+                    var val_department = validateDepartment();
+                    submit_btn.disabled = (val_email || val_phone || val_department);
+                }
+                function validateEmail() {
+                    var email = document.querySelector('.faculty_email').value;
+                    var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                    if(email.length==0)return true;
+                    // show error if email is not valid
+                    if (!re.test(email)&&email!="") {
+                        // show error in label
+                        document.querySelector(".faculty_email_error").innerHTML = "Invalid email";
+                        // add error class to input
+                        document.querySelector(".faculty_email").classList.add("error");
+                        // disable submit button
+                        // document.querySelector(".submit_faculty").disabled = true;
+                        return true;
+                    }else {
+                        // remove error class from input
+                        document.querySelector(".faculty_email").classList.remove("error");
+                        // remove error from label
+                        document.querySelector(".faculty_email_error").innerHTML = "";
+                        // enable submit button
+                        // document.querySelector(".submit_faculty").disabled = false;
+                        return false;
+                    }
+                    return true;
+                }
+                function validatePhone(){
+                    var phone = document.querySelector('.faculty_phone').value;
+                    console.log(phone);
+                    var re = /^[0-9]{10}$/;
+                    // show error if phone is not valid
+                    if(phone.length==0)return true;
+                    if (!re.test(phone)&&phone.length!=0) {
+                        // show error in label
+                        document.querySelector(".faculty_phone_error").innerHTML = "Invalid phone";
+                        // add error class to input
+                        document.querySelector(".faculty_phone").classList.add("error");
+                        // disable submit button
+                        // document.querySelector(".submit_faculty").disabled = true;
+                        return true;
+                    }else {
+                        // remove error class from input
+                        document.querySelector(".faculty_phone").classList.remove("error");
+                        // remove error from label
+                        document.querySelector(".faculty_phone_error").innerHTML = "";
+                        // enable submit button
+                        // document.querySelector(".submit_faculty").disabled = false;
+                        return false;
+                    }
+                }
+
+                function validateDepartment(){
+                    var department = document.querySelector(".faculty_department").value;
+                    console.log(department);
+                    if(department.length==0)return true;
+                    if(department == ""&&department.length!=0){
+                        // show error in label
+                        document.querySelector(".faculty_department_error").innerHTML = "Select Department";
+                        // add error class to input
+                        document.querySelector(".faculty_department").classList.add("error");
+                        // disable submit button
+                        // document.querySelector(".submit_faculty").disabled = true;
+                        return true;
+                    }else{
+    
+                        // remove error class from input
+                        document.querySelector(".faculty_department").classList.remove("error");
+                        // remove error from label
+                        document.querySelector(".faculty_department_error").innerHTML = "";
+                        // enable submit button
+                        // document.querySelector(".submit_faculty").disabled = false;
+                        return false;
+                    }
+                }
                 
+                
+                function addRow() {
+                    // dont send request
+                    event.preventDefault();
+                    let lastRow = document.querySelector('.add_faculty_table tbody tr:last-child');
+                    // get last row number
+                    let lastRowNumber = lastRow.querySelector('td:first-child').innerText;
+                    // get last row number and increment it
+                    let newRowNumber = parseInt(lastRowNumber) + 1;
+                    addFaculty(newRowNumber);
+                }
+                function addFaculty(newId) {
+                    // add a new table row to add faculty name in input box
+                    var table = document.getElementsByClassName("add_faculty_table")[0];
+                    var row = table.insertRow(-1);
+                    row.classList.add("row_" + newId);
+                    row.classList.add("input-tr");
+                    var cell0 = row.insertCell(0);
+                    var cell1 = row.insertCell(1);
+                    var cell2 = row.insertCell(2);
+                    var cell3 = row.insertCell(3);
+                    var cell4 = row.insertCell(4);
+                    var cell5 = row.insertCell(5);
+                    var cell6 = row.insertCell(6);
+                    cell0.innerHTML = newId;
+                    cell1.innerHTML =
+                        `<input type='text' class='form-control faculty_name'  placeholder='Faculty Name' name='faculty_name[]' required>
+                        <label class='faculty_name_error' style='color:red;'></label>`;
+                    cell2.innerHTML =
+                        `<input onkeyup="validate()" type='email' class='form-control faculty_email'  placeholder='Faculty Email' name='faculty_email[]' required>
+                        <label class='faculty_email_error' style='color:red;'></label>`;
+                    cell3.innerHTML =
+                        `<input onkeyup="validate()" type='text' class='form-control faculty_phone'  placeholder='Faculty Phone' name='faculty_phone[]' required>
+                        <label class='faculty_phone_error' style='color:red;'></label>`;
+                    cell4.innerHTML = `
+                    <select onchange="validate()" class="form-control select faculty_department" aria-label
+                                                                class="form-label faculty-department" id="department_1" name="faculty_department[]"
+                                                                 required>
+                                                                required>
+                                                                <option selected disabled value="">Choose...</option>
+                                                                // get all departments
+                                                                <?php
+                                                                $departments = DB::table('departments')->get();
+                                                                foreach ($departments as $department) {
+                                                                    echo "<option value='$department->department_name'>$department->department_name</option>";
+                                                                }
+                                                                ?>
+                                                            </select>
+                    <label class='faculty_department_error' style='color:red;'></label>
+                    `
+                    cell5.innerHTML = `<input class="form-control faculty_password" type="text" name="faculty_password[]" value="" >`;
+                    cell6.innerHTML =
+                        `<button type="button" class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
+                    
+                    // show submit button
+                    document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
+                    newId++;
+                }
                 function addFacultyInDB(){
                     // store data for many  input fields
                     var faculty_name = [];
@@ -295,44 +442,6 @@
                         
                     }
                 }
-                function validateEmail() {
-                    var faculty_email = document.querySelector(".faculty_email").value;
-                    var faculty_email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-                    // show error if email is not valid
-                    if (!faculty_email_regex.test(faculty_email)) {
-                        document.querySelector(".faculty_email_error").innerHTML = "Please enter a valid email";
-                    } else {
-                        document.querySelector(".faculty_email_error").innerHTML = "";
-                    }
-                    enableSubmit();
-
-                }
-
-                function validateDepartment() {
-                    console.log("here")
-                    // disable if department is not selected
-                    var faculty_department = document.querySelector(".faculty_department").value;
-                    if (faculty_department == "Choose...") {
-                        document.querySelector(".faculty_department_error").innerHTML = "Please select a department";
-                    } else {
-                        document.querySelector(".faculty_department_error").innerHTML = "";
-                    }
-                    enableSubmit();
-                }
-
-                function validatePhone() {
-
-                    var faculty_phone = document.querySelector(".faculty_phone").value;
-                    var faculty_phone_regex = /^[0-9]{10}$/;
-                    // show error if phone is not valid
-                    if (!faculty_phone_regex.test(faculty_phone)) {
-                        document.querySelector(".faculty_phone_error").innerHTML = "Please enter a valid phone number";
-                    } else {
-                        document.querySelector(".faculty_phone_error").innerHTML = "";
-                    }
-                    enableSubmit();
-                }
-               
                 
                 function editFaculty(id, i) {
                     // stop submit
@@ -426,38 +535,7 @@
                     });
                 }
 
-                // enable submit only after all values have been entered
-                function enableSubmit() {
 
-                    var faculty_name = document.getElementsByClassName("faculty_name");
-                    var faculty_email = document.getElementsByClassName("faculty_email");
-                    var faculty_phone = document.getElementsByClassName("faculty_phone");
-                    var faculty_department = document.getElementsByClassName("faculty_department");
-                    var flag = 0;
-                    for (var i = 0; i < faculty_name.length; i++) {
-                        if (faculty_name[i].value == "" || faculty_email[i].value == "" || faculty_phone[i].value == "" ||
-                            faculty_department[i].value == "") {
-                            flag = 1;
-                        }
-                    }
-                    if (flag == 0) {
-                        document.querySelector(".submit_faculty").disabled = false;
-                    } else {
-                        document.querySelector(".submit_faculty").disabled = true;
-
-                    }
-                }
-
-                function addRow() {
-                    // dont send request
-                    event.preventDefault();
-                    let lastRow = document.querySelector('.add_faculty_table tbody tr:last-child');
-                    // get last row number
-                    let lastRowNumber = lastRow.querySelector('td:first-child').innerText;
-                    // get last row number and increment it
-                    let newRowNumber = parseInt(lastRowNumber) + 1;
-                    addFaculty(newRowNumber);
-                }
 
                 function removeFaculty(id,i){
                     var faculty_name = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML;
@@ -518,53 +596,7 @@
 
                 }
 
-                function addFaculty(newId) {
-                    // add a new table row to add faculty name in input box
-                    var table = document.getElementsByClassName("add_faculty_table")[0];
-                    var row = table.insertRow(-1);
-                    row.classList.add("row_" + newId);
-                    row.classList.add("input-tr");
-                    var cell0 = row.insertCell(0);
-                    var cell1 = row.insertCell(1);
-                    var cell2 = row.insertCell(2);
-                    var cell3 = row.insertCell(3);
-                    var cell4 = row.insertCell(4);
-                    var cell5 = row.insertCell(5);
-                    var cell6 = row.insertCell(6);
-                    cell0.innerHTML = newId;
-                    cell1.innerHTML =
-                        `<input type='text' class='form-control faculty_name'  placeholder='Faculty Name' name='faculty_name[]' required>
-                        <label class='faculty_name_error' style='color:red;'></label>`;
-                    cell2.innerHTML =
-                        `<input type='email' class='form-control faculty_email'  placeholder='Faculty Email' name='faculty_email[]' required>
-                        <label class='faculty_email_error' style='color:red;'></label>`;
-                    cell3.innerHTML =
-                        `<input type='text' class='form-control faculty_phone'  placeholder='Faculty Phone' name='faculty_phone[]' required>
-                        <label class='faculty_phone_error' style='color:red;'></label>`;
-                    cell4.innerHTML = `
-                    <select class="form-control select faculty_department" aria-label
-                                                                class="form-label faculty-department" id="department_1" name="faculty_department[]"
-                                                                 required>
-                                                                required>
-                                                                <option selected disabled value="">Choose...</option>
-                                                                // get all departments
-                                                                <?php
-                                                                $departments = DB::table('departments')->get();
-                                                                foreach ($departments as $department) {
-                                                                    echo "<option value='$department->department_name'>$department->department_name</option>";
-                                                                }
-                                                                ?>
-                                                            </select>
-                    <label class='faculty_department_error' style='color:red;'></label>
-                    `
-                    cell5.innerHTML = `<input class="form-control faculty_password" type="text" name="faculty_password[]" value="" >`;
-                    cell6.innerHTML =
-                        `<button type="button" class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
-                    
-                    // show submit button
-                    document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
-                    newId++;
-                }
+                
             </script>
         </div>
         </div>
