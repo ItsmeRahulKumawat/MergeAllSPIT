@@ -44,15 +44,18 @@ class ProposalController extends Controller
 
         $request->validate([
             'proposal_title' => 'required|unique:proposals|max:255',
-            'proposal_abstract' => 'required',
-            'proposal_fundingAmount' => 'required',
+            'proposal_abstract' => 'required|min:20',
+            'proposal_fundingAmount' => 'required:min:1000',
             'proposal_submissionDate' => 'required',
             'proposal_file' => 'required|max:10240',
         ],[
             'proposal_title.required' => 'Proposal Title is required',
             'proposal_title.unique' => 'Proposal Title already exists',
+            'proposal_title.max' => 'Proposal Title must be less than 255 characters',
             'proposal_abstract.required' => 'Proposal Abstract is required',
+            'proposal_abstract.min' => 'Proposal Abstract must be at least 20 characters',
             'proposal_fundingAmount.required' => 'Proposal Funding Amount is required',
+            'proposal_fundingAmount.min' => 'Proposal Funding Amount must be greater than 1000',
             'proposal_submissionDate.required' => 'Proposal Submission Date is required',
             'proposal_file.max' => 'File size must be less than 10MB',
         ],
