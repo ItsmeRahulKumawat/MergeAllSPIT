@@ -32,20 +32,6 @@ class FacultyController extends Controller
         
         //
         try{
-            $request->validate([
-                'faculty_name' => 'required|max:255',
-                'faculty_department' => 'required',
-                'faculty_email' => 'required|email|unique:faculties',
-                'faculty_phone' => 'required|numeric|digits:10',
-                'faculty_password' =>'required|min:8'
-            ],[
-                'faculty_name.required' => 'Faculty Name is required',
-                'faculty_department.required' => 'Faculty Department is required',
-                'faculty_email.required' => 'Faculty Email is required',
-                'faculty_phone.required' => 'Faculty Phone is required',
-                'faculty_password.required' => 'Faculty Password is required'
-            ],
-            );
             // store data in an array
             $temp = array();
             foreach($request->faculty_name as $key => $value){
@@ -69,7 +55,6 @@ class FacultyController extends Controller
                 'data' => $temp
             ], 200);
             }catch(\Exception $e){
-                
                 if($e->getCode() == 23000){
                     return response()->json([
                         'status' => 'error',
@@ -77,6 +62,8 @@ class FacultyController extends Controller
                         'data' => null
                     ], 400);
                 }
+                
+
                 return response()->json([
                     'status' => 'error',
                     'message' => $e->getMessage(),

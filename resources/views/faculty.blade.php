@@ -191,7 +191,23 @@
                     var val_email = validateEmail();
                     var val_phone = validatePhone();
                     var val_department = validateDepartment();
-                    submit_btn.disabled = (val_email || val_phone || val_department);
+                    var val_password = validatePassword();
+                    submit_btn.disabled = (val_email || val_phone || val_department|| val_password);
+                }
+                function validatePassword(){
+                    var password = document.querySelector('.faculty_password').value;
+                    var submit_btn = document.querySelector(".submit_faculty");
+                    if(password.length==0)return true;
+                    if(password.length < 8){
+                        document.querySelector('.faculty_password').style.border = "2px solid red";
+                        
+                        return true;
+                    }
+                    else{
+                        document.querySelector('.faculty_password').style.border = "2px solid green";
+                        
+                        return false;
+                    }
                 }
                 function validateEmail() {
                     var email = document.querySelector('.faculty_email').value;
@@ -316,7 +332,10 @@
                                                             </select>
                     <label class='faculty_department_error' style='color:red;'></label>
                     `
-                    cell5.innerHTML = `<input class="form-control faculty_password" type="text" name="faculty_password[]" value="" >`;
+                    cell5.innerHTML = `<input onkeyup="validate()" class="form-control faculty_password" type="password" name="faculty_password[]" value="" >
+                    <label class='faculty_password_error' style='color:red;'></label>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="showPassword(this)">Show</button>
+                    `;
                     cell6.innerHTML =
                         `<button type="button" class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
                     
@@ -389,10 +408,12 @@
                                         timer: 1500
                                     })
                             }else {
+                                // print validation errors
+                                // reload
                                 Swal.fire({
                                     position: 'center',
                                     icon: 'error',
-                                    title: 'Something went wrong',
+                                    title: `Something went wrong`,
                                     showConfirmButton: false,
                                     timer: 1500
                                 })
@@ -401,6 +422,15 @@
                     });
                 }
 
+                function showPassword(paassword){
+                    var password = paassword.parentElement.getElementsByClassName("faculty_password")[0];
+                    if (password.type === "password") {
+                        password.type = "text";
+                    } else {
+                        password.type = "password";
+                    }
+
+                }
                 function changeInputToRow(data){
                     // remove input fields
                     var faculty_name_input = document.querySelectorAll(".faculty_name");
@@ -451,6 +481,7 @@
                     var faculty_email = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[2].innerHTML;
                     var faculty_phone = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[3].innerHTML;
                     var faculty_department = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4].innerHTML;
+                    var faculty_password = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[5].innerHTML;
                     document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML =
                     `<input type='text' class='form-control faculty_name' placeholder='Faculty Name' name='faculty_name[]' required value=${faculty_name}>
                     <label class='faculty_name_error' style='color:red;'></label>`;
@@ -477,6 +508,10 @@
                                                                 // select department
                                                             </select>
                     <label class='faculty_department_error' style='color:red;'></label>`
+                    document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[5].innerHTML =
+                    `<input type='password' value="${faculty_password}" class='form-control faculty_password'  placeholder='Faculty Password' name='faculty_password[]' required>
+                        <label class='faculty_password_error' style='color:red;'></label>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="showPassword(this)">Show</button>`;
                     // change edit button to update button
                     document.getElementsByClassName("edit_" + i)[0].innerHTML = "Update";
                     // submit on click update
