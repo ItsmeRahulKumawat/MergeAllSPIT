@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class FacultyController extends Controller
 {
@@ -28,19 +29,21 @@ class FacultyController extends Controller
      */
     public function store(Request $request)
     {
+        
         //
         try{
             $request->validate([
-                'faculty_name' => 'required|unique:faculties|max:255',
+                'faculty_name' => 'required|max:255',
                 'faculty_department' => 'required',
-                'faculty_email' => 'required',
-                'faculty_phone' => 'required',
+                'faculty_email' => 'required|email|unique:faculties',
+                'faculty_phone' => 'required|numeric|digits:10',
+                'faculty_password' =>'required|min:8'
             ],[
                 'faculty_name.required' => 'Faculty Name is required',
-                'faculty_name.unique' => 'Faculty Name already exists',
                 'faculty_department.required' => 'Faculty Department is required',
                 'faculty_email.required' => 'Faculty Email is required',
                 'faculty_phone.required' => 'Faculty Phone is required',
+                'faculty_password.required' => 'Faculty Password is required'
             ],
             );
             // store data in an array
@@ -51,8 +54,9 @@ class FacultyController extends Controller
                     'faculty_department' => $request->faculty_department[$key],
                     'faculty_email' => $request->faculty_email[$key],
                     'faculty_phone' => $request->faculty_phone[$key],
+                    'faculty_password' => $request->faculty_password[$key]
                 );
-                Faculty::create($data);
+                
                 $faculty_id = Faculty::insertGetId($data);
                 $data['faculty_id'] = $faculty_id;
                 array_push($temp, $data);
@@ -65,15 +69,20 @@ class FacultyController extends Controller
                 'data' => $temp
             ], 200);
             }catch(\Exception $e){
+                
                 if($e->getCode() == 23000){
                     return response()->json([
                         'status' => 'error',
-                        'message' => 'Faculty already exists',
+                        'message' => 'Email already exists',
                         'data' => null
                     ], 400);
                 }
-        }
-    
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $e->getMessage(),
+                    'data' => null
+                ], 400);
+            }
     }
 
     /**

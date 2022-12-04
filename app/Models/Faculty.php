@@ -15,5 +15,6 @@ class Faculty extends Model
         'faculty_department',
         'faculty_email',
         'faculty_phone',
+        'faculty_password'
     ];
 }

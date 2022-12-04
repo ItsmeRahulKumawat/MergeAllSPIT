@@ -137,6 +137,7 @@
                         <th>Faculty Email</th>
                         <th>Faculty Phone</th>
                         <th>Faculty Department</th>
+                        <th>Faculty Password</th>
                         <th colspan="2">Action</th>
                         </tr>
                     </thead>
@@ -148,6 +149,7 @@
                             <td>{{ $faculty->faculty_email }}</td>
                             <td>{{ $faculty->faculty_phone }}</td>
                             <td>{{ $faculty->faculty_department }}</td>
+                            <td>{{$faculty->faculty_password}}</td>
                             <td><button type="button" class="btn btn-danger remove_{{ $loop->iteration }}"
                                     onclick="removeFaculty({{ $faculty->faculty_id }},{{ $loop->iteration }})">Remove</button>
                             </td>
@@ -168,7 +170,7 @@
             <script>
                 // prevent buttons from submitting
                 
-                document.querySelector(".submit_faculty").disabled = true;
+                document.querySelector(".submit_faculty").disabled = false;
                 // stop form from submitting
                 document.querySelector("form").addEventListener("submit", function(stop) {
                     stop.preventDefault();
@@ -181,27 +183,32 @@
                     var faculty_email = [];
                     var faculty_phone = [];
                     var faculty_department = [];
+                    var faculty_password = [];
                     // get all input fields
                     var faculty_name_input = document.querySelectorAll(".faculty_name");
                     var faculty_email_input = document.querySelectorAll(".faculty_email");
                     var faculty_phone_input = document.querySelectorAll(".faculty_phone");
                     var faculty_department_input = document.querySelectorAll(".faculty_department");
+                    var faculty_password_input = document.querySelectorAll(".faculty_password");
                     // store data in array
                     for (var i = 0; i < faculty_name_input.length; i++) {
                         faculty_name.push(faculty_name_input[i].value);
                         faculty_email.push(faculty_email_input[i].value);
                         faculty_phone.push(faculty_phone_input[i].value);
                         faculty_department.push(faculty_department_input[i].value);
+                        faculty_password.push(faculty_password_input[i].value);
                     }
                     // send data to server
                     $.ajax({
                         url: `{{route('admin.faculty')}}`,
                         type: "POST",
+                        dataType: "json",
                         data: {
                             faculty_name: faculty_name,
                             faculty_email: faculty_email,
                             faculty_phone: faculty_phone,
                             faculty_department: faculty_department,
+                            faculty_password: faculty_password,
                             _token: "{{ csrf_token() }}",
                         },
                         success: function(response) {
@@ -224,6 +231,26 @@
                                 }
                             }
                         },
+                        error: function(error) {
+                            console.log(error);
+                            if (error.responseJSON["status"]) {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'error',
+                                        title: 'Faculty already exists',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                            }else {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: 'Something went wrong',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            }
+                        }
                     });
                 }
 
@@ -233,7 +260,7 @@
                     var faculty_email_input = document.querySelectorAll(".faculty_email");
                     var faculty_phone_input = document.querySelectorAll(".faculty_phone");
                     var faculty_department_input = document.querySelectorAll(".faculty_department");
-                    
+                    var faculty_password_input = document.querySelectorAll(".faculty_password");
                     // for (var i = 0; i < faculty_name_input.length; i++) {
                     //     faculty_name_input[i].remove();
                     //     faculty_email_input[i].remove();
@@ -246,6 +273,7 @@
                     var faculty_email_td = document.querySelectorAll(".input-tr td input.faculty_email");
                     var faculty_phone_td = document.querySelectorAll(".input-tr td input.faculty_phone");
                     var faculty_department_td = document.querySelectorAll(".input-tr td select.faculty_department");
+                    var faculty_password_td = document.querySelectorAll(".input-tr td input.faculty_password");
                     var s_no = document.querySelectorAll(".input-tr td:nth-child(1)");
                     var remove_td = document.querySelectorAll(".input-tr td button");
                     
@@ -256,6 +284,7 @@
                         faculty_email_td[i].parentElement.innerHTML = data[i]["faculty_email"];
                         faculty_phone_td[i].parentElement.innerHTML = data[i]["faculty_phone"];
                         faculty_department_td[i].parentElement.innerHTML = data[i]["faculty_department"];
+                        faculty_password_td[i].parentElement.innerHTML = data[i]["faculty_password"];
                         remove_td[i].parentElement.innerHTML = `<button type="button" class="btn btn-danger remove_${s_no[i].innerHTML}" onclick="removeFaculty(${data[i]["faculty_id"]},${s_no[i].innerHTML})">Remove</button>`;
                         edit_td.innerHTML = `<button type="button" class="btn btn-primary edit_${s_no[i].innerHTML}" onclick="editFaculty(${data[i]["faculty_id"]},${s_no[i].innerHTML})">Edit</button>`;
                         input_tr[i].appendChild(edit_td);
@@ -317,15 +346,15 @@
                     `<input type='text' class='form-control faculty_name' placeholder='Faculty Name' name='faculty_name[]' required value=${faculty_name}>
                     <label class='faculty_name_error' style='color:red;'></label>`;
                     document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[2].innerHTML =
-                    `<input type='email' value = "${faculty_email}" class='form-control faculty_email' onchange='validateEmail()' placeholder='Faculty Email' name='faculty_email[]' required>
+                    `<input type='email' value = "${faculty_email}" class='form-control faculty_email'  placeholder='Faculty Email' name='faculty_email[]' required>
                         <label class='faculty_email_error' style='color:red;'></label>`;
                     document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[3].innerHTML =
-                    `<input type='text' value="${faculty_phone}" class='form-control faculty_phone' onchange='validatePhone()' placeholder='Faculty Phone' name='faculty_phone[]' required>
+                    `<input type='text' value="${faculty_phone}" class='form-control faculty_phone'  placeholder='Faculty Phone' name='faculty_phone[]' required>
                         <label class='faculty_phone_error' style='color:red;'></label>`;
                     document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4].innerHTML =
                        `<select class="form-control select faculty_department" aria-label
                                                                 class="form-label faculty-department" id="department_1" name="faculty_department[]"
-                                                                onchange="validateDepartment()" required>
+                                                                 required>
                                                                 required>
                                                                 <option selected value="${faculty_department}">${faculty_department}</option>
                                                         
@@ -501,20 +530,21 @@
                     var cell3 = row.insertCell(3);
                     var cell4 = row.insertCell(4);
                     var cell5 = row.insertCell(5);
+                    var cell6 = row.insertCell(6);
                     cell0.innerHTML = newId;
                     cell1.innerHTML =
                         `<input type='text' class='form-control faculty_name'  placeholder='Faculty Name' name='faculty_name[]' required>
                         <label class='faculty_name_error' style='color:red;'></label>`;
                     cell2.innerHTML =
-                        `<input type='email' class='form-control faculty_email' onchange='validateEmail()' placeholder='Faculty Email' name='faculty_email[]' required>
+                        `<input type='email' class='form-control faculty_email'  placeholder='Faculty Email' name='faculty_email[]' required>
                         <label class='faculty_email_error' style='color:red;'></label>`;
                     cell3.innerHTML =
-                        `<input type='text' class='form-control faculty_phone' onchange='validatePhone()' placeholder='Faculty Phone' name='faculty_phone[]' required>
+                        `<input type='text' class='form-control faculty_phone'  placeholder='Faculty Phone' name='faculty_phone[]' required>
                         <label class='faculty_phone_error' style='color:red;'></label>`;
                     cell4.innerHTML = `
                     <select class="form-control select faculty_department" aria-label
                                                                 class="form-label faculty-department" id="department_1" name="faculty_department[]"
-                                                                onchange="validateDepartment()" required>
+                                                                 required>
                                                                 required>
                                                                 <option selected disabled value="">Choose...</option>
                                                                 // get all departments
@@ -527,8 +557,10 @@
                                                             </select>
                     <label class='faculty_department_error' style='color:red;'></label>
                     `
-                    cell5.innerHTML =
+                    cell5.innerHTML = `<input class="form-control faculty_password" type="text" name="faculty_password[]" value="" >`;
+                    cell6.innerHTML =
                         `<button type="button" class="btn btn-primary remove_${newId}" onclick="removeFaculty(${null},${newId})">Remove</button>`;
+                    
                     // show submit button
                     document.getElementsByClassName("submit_faculty")[0].classList.remove("hidden");
                     newId++;
