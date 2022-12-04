@@ -11,9 +11,10 @@ class Faculty extends Model
     use HasFactory;
 
     protected $fillable = [
-        'faculty_name',
-        'faculty_department',
-        'faculty_email',
-        'faculty_phone',
+        'faculty_name[]',
+        'faculty_department[]',
+        'faculty_email[]',
+        'faculty_phone[]',
+        'faculty_password[]'
     ];
 }
