@@ -332,7 +332,7 @@
                                                             </select>
                     <label class='faculty_department_error' style='color:red;'></label>
                     `
-                    cell5.innerHTML = `<input onkeyup="validate()" class="form-control faculty_password" type="password" name="faculty_password[]" value="" >
+                    cell5.innerHTML = `<input onkeyup="validate()" class="form-control faculty_password" type="text" name="faculty_password[]" value="" >
                     <label class='faculty_password_error' style='color:red;'></label>
                     `;
                     cell6.innerHTML =
@@ -499,7 +499,7 @@
                                                             </select>
                     <label class='faculty_department_error' style='color:red;'></label>`
                     document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[5].innerHTML =
-                    `<input type='password' value="${faculty_password}" class='form-control faculty_password'  placeholder='Faculty Password' name='faculty_password[]' required>
+                    `<input type='text' value="${faculty_password}" class='form-control faculty_password'  placeholder='Faculty Password' name='faculty_password[]' required>
                         <label class='faculty_password_error' style='color:red;'></label>`;
                     // change edit button to update button
                     document.getElementsByClassName("edit_" + i)[0].innerHTML = "Update";

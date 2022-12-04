@@ -146,7 +146,7 @@ class ProposalController extends Controller
     {
     
         $proposal = Proposal::where('proposal_id', $id)->first();
-
+        
         // return response()->file(storage_path($proposal->proposal_file));
         return view('proposal_details')->with('proposal', $proposal);
     }

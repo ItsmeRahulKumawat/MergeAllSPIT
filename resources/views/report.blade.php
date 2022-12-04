@@ -297,7 +297,7 @@
                                                 <td>{{ $faculty_names[0]->faculty_group_department }}</td>
 
                                                 <td>
-                                                    <a href="{{ url('/proposal/' . $proposal->proposal_id) }}"
+                                                    <a href="{{route('admin.proposal')}}/{{ $proposal->proposal_id }}"
                                                         class="btn btn-primary">View</a>
                                                     {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
 
