@@ -122,7 +122,7 @@
                 <h3>Report</h3>
             </div>
             <div class="card-body">
-                <form action="{{ url('admin/report') }}" method="POST" novalidate>
+                <form id="report-form" action="{{ url('admin/report') }}" method="POST" novalidate>
                     @csrf
                     {{-- select between proposal and outreach --}}
                     <div class="form-group">
@@ -198,7 +198,10 @@
                                                 $(`#faculty_select`).html(
                                                     "<option  selected disabled value=''>No faculty found in this department</option>"
                                                 );
-                                            } else $(`#faculty_select`).html(data);
+                                            } else {
+                                                $(`#faculty_select`).html(data);
+                                                checkFaculty();
+                                            }
                                         }
                                     });
                                 }
@@ -367,6 +370,10 @@
         function changeSelection() {
             buttons.forEach(btn => btn.classList.remove('selected'));
             this.classList.add('selected');
+            console.log(this);
+            // reset form
+            document.querySelector("#report-form").reset();
+            document.querySelector("#faculty_select").value='0';
         }
 
         // show date only on date select
@@ -395,16 +402,18 @@
 
         function checkDepartment() {
             // enable button if department is selected
-            var department_select = document.getElementById('department_select');
+            var department_select = document.getElementById('faculty_department_1');
             if (department_select.value != 'Choose..') {
                 generate_report_btn.disabled = false;
             }
+            checkFaculty();
         }
 
         function checkFaculty() {
             // enable button if faculty is selected
             var faculty_select = document.getElementById('faculty_select');
-            if (faculty_select.value != 'Choose..') {
+            console.log("test",faculty_select.value);
+            if (faculty_select.value != '0') {
                 generate_report_btn.disabled = false;
             }
         }
