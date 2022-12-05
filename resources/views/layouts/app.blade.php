@@ -108,6 +108,10 @@
                                         class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
                                         <a class=" mega-menu-link nav-link" href="{{ route('proposal') }}">Proposal</a>
                                     </li>
+                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                        <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a></li>
+                                        <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                            <a class="mega-menu-link" target="_blank" href="report" tabindex="0">Report</a></li>
                                 @endif
                                 <li
                                     class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">

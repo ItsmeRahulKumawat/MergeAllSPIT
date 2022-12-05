@@ -51,6 +51,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
 
     
     Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal');
+    Route::get('/proposal/{id}', [ProposalController::class, 'show']);
+    Route::delete('/proposal/{id}', [ProposalController::class, 'destroy'])->name('proposal.remove');
     Route::get('/proposal_submitted', [ProposalController::class, 'submitted']);
     
     Route::get('/faculty', [FacultyController::class, 'index'])->name('faculty');
@@ -66,10 +68,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
     Route::get('/report',[ReportController::class,'index'])->name('report');;    
     Route::post('/report',[ReportController::class,'generateReport']);
 
-    Route::get('/proposal/{id}', [ProposalController::class, 'show']);
 
 });
 
+Route::get('/report',[ReportController::class,'index'])->name('report');;    
+Route::post('/report',[ReportController::class,'generateReport']);
+Route::get('/proposal/{id}', [ProposalController::class, 'show']);
 
 Route::post('/getDept', [ProposalController::class, 'getDept']);
 

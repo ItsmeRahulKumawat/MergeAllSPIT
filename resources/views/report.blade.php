@@ -65,15 +65,7 @@
                             data-breakpoint="600" data-unbind="true" data-hover-intent-timeout="300"
                             data-hover-intent-interval="100">
 
-                            <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                <a class=" mega-menu-link nav-link" href="{{ route('admin.department') }}">Department</a>
-                            </li>
-                            <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
-                            </li>
-                            <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                <a class=" mega-menu-link nav-link" href="{{ route('admin.report') }}">Report</a>
-                            </li>
+                          
                             @guest
                                 @if (Route::has('login'))
                                     <li id='mega-menu-item-25693' tabindex="0"
@@ -81,21 +73,39 @@
                                         <a class=" mega-menu-link nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                     </li>
                                 @endif
-
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a></li>
+                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a></li>
                                 {{-- @if (Route::has('register'))
                                 <li  id="mega-menu-item-25693"  tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
                                     <a class=" mega-menu-link nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif --}}
                             @else
+                                @if (Auth::user()->role == '1')
+                                    <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
+                                    <a class=" mega-menu-link nav-link" href="{{ route('admin.department') }}">Department</a>
+                                    </li>
+                                    <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
+                                    <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
+                                    </li>
+                                    
+                                @endif
+                                @if (Auth::user()->role == '0')
+                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a></li>
+                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a></li>
+                                    
+                                @endif
                                 <li
-                                    class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
-                                    <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#"
-                                        role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        v-pre>
-                                        {{ Auth::user()->name }}
-                                    </a>
-
+                                        class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
+                                        <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#"
+                                            role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            v-pre>
+                                            {{ Auth::user()->name }}
+                                        </a>
                                     <div class="dropdown-user-menu dropdown-menu dropdown-menu-end"
                                         aria-labelledby="navbarDropdown">
                                         <a id="dropdown-user-menu-item " class="dropdown-item" href="{{ route('logout') }}"
@@ -122,7 +132,15 @@
                 <h3>Report</h3>
             </div>
             <div class="card-body">
-                <form id="report-form" action="{{ url('admin/report') }}" method="POST" novalidate>
+                @php
+                    // guest session
+
+                    $link = route('admin.report');
+                    if(Route::has('login')){
+                        $link = route('report');
+                    }
+                @endphp
+                <form id="report-form" action="{{ $link}}" method="POST" novalidate>
                     @csrf
                     {{-- select between proposal and outreach --}}
                     <div class="form-group">
@@ -255,16 +273,17 @@
                 @if (isset($report))
                     <div class="report_table mt-5">
                         <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Proposal Id</th>
-                                    <th>Proposal Name</th>
-                                    <th>Propsal Date</th>
-                                    <th>Proposal Amount</th>
-                                    <th>Authority/Organization</th>
-                                    <th> Govt/Private</th>
-                                    <th>Faculty Name</th>
-                                    <th>Department Name</th>
+                            <thead >
+                                <tr class="d-flex">
+                                    <th class="col-1">Proposal Id</th>
+                                    <th class="col-2">Proposal Name</th>
+                                    <th class="col-1">Propsal Date</th>
+                                    <th class="col-1">Proposal Amount</th>
+                                    <th class="col-1">Authority/Organization</th>
+                                    <th class="col-1"> Govt/Private</th>
+                                    <th class="col-2">Faculty Name</th>
+                                    <th class="col-1">Department Name</th>
+                                    <th class="col-2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -277,18 +296,18 @@
                                         </tr>
                                     @else
                                         @foreach ($proposal as $proposal)
-                                            <tr>
+                                            <tr class="d-flex">
                                                 {{-- {{-- reduce size of id --}}
                                                 @php
                                                     $id = $proposal->proposal_id;
                                                     $id = substr($id, 0, 5) . '...' . substr($id, -5);
                                                 @endphp
-                                                <td>{{ $id }}</td>
-                                                <td>{{ $proposal->proposal_title }}</td>
-                                                <td>{{ $proposal->proposal_submissionDate }}</td>
-                                                <td>{{ $proposal->proposal_fundingAmount }}</td>
-                                                <td>{{ $proposal->proposal_authorityOrOrganization }}</td>
-                                                <td>{{ $proposal->proposal_govtPrivate }}</td>
+                                                <td class="col-1">{{ $id }}</td>
+                                                <td class="col-2">{{ $proposal->proposal_title }}</td>
+                                                <td class="col-1">{{ $proposal->proposal_submissionDate }}</td>
+                                                <td class="col-1">{{ $proposal->proposal_fundingAmount }}</td>
+                                                <td class="col-1">{{ $proposal->proposal_authorityOrOrganization }}</td>
+                                                <td class="col-1">{{ $proposal->proposal_govtPrivate }}</td>
                                                 {{-- show faculty by getting faculty name from faculty group id --}}
                                                 {{-- hide this --}}
                                                 <?php
@@ -296,12 +315,26 @@
                                                     ->where('faculty_group_id', $proposal->proposal_faculty_group_id)
                                                     ->get();
                                                 ?>
-                                                <td>{{ $faculty_names[0]->faculty_group_name }}</td>
-                                                <td>{{ $faculty_names[0]->faculty_group_department }}</td>
+                                                <td class="col-2">{{ $faculty_names[0]->faculty_group_name }}</td>
+                                                <td class="col-1">{{ $faculty_names[0]->faculty_group_department }}</td>
 
                                                 <td>
-                                                    <a href="{{route('admin.proposal')}}/{{ $proposal->proposal_id }}"
+                                                    {{-- if admin is logged in --}}
+
+                                                   
+                                                    @if (Route::has('login'))
+                                                    <a href="{{route('proposal')}}/{{ $proposal->proposal_id }}"
                                                         class="btn btn-primary">View</a>
+                                                    @else
+                                                    @if (Auth::user()->role == '0')
+                                                        <a href="{{route('proposal')}}/{{ $proposal->proposal_id }}"
+                                                        class="btn btn-primary">View</a>
+                                                    @else
+                                                        <a href="{{route('admin.proposal')}}/{{ $proposal->proposal_id }}"
+                                                        class="btn btn-primary">View</a>
+                                                        <a href="{{route('admin.proposal.remove')}}/{{ $proposal->proposal_id }}"
+                                                        class="btn btn-primary">Remove</a>
+                                                    @endif
                                                     {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
 
                                             </tr>
