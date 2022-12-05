@@ -65,7 +65,7 @@
                             data-breakpoint="600" data-unbind="true" data-hover-intent-timeout="300"
                             data-hover-intent-interval="100">
 
-                          
+
                             @guest
                                 @if (Route::has('login'))
                                     <li id='mega-menu-item-25693' tabindex="0"
@@ -73,10 +73,14 @@
                                         <a class=" mega-menu-link nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                     </li>
                                 @endif
-                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                                    <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a></li>
-                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                                    <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a></li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                    id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a>
+                                </li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                    id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a>
+                                </li>
                                 {{-- @if (Route::has('register'))
                                 <li  id="mega-menu-item-25693"  tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
                                     <a class=" mega-menu-link nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
@@ -84,28 +88,35 @@
                             @endif --}}
                             @else
                                 @if (Auth::user()->role == '1')
-                                    <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                    <a class=" mega-menu-link nav-link" href="{{ route('admin.department') }}">Department</a>
+                                    <li id='mega-menu-item-25693' tabindex="0"
+                                        class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
+                                        <a class=" mega-menu-link nav-link"
+                                            href="{{ route('admin.department') }}">Department</a>
                                     </li>
-                                    <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                    <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
+                                    <li id='mega-menu-item-25693' tabindex="0"
+                                        class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
+                                        <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
                                     </li>
-                                    
                                 @endif
                                 @if (Auth::user()->role == '0')
-                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                                    <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a></li>
-                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                                    <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a></li>
-                                    
+                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                        id='mega-menu-item-25693'>
+                                        <a class="mega-menu-link" target="_blank" href="proposal"
+                                            tabindex="0">Proposal</a>
+                                    </li>
+                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                        id='mega-menu-item-25693'>
+                                        <a class="mega-menu-link" target="_blank" href="outreach"
+                                            tabindex="0">Outreach</a>
+                                    </li>
                                 @endif
                                 <li
-                                        class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
-                                        <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#"
-                                            role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            v-pre>
-                                            {{ Auth::user()->name }}
-                                        </a>
+                                    class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
+                                    <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#"
+                                        role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        v-pre>
+                                        {{ Auth::user()->name }}
+                                    </a>
                                     <div class="dropdown-user-menu dropdown-menu dropdown-menu-end"
                                         aria-labelledby="navbarDropdown">
                                         <a id="dropdown-user-menu-item " class="dropdown-item" href="{{ route('logout') }}"
@@ -113,7 +124,8 @@
                                                      document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}
                                         </a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            class="d-none">
                                             @csrf
                                         </form>
                                     </div>
@@ -134,13 +146,13 @@
             <div class="card-body">
                 @php
                     // guest session
-
+                    
                     $link = route('admin.report');
-                    if(Route::has('login')){
+                    if (Route::has('login')) {
                         $link = route('report');
                     }
                 @endphp
-                <form id="report-form" action="{{ $link}}" method="POST" novalidate>
+                <form id="report-form" action="{{ $link }}" method="POST" novalidate>
                     @csrf
                     {{-- select between proposal and outreach --}}
                     <div class="form-group">
@@ -273,7 +285,7 @@
                 @if (isset($report))
                     <div class="report_table mt-5">
                         <table class="table table-striped table-bordered table-hover">
-                            <thead >
+                            <thead>
                                 <tr class="d-flex">
                                     <th class="col-1">Proposal Id</th>
                                     <th class="col-2">Proposal Name</th>
@@ -306,7 +318,8 @@
                                                 <td class="col-2">{{ $proposal->proposal_title }}</td>
                                                 <td class="col-1">{{ $proposal->proposal_submissionDate }}</td>
                                                 <td class="col-1">{{ $proposal->proposal_fundingAmount }}</td>
-                                                <td class="col-1">{{ $proposal->proposal_authorityOrOrganization }}</td>
+                                                <td class="col-1">{{ $proposal->proposal_authorityOrOrganization }}
+                                                </td>
                                                 <td class="col-1">{{ $proposal->proposal_govtPrivate }}</td>
                                                 {{-- show faculty by getting faculty name from faculty group id --}}
                                                 {{-- hide this --}}
@@ -316,25 +329,28 @@
                                                     ->get();
                                                 ?>
                                                 <td class="col-2">{{ $faculty_names[0]->faculty_group_name }}</td>
-                                                <td class="col-1">{{ $faculty_names[0]->faculty_group_department }}</td>
+                                                <td class="col-1">{{ $faculty_names[0]->faculty_group_department }}
+                                                </td>
 
                                                 <td>
                                                     {{-- if admin is logged in --}}
 
-                                                   
-                                                    @if (Route::has('login'))
-                                                    <a href="{{route('proposal')}}/{{ $proposal->proposal_id }}"
-                                                        class="btn btn-primary">View</a>
+                                                    @guest
+                                                        @if (Route::has('login'))
+                                                            <a href="{{ route('proposal') }}/{{ $proposal->proposal_id }}"
+                                                                class="btn btn-primary">View</a>
+                                                        @endif
                                                     @else
-                                                    @if (Auth::user()->role == '0')
-                                                        <a href="{{route('proposal')}}/{{ $proposal->proposal_id }}"
-                                                        class="btn btn-primary">View</a>
-                                                    @else
-                                                        <a href="{{route('admin.proposal')}}/{{ $proposal->proposal_id }}"
-                                                        class="btn btn-primary">View</a>
-                                                        <a href="{{route('admin.proposal.remove')}}/{{ $proposal->proposal_id }}"
-                                                        class="btn btn-primary">Remove</a>
-                                                    @endif
+                                                        @if (Auth::user()->role == '0')
+                                                            <a href="{{ route('proposal') }}/{{ $proposal->proposal_id }}"
+                                                                class="btn btn-primary">View</a>
+                                                        @else
+                                                            <a href="{{ route('admin.proposal') }}/{{ $proposal->proposal_id }}"
+                                                                class="btn btn-primary">View</a>
+                                                            <button class="btn btn-danger"
+                                                                onclick="removeProposal('{{ $proposal->proposal_id }}')">Delete</button>
+                                                        @endif
+                                                    @endguest
                                                     {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
 
                                             </tr>
@@ -394,6 +410,48 @@
         @show
     </div>
     <script>
+        function removeProposal(proposalId) {
+            console.log(proposalId);
+            // sweet alert for confirming
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // if confirmed then delete the proposal
+                    var url = "{{ route('admin.proposal.remove', ':id') }}";
+                    url = url.replace(':id', proposalId);
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            'proposal_id': proposalId,
+                            "_token": "{{ csrf_token() }}",
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            // sweet alert
+                            Swal.fire({
+                                title: 'Success',
+                                text: 'Proposal deleted successfully',
+                                icon: 'success',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            })
+                        }
+                    });
+                }
+            })
+
+        }
         //    change selected button on click
         const buttons = document.querySelectorAll('.btn-group button');
         buttons.forEach(button => {
@@ -406,7 +464,7 @@
             console.log(this);
             // reset form
             document.querySelector("#report-form").reset();
-            document.querySelector("#faculty_select").value='0';
+            document.querySelector("#faculty_select").value = '0';
         }
 
         // show date only on date select
@@ -445,7 +503,7 @@
         function checkFaculty() {
             // enable button if faculty is selected
             var faculty_select = document.getElementById('faculty_select');
-            console.log("test",faculty_select.value);
+            console.log("test", faculty_select.value);
             if (faculty_select.value != '0') {
                 generate_report_btn.disabled = false;
             }

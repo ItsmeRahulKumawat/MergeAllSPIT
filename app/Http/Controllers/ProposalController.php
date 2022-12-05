@@ -174,6 +174,8 @@ class ProposalController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // delete proposal
+        $proposal = Proposal::where('proposal_id', $id)->delete();
+
     }
 }
