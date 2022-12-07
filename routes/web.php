@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\OutreachController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\ReportController;
@@ -77,6 +78,11 @@ Route::get('/proposal/{id}', [ProposalController::class, 'show']);
 
 Route::post('/getDept', [ProposalController::class, 'getDept']);
 
+Route::get('/outreach',function(){
+    return view('outreach');
+});
+
+Route::post('outreach',[OutreachController::class,'store']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
