@@ -82,7 +82,9 @@ Route::get('/outreach',function(){
     return view('outreach');
 });
 
-Route::post('outreach',[OutreachController::class,'store']);
+Route::post('outreach',[OutreachController::class,'store'])->name('outreach');
+Route::get('outreach/{id}',[OutreachController::class,'show']);
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

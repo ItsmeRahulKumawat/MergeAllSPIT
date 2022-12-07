@@ -285,22 +285,22 @@
                 @if (isset($report))
                     <div class="report_table mt-5">
                         <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr class="d-flex">
-                                    <th class="col-1">Proposal Id</th>
-                                    <th class="col-2">Proposal Name</th>
-                                    <th class="col-1">Propsal Date</th>
-                                    <th class="col-1">Proposal Amount</th>
-                                    <th class="col-1">Authority/Organization</th>
-                                    <th class="col-1"> Govt/Private</th>
-                                    <th class="col-2">Faculty Name</th>
-                                    <th class="col-1">Department Name</th>
-                                    <th class="col-2">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{-- show proposal data that is fetched from post request --}}
-                                @if (isset($proposal))
+                            @if (isset($proposal))
+                                <thead>
+                                    <tr class="d-flex">
+                                        <th class="col-1">Proposal Id</th>
+                                        <th class="col-2">Proposal Name</th>
+                                        <th class="col-1">Propsal Date</th>
+                                        <th class="col-1">Proposal Amount</th>
+                                        <th class="col-1">Authority/Organization</th>
+                                        <th class="col-1"> Govt/Private</th>
+                                        <th class="col-2">Faculty Name</th>
+                                        <th class="col-1">Department Name</th>
+                                        <th class="col-2">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- show proposal data that is fetched from post request --}}
                                     {{-- if proposal size is 0 --}}
                                     @if (count($proposal) == 0)
                                         <tr>
@@ -357,9 +357,82 @@
                                         @endforeach
 
                                     @endif
-                                @endif
-                                {{-- show outreach data that is fetched from post request --}}
-                            </tbody>
+                                    {{-- show outreach data that is fetched from post request --}}
+                                </tbody>
+                                @else 
+                                <thead>
+                                    <tr class="d-flex">
+                                        <th class="col-1">Outreach Id</th>
+                                        <th class="col-2">Outreach Activity</th>
+                                        <th class="col-1">Outreach Status</th>
+                                        <th class="col-1">Outreach Date</th>
+                                        <th class="col-1">Outreach Amount</th>
+                                        <th class="col-1">Outreach Place</th>
+                                        <th class="col-1">Outreach Sponsors</th>
+                                        <th class="col-1">Outreach Faculty Name</th>
+                                        <th class="col-1">Outreach Faculty Department</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- show proposal data that is fetched from post request --}}
+                                    
+                                    @if (count($outreach) == 0)
+                                        <tr>
+                                            <td colspan="4" class="text-center">No Data Found</td>
+                                        </tr>
+                                    @else
+                                        @foreach ($outreach as $outreach)
+                                            <tr class="d-flex">
+                                                {{-- {{-- reduce size of id --}}
+                                                @php
+                                                    $id = $outreach->id;
+                                                @endphp
+                                                <td class="col-1">{{ $id }}</td>
+                                                <td class="col-2">{{ $outreach->outreach_activity }}</td>
+                                                <td class="col-1">{{ $outreach->outreach_status }}</td>
+                                                <td class="col-1">{{ $outreach->outreach_date }}</td>
+                                                <td class="col-1">{{ $outreach->outreach_amount }}</td>
+                                                <td class="col-1">{{ $outreach->outreach_place }}</td>
+                                                <td class="col-1">{{ $outreach->outreach_sponsors }}</td>
+                                              
+                                                <?php
+                                                $faculty_name = DB::table('faculties')
+                                                    ->where('faculty_id', $outreach->outreach_faculty_name)
+                                                    ->get();
+                                                ?>
+                                                
+                                                    <td class="col-1">{{ $faculty_name[0]->faculty_name }}</td>
+                                                    <td class="col-1">{{ $outreach->outreach_faculty_department }}</td>
+                                                
+
+                                                <td>
+                                                    {{-- if admin is logged in --}}
+
+                                                    @guest
+                                                        @if (Route::has('login'))
+                                                            <a href="{{ route('outreach') }}/{{ $outreach->id }}"
+                                                                class="btn btn-primary">View</a>
+                                                        @endif
+                                                    @else
+                                                        @if (Auth::user()->role == '0')
+                                                            <a href="{{ route('outreach') }}/{{ $outreach->id  }}"
+                                                                class="btn btn-primary">View</a>
+                                                        @else
+                                                            <a href="{{ route('admin.outreach') }}/{{$outreach->id  }}"
+                                                                class="btn btn-primary">View</a>
+                                                            <button class="btn btn-danger"
+                                                                onclick="removeProposal('{{ $outreach->id  }}')">Delete</button>
+                                                        @endif
+                                                    @endguest
+                                                    {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
+
+                                            </tr>
+                                        @endforeach
+
+                                    @endif
+                                <tbody>
+
+                            @endif
                         </table>
                     </div>
                 @endif

@@ -54,8 +54,8 @@ class OutreachController extends Controller
         $day_folder = $day;
         $photos_folder = 'photos';
         $report_folder = 'report';
-        $photos_path = 'public/outreach/'.$photos_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
-        $report_path = 'public/outreach/'.$report_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
+        $photos_path = 'outreach/'.$photos_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
+        $report_path = 'outreach/'.$report_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
         $photos = array();
         foreach($request->file('photos') as $image)
         {
@@ -68,10 +68,6 @@ class OutreachController extends Controller
         $report_name = $report->getClientOriginalName();
         $report->storeAs($report_path, $report_name);
         $outreach->outreach_report = $report_path . '/' . $report_name;
-        
-
-
-
         $outreach->save();
 
 
@@ -86,7 +82,8 @@ class OutreachController extends Controller
      */
     public function show($id)
     {
-        //
+        $outreach = Outreach::where('id', $id)->first();
+        return view('proposal_details')->with('outreach', $outreach);
     }
 
     /**
