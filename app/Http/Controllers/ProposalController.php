@@ -5,7 +5,7 @@ use App\Models\Faculty;
 use App\Models\FacultyGroup;
 use Illuminate\Http\Request;
 use App\Models\Proposal;
-
+use Illuminate\Support\Facades\Storage;
 
 class ProposalController extends Controller
 {
@@ -175,7 +175,13 @@ class ProposalController extends Controller
     public function destroy($id)
     {
         // delete proposal
-        $proposal = Proposal::where('proposal_id', $id)->delete();
+        $proposal = Proposal::where('proposal_id', $id)->first();
+        // dd(Storage::disk('public')->exists($proposal->proposal_file));
+        // dd(Storage::exists($proposal->proposal_file));
+        if(Storage::disk('public')->exists($proposal->proposal_file)){
+            Storage::disk('public')->delete($proposal->proposal_file);
+        }
+        // Proposal::where('proposal_id', $id)->delete();
 
     }
 }

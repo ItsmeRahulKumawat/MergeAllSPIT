@@ -120,12 +120,12 @@ class OutreachController extends Controller
         $photos_array = explode(",", $outreach->outreach_photos);
         
         foreach($photos_array as $photos){
-            if(Storage::exists( $photos)){
+            if( Storage::disk('public')->exists( $photos)){
                 Storage::disk('public')->delete($photos);
             }
             
         }
-        if(Storage::exists($outreach->outreach_report)){
+        if( Storage::disk('public')->exists($outreach->outreach_report)){
             Storage::disk('public')->delete($outreach->outreach_report);
         }
         $outreach->delete();
