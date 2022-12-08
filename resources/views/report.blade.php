@@ -421,7 +421,7 @@
                                                             <a href="{{ route('admin.outreach') }}/{{$outreach->id  }}"
                                                                 class="btn btn-primary">View</a>
                                                             <button class="btn btn-danger"
-                                                                onclick="removeProposal('{{ $outreach->id  }}')">Delete</button>
+                                                                onclick="removeOutreach('{{ $outreach->id  }}')">Delete</button>
                                                         @endif
                                                     @endguest
                                                     {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
@@ -439,6 +439,46 @@
             </div>
     </section>
     <script>
+        function removeOutreach(outreachId){
+            console.log(outreachId);
+            // sweet alert for confirming
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if(result.isConfirmed){
+                    // if confirmed then delete the proposal
+                    var url = "{{ route('admin.outreach.remove', ':id') }}";
+                    url = url.replace(':id', outreachId);
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            '_token': "{{ csrf_token() }}"
+                        },
+                        success: function(response){
+                            console.log(response);
+                            
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your file has been deleted.',
+                                    'success'
+                                ).then((result) => {
+                                    if(result.isConfirmed){
+                                        location.reload();
+                                    }
+                                });
+                        }
+                    });
+                }
+            });
+
+        }
         function removeProposal(proposalId) {
             console.log(proposalId);
             // sweet alert for confirming

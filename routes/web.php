@@ -75,6 +75,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
     Route::get('/outreach',[OutreachController::class,'index'])->name('outreach');
     Route::post('outreach', [OutreachController::class, 'store']);
     Route::get('outreach/{id}',[OutreachController::class,'show']);
+    Route::delete('outreach/{id}',[OutreachController::class,'destroy'])->name('outreach.remove');
 
 });
 

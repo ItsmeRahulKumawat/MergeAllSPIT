@@ -111,5 +111,6 @@ class OutreachController extends Controller
     public function destroy($id)
     {
         //
+        $outreach = Outreach::where('id', $id)->delete();
     }
 }
