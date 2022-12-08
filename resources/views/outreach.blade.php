@@ -185,7 +185,7 @@
                                                     <label class="form-label" for="faculty_name_1"
                                                         class="form-label">Faculty Name</label>
                                                     <select class="form-control select" aria-label class="form-label"
-                                                        id="faculty_name_1" name="faculty_name_1"required>
+                                                        id="faculty_name_1" name="faculty_name_1" required>
                                                         <option selected disabled value="">Choose...</option>
 
                                                     </select>
@@ -199,7 +199,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Name of Activity</label>
-                                <input type="text" name="activity" id="activity" class="form-control"
+                                <input required type="text" name="activity" id="activity" class="form-control"
                                     placeholder="" />
                                 <span class="text-danger">
                                     @error('activity')
@@ -209,7 +209,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="my-1 mr-2" for="status">Coducted or Attended</label>
-                                <select class="custom-select my-1 mr-sm-2" id="status" name="status">
+                                <select required class="custom-select my-1 mr-sm-2" id="status" name="status">
                                     <option selected>Choose...</option>
                                     <option value="Attended">Attended</option>
                                     <option value="Conducted">Conducted</option>
@@ -234,12 +234,12 @@
                                 ?>
                                 <label class="form-flabel" for="date_activity">Date of Activity</label
                                     class="form-label">
-                                <input name="date_activity" type="date" class="form-control" id="date_activity"
+                                <input required name="date_activity" type="date" class="form-control" id="date_activity"
                                     value="<?php echo $today; ?>" max="<?php echo date('Y-m-d'); ?>">
                             </div>
                             <div class="form-group">
                                 <label class="my-1 mr-2" for="sponsorList">Sponsored</label>
-                                <select class="custom-select my-1 mr-sm-2" id="sponsorList" name="sponsorList">
+                                <select required class="custom-select my-1 mr-sm-2" id="sponsorList" name="sponsorList">
                                     <option selected>Choose...</option>
                                     <option value="IEEE">IEEE (Institute of Electrical and Electronics Engineers)
                                     </option>
@@ -254,7 +254,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="outreach_amount">Funding amount</label>
-                                <input type="number" name = "outreach_amount" id="outreach_amount" class="form-control"
+                                <input required min="500" type="number" name = "outreach_amount" id="outreach_amount" class="form-control"
                                     placeholder = "">
                                 <span class="text-danger">
                                     @error('name')
