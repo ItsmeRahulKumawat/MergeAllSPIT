@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\FacultyGroup;
+use App\Models\Outreach;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 
@@ -99,6 +100,44 @@ class ReportController extends Controller
                 $proposal = Proposal::all();
                 $report = true;
                 return view('report', compact('proposal', 'report'));
+            }
+        }else if($selected == 'outreach'){
+            $start_date = $request->start_date;
+            $faculty_id = $request->faculty_select;
+            $department_id = $request->department_select;
+            echo "<script>console.log('faculty id: ".$faculty_id."')</script>";
+            echo "<script>console.log('department id: ".$department_id."')</script>";
+            echo "<script>console.log('start date: ".$start_date."')</script>";
+            if($start_date!=null){
+                $end_date = $request->end_date;
+                $outreach = Outreach::whereBetween('outreach_date', [$start_date, $end_date])->get();
+                $report = true;
+                return view('report', compact('outreach', 'report')); 
+            }else if($faculty_id!=null){
+                $faculty = Faculty::where('faculty_id', $faculty_id)->first();
+                // find faculty group id by searching faculty name
+                // search faculty name with like clause
+                $faculty_name = $faculty->faculty_name;
+                // find proposal by searching faculty group id
+                
+                $outreach_array=[];
+                $outreach = Outreach::where('outreach_faculty_name', 'like', '%'.$faculty_name.'%')->get();
+                $report = true;
+                return view('report', compact('outreach', 'report'));
+            }else if($department_id!='0'){
+                
+                $department = Department::where('department_id', $department_id)->first();
+                $outreach_array=[];
+                $outreach = Outreach::where('outreach_faculty_department', 'like', '%'.$department->department_name.'%')->get();
+                $report = true;
+                return view('report', compact('outreach', 'report'));
+            }
+            // else 
+            // show all proposal
+            else{
+                $outreach = Outreach::all();
+                $report = true;
+                return view('report', compact('outreach', 'report'));
             }
         }
         

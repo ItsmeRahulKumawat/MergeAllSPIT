@@ -65,15 +65,7 @@
                             data-breakpoint="600" data-unbind="true" data-hover-intent-timeout="300"
                             data-hover-intent-interval="100">
 
-                            <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                <a class=" mega-menu-link nav-link" href="{{ route('admin.department') }}">Department</a>
-                            </li>
-                            <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
-                            </li>
-                            <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                <a class=" mega-menu-link nav-link" href="{{ route('admin.report') }}">Report</a>
-                            </li>
+
                             @guest
                                 @if (Route::has('login'))
                                     <li id='mega-menu-item-25693' tabindex="0"
@@ -81,13 +73,43 @@
                                         <a class=" mega-menu-link nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                     </li>
                                 @endif
-
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                    id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a>
+                                </li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                    id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a>
+                                </li>
                                 {{-- @if (Route::has('register'))
                                 <li  id="mega-menu-item-25693"  tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
                                     <a class=" mega-menu-link nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif --}}
                             @else
+                                @if (Auth::user()->role == '1')
+                                    <li id='mega-menu-item-25693' tabindex="0"
+                                        class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
+                                        <a class=" mega-menu-link nav-link"
+                                            href="{{ route('admin.department') }}">Department</a>
+                                    </li>
+                                    <li id='mega-menu-item-25693' tabindex="0"
+                                        class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
+                                        <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
+                                    </li>
+                                @endif
+                                @if (Auth::user()->role == '0')
+                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                        id='mega-menu-item-25693'>
+                                        <a class="mega-menu-link" target="_blank" href="proposal"
+                                            tabindex="0">Proposal</a>
+                                    </li>
+                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                        id='mega-menu-item-25693'>
+                                        <a class="mega-menu-link" target="_blank" href="outreach"
+                                            tabindex="0">Outreach</a>
+                                    </li>
+                                @endif
                                 <li
                                     class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
                                     <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#"
@@ -95,7 +117,6 @@
                                         v-pre>
                                         {{ Auth::user()->name }}
                                     </a>
-
                                     <div class="dropdown-user-menu dropdown-menu dropdown-menu-end"
                                         aria-labelledby="navbarDropdown">
                                         <a id="dropdown-user-menu-item " class="dropdown-item" href="{{ route('logout') }}"
@@ -103,7 +124,8 @@
                                                      document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}
                                         </a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            class="d-none">
                                             @csrf
                                         </form>
                                     </div>
@@ -122,7 +144,15 @@
                 <h3>Report</h3>
             </div>
             <div class="card-body">
-                <form id="report-form" action="{{ url('admin/report') }}" method="POST" novalidate>
+                @php
+                    // guest session
+                    
+                    $link = route('admin.report');
+                    if (Route::has('login')) {
+                        $link = route('report');
+                    }
+                @endphp
+                <form id="report-form" action="{{ $link }}" method="POST" novalidate>
                     @csrf
                     {{-- select between proposal and outreach --}}
                     <div class="form-group">
@@ -255,21 +285,22 @@
                 @if (isset($report))
                     <div class="report_table mt-5">
                         <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Proposal Id</th>
-                                    <th>Proposal Name</th>
-                                    <th>Propsal Date</th>
-                                    <th>Proposal Amount</th>
-                                    <th>Authority/Organization</th>
-                                    <th> Govt/Private</th>
-                                    <th>Faculty Name</th>
-                                    <th>Department Name</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{-- show proposal data that is fetched from post request --}}
-                                @if (isset($proposal))
+                            @if (isset($proposal))
+                                <thead>
+                                    <tr class="d-flex">
+                                        <th class="col-1">Proposal Id</th>
+                                        <th class="col-2">Proposal Name</th>
+                                        <th class="col-1">Propsal Date</th>
+                                        <th class="col-1">Proposal Amount</th>
+                                        <th class="col-1">Authority/Organization</th>
+                                        <th class="col-1"> Govt/Private</th>
+                                        <th class="col-2">Faculty Name</th>
+                                        <th class="col-1">Department Name</th>
+                                        <th class="col-2">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- show proposal data that is fetched from post request --}}
                                     {{-- if proposal size is 0 --}}
                                     @if (count($proposal) == 0)
                                         <tr>
@@ -277,18 +308,19 @@
                                         </tr>
                                     @else
                                         @foreach ($proposal as $proposal)
-                                            <tr>
+                                            <tr class="d-flex">
                                                 {{-- {{-- reduce size of id --}}
                                                 @php
                                                     $id = $proposal->proposal_id;
                                                     $id = substr($id, 0, 5) . '...' . substr($id, -5);
                                                 @endphp
-                                                <td>{{ $id }}</td>
-                                                <td>{{ $proposal->proposal_title }}</td>
-                                                <td>{{ $proposal->proposal_submissionDate }}</td>
-                                                <td>{{ $proposal->proposal_fundingAmount }}</td>
-                                                <td>{{ $proposal->proposal_authorityOrOrganization }}</td>
-                                                <td>{{ $proposal->proposal_govtPrivate }}</td>
+                                                <td class="col-1">{{ $id }}</td>
+                                                <td class="col-2">{{ $proposal->proposal_title }}</td>
+                                                <td class="col-1">{{ $proposal->proposal_submissionDate }}</td>
+                                                <td class="col-1">{{ $proposal->proposal_fundingAmount }}</td>
+                                                <td class="col-1">{{ $proposal->proposal_authorityOrOrganization }}
+                                                </td>
+                                                <td class="col-1">{{ $proposal->proposal_govtPrivate }}</td>
                                                 {{-- show faculty by getting faculty name from faculty group id --}}
                                                 {{-- hide this --}}
                                                 <?php
@@ -296,26 +328,311 @@
                                                     ->where('faculty_group_id', $proposal->proposal_faculty_group_id)
                                                     ->get();
                                                 ?>
-                                                <td>{{ $faculty_names[0]->faculty_group_name }}</td>
-                                                <td>{{ $faculty_names[0]->faculty_group_department }}</td>
+                                                <td class="col-2">{{ $faculty_names[0]->faculty_group_name }}</td>
+                                                <td class="col-1">{{ $faculty_names[0]->faculty_group_department }}
+                                                </td>
 
                                                 <td>
-                                                    <a href="{{route('admin.proposal')}}/{{ $proposal->proposal_id }}"
-                                                        class="btn btn-primary">View</a>
+                                                    {{-- if admin is logged in --}}
+
+                                                    @guest
+                                                        @if (Route::has('login'))
+                                                            <a href="{{ route('proposal') }}/{{ $proposal->proposal_id }}"
+                                                                class="btn btn-primary">View</a>
+                                                        @endif
+                                                    @else
+                                                        @if (Auth::user()->role == '0')
+                                                            <a href="{{ route('proposal') }}/{{ $proposal->proposal_id }}"
+                                                                class="btn btn-primary">View</a>
+                                                        @else
+                                                            <a href="{{ route('admin.proposal') }}/{{ $proposal->proposal_id }}"
+                                                                class="btn btn-primary">View</a>
+                                                            <button class="btn btn-danger"
+                                                                onclick="removeProposal('{{ $proposal->proposal_id }}')">Delete</button>
+                                                        @endif
+                                                    @endguest
                                                     {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
 
                                             </tr>
                                         @endforeach
 
                                     @endif
-                                @endif
-                                {{-- show outreach data that is fetched from post request --}}
-                            </tbody>
+                                    {{-- show outreach data that is fetched from post request --}}
+                                </tbody>
+                                @else 
+                                <thead>
+                                    <tr class="d-flex">
+                                        <th class="col-1">Outreach Id</th>
+                                        <th class="col-2">Outreach Activity</th>
+                                        <th class="col-1">Outreach Status</th>
+                                        <th class="col-1">Outreach Date</th>
+                                        <th class="col-1">Outreach Amount</th>
+                                        <th class="col-1">Outreach Place</th>
+                                        <th class="col-1">Outreach Sponsors</th>
+                                        <th class="col-1">Outreach Faculty Name</th>
+                                        <th class="col-1">Outreach Faculty Department</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- show proposal data that is fetched from post request --}}
+                                    
+                                    @if (count($outreach) == 0)
+                                        <tr>
+                                            <td colspan="4" class="text-center">No Data Found</td>
+                                        </tr>
+                                    @else
+                                        @foreach ($outreach as $outreach)
+                                            <tr class="d-flex">
+                                                {{-- {{-- reduce size of id --}}
+                                                @php
+                                                    $id = $outreach->id;
+                                                @endphp
+                                                <td class="col-1">{{ $id }}</td>
+                                                <td class="col-2">{{ $outreach->outreach_activity }}</td>
+                                                <td class="col-1">{{ $outreach->outreach_status }}</td>
+                                                <td class="col-1">{{ $outreach->outreach_date }}</td>
+                                                <td class="col-1">{{ $outreach->outreach_amount }}</td>
+                                                <td class="col-1">{{ $outreach->outreach_place }}</td>
+                                                <td class="col-1">{{ $outreach->outreach_sponsors }}</td>
+                                              
+                                                <?php
+                                                $faculty_name = DB::table('faculties')
+                                                    ->where('faculty_id', $outreach->outreach_faculty_name)
+                                                    ->get();
+                                                ?>
+                                                
+                                                    <td class="col-1">{{ $faculty_name[0]->faculty_name }}</td>
+                                                    <td class="col-1">{{ $outreach->outreach_faculty_department }}</td>
+                                                
+
+                                                <td>
+                                                    {{-- if admin is logged in --}}
+
+                                                    @guest
+                                                        @if (Route::has('login'))
+                                                            <a href="{{ route('outreach') }}/{{ $outreach->id }}"
+                                                                class="btn btn-primary">View</a>
+                                                        @endif
+                                                    @else
+                                                        @if (Auth::user()->role == '0')
+                                                            <a href="{{ route('outreach') }}/{{ $outreach->id  }}"
+                                                                class="btn btn-primary">View</a>
+                                                        @else
+                                                            <a href="{{ route('admin.outreach') }}/{{$outreach->id  }}"
+                                                                class="btn btn-primary">View</a>
+                                                            <button class="btn btn-danger"
+                                                                onclick="removeOutreach('{{ $outreach->id  }}')">Delete</button>
+                                                        @endif
+                                                    @endguest
+                                                    {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
+
+                                            </tr>
+                                        @endforeach
+
+                                    @endif
+                                <tbody>
+
+                            @endif
                         </table>
                     </div>
                 @endif
             </div>
     </section>
+    <script>
+        function removeOutreach(outreachId){
+            console.log(outreachId);
+            // sweet alert for confirming
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if(result.isConfirmed){
+                    // if confirmed then delete the proposal
+                    var url = "{{ route('admin.outreach.remove', ':id') }}";
+                    url = url.replace(':id', outreachId);
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            '_token': "{{ csrf_token() }}"
+                        },
+                        success: function(response){
+                            console.log(response);
+                            
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your file has been deleted.',
+                                    'success'
+                                ).then((result) => {
+                                    if(result.isConfirmed){
+                                        location.reload();
+                                    }
+                                });
+                        }
+                    });
+                }
+            });
+
+        }
+        function removeProposal(proposalId) {
+            console.log(proposalId);
+            // sweet alert for confirming
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // if confirmed then delete the proposal
+                    var url = "{{ route('admin.proposal.remove', ':id') }}";
+                    url = url.replace(':id', proposalId);
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            'proposal_id': proposalId,
+                            "_token": "{{ csrf_token() }}",
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            // sweet alert
+                            Swal.fire({
+                                title: 'Success',
+                                text: 'Proposal deleted successfully',
+                                icon: 'success',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            })
+                        }
+                    });
+                }
+            })
+
+        }
+        //    change selected button on click
+        const buttons = document.querySelectorAll('.btn-group button');
+        buttons.forEach(button => {
+            button.addEventListener('click', changeSelection, false);
+        });
+
+        function changeSelection() {
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            this.classList.add('selected');
+            console.log(this);
+            // reset form
+            var temp = document.querySelector("#reportType").value;
+            console.log("before reset",temp);
+            document.querySelector("#report-form").reset();
+            // do not reset report type
+            console.log("after reset",temp);
+
+            document.querySelector("#reportType").value = temp;
+            document.querySelector("#faculty_select").value = '0';
+        }
+
+        
+        // show date only on date select
+        const date_btn = document.querySelector('.date_btn');
+        const date_selection = document.querySelector('#date_selection');
+        const faculty_btn = document.querySelector('.faculty_btn');
+        const faculty_selection = document.querySelector('#faculty_selection');
+        const dept_btn = document.querySelector('.dept_btn');
+        const department_selection = document.querySelector('#department_selection');
+
+        date_btn.addEventListener('click', showDate, false);
+
+        function checkAll() {
+            checkDate();
+            checkFaculty();
+            checkDepartment();
+        }
+
+        function showDate() {
+            date_selection.classList.remove('hidden');
+            faculty_selection.classList.add('hidden');
+            department_selection.classList.add('hidden');
+        }
+
+        var generate_report_btn = document.querySelector('#generate_report');
+
+        function checkDepartment() {
+            // enable button if department is selected
+            var department_select = document.getElementById('faculty_department_1');
+            if (department_select.value != 'Choose..') {
+                generate_report_btn.disabled = false;
+            }
+            checkFaculty();
+        }
+
+        function checkFaculty() {
+            // enable button if faculty is selected
+            var faculty_select = document.getElementById('faculty_select');
+            console.log("test", faculty_select.value);
+            if (faculty_select.value != '0') {
+                generate_report_btn.disabled = false;
+            }
+        }
+
+        function checkDate() {
+            var start_date = document.getElementById('start_date');
+            var end_date = document.getElementById('end_date');
+            // end date cannot be less than start date
+            console.log(start_date.value);
+            console.log(end_date.value);
+
+            if (start_date.value != '' && end_date.value != '') {
+                generate_report_btn.disabled = false;
+            }
+            if (start_date.value > end_date.value) {
+                generate_report_btn.disabled = true;
+            }
+        }
+        // show department only on department select
+        dept_btn.addEventListener('click', showDept, false);
+
+        function showDept() {
+            department_selection.classList.remove('hidden');
+            faculty_selection.classList.add('hidden');
+            date_selection.classList.add('hidden');
+        }
+
+
+        function disableButton() {
+            generate_report_btn.disabled = true;
+            // clear date 
+            var start_date = document.getElementById('start_date');
+            var end_date = document.getElementById('end_date');
+            start_date.value = '';
+            end_date.value = '';
+            // clear faculty
+            var faculty_select = document.getElementById('faculty_select');
+            // clear department
+            var department_select = document.getElementById('department_select');
+            // select option 0
+
+            
+        }
+
+        faculty_btn.addEventListener('click', showFaculty, false);
+
+        function showFaculty() {
+            faculty_selection.classList.remove('hidden');
+            date_selection.classList.add('hidden');
+            department_selection.classList.add('hidden');
+        }
+    </script>
     <div class="footer">
         @section('footer')
             <p>
@@ -360,115 +677,7 @@
             <script src="{{ asset('js/app.js') }}"></script>
         @show
     </div>
-    <script>
-        //    change selected button on click
-        const buttons = document.querySelectorAll('.btn-group button');
-        buttons.forEach(button => {
-            button.addEventListener('click', changeSelection, false);
-        });
-
-        function changeSelection() {
-            buttons.forEach(btn => btn.classList.remove('selected'));
-            this.classList.add('selected');
-            console.log(this);
-            // reset form
-            document.querySelector("#report-form").reset();
-            document.querySelector("#faculty_select").value='0';
-        }
-
-        // show date only on date select
-        const date_btn = document.querySelector('.date_btn');
-        const date_selection = document.querySelector('#date_selection');
-        const faculty_btn = document.querySelector('.faculty_btn');
-        const faculty_selection = document.querySelector('#faculty_selection');
-        const dept_btn = document.querySelector('.dept_btn');
-        const department_selection = document.querySelector('#department_selection');
-
-        date_btn.addEventListener('click', showDate, false);
-
-        function checkAll() {
-            checkDate();
-            checkFaculty();
-            checkDepartment();
-        }
-
-        function showDate() {
-            date_selection.classList.remove('hidden');
-            faculty_selection.classList.add('hidden');
-            department_selection.classList.add('hidden');
-        }
-
-        var generate_report_btn = document.querySelector('#generate_report');
-
-        function checkDepartment() {
-            // enable button if department is selected
-            var department_select = document.getElementById('faculty_department_1');
-            if (department_select.value != 'Choose..') {
-                generate_report_btn.disabled = false;
-            }
-            checkFaculty();
-        }
-
-        function checkFaculty() {
-            // enable button if faculty is selected
-            var faculty_select = document.getElementById('faculty_select');
-            console.log("test",faculty_select.value);
-            if (faculty_select.value != '0') {
-                generate_report_btn.disabled = false;
-            }
-        }
-
-        function checkDate() {
-            var start_date = document.getElementById('start_date');
-            var end_date = document.getElementById('end_date');
-            // end date cannot be less than start date
-            console.log(start_date.value);
-            console.log(end_date.value);
-
-            if (start_date.value != '' && end_date.value != '') {
-                generate_report_btn.disabled = false;
-            }
-            if (start_date.value > end_date.value) {
-                generate_report_btn.disabled = true;
-            }
-        }
-        // show department only on department select
-        dept_btn.addEventListener('click', showDept, false);
-
-        function showDept() {
-            department_selection.classList.remove('hidden');
-            faculty_selection.classList.add('hidden');
-            date_selection.classList.add('hidden');
-        }
-
-
-        function disableButton() {
-            generate_report_btn.disabled = true;
-            // clear date 
-            var start_date = document.getElementById('start_date');
-            var end_date = document.getElementById('end_date');
-            start_date.value = '';
-            end_date.value = '';
-            // clear faculty
-            var faculty_select = document.getElementById('faculty_select');
-            // clear department
-            var department_select = document.getElementById('department_select');
-            // select option 0
-
-            // if date is not empty
-            // checkDate();
-            // checkFaculty();
-            // checkDepartment();
-        }
-
-        faculty_btn.addEventListener('click', showFaculty, false);
-
-        function showFaculty() {
-            faculty_selection.classList.remove('hidden');
-            date_selection.classList.add('hidden');
-            department_selection.classList.add('hidden');
-        }
-    </script>
+    
 </body>
 
 </html>

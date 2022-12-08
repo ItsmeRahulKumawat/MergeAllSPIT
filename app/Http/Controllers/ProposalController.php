@@ -5,14 +5,14 @@ use App\Models\Faculty;
 use App\Models\FacultyGroup;
 use Illuminate\Http\Request;
 use App\Models\Proposal;
-
+use Illuminate\Support\Facades\Storage;
 
 class ProposalController extends Controller
 {
 
 
     public function submitted(){
-        return view('proposal_submitted');
+        return view('submitted');
     }
     public function getDept(){
         $num = $_POST['num'];
@@ -134,7 +134,7 @@ class ProposalController extends Controller
         $proposal->save();
         // send view with proposal id
 
-        return view('proposal_submitted', ['proposal_id' => $proposal->proposal_id]);
+        return view('submitted', ['proposal_id' => $proposal->proposal_id]);
         
     }
 
@@ -174,6 +174,14 @@ class ProposalController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // delete proposal
+        $proposal = Proposal::where('proposal_id', $id)->first();
+        // dd(Storage::disk('public')->exists($proposal->proposal_file));
+        // dd(Storage::exists($proposal->proposal_file));
+        if(Storage::disk('public')->exists($proposal->proposal_file)){
+            Storage::disk('public')->delete($proposal->proposal_file);
+        }
+        // Proposal::where('proposal_id', $id)->delete();
+
     }
 }

@@ -67,9 +67,7 @@
                             <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
                                 <a class=" mega-menu-link nav-link" href="{{ route('admin.department') }}">Department</a>
                             </li>
-                            <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
-                            </li>
+                            
                             <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
                                 <a class=" mega-menu-link nav-link" href="{{ route('admin.report') }}">Report</a>
                             </li>

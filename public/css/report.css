@@ -15,3 +15,8 @@
 .visible{
     display: block;
 }
+
+/* reduce table width */
+table {
+    width: 50%;
+}
