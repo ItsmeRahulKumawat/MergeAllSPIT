@@ -12,7 +12,7 @@ class ProposalController extends Controller
 
 
     public function submitted(){
-        return view('proposal_submitted');
+        return view('submitted');
     }
     public function getDept(){
         $num = $_POST['num'];
@@ -134,7 +134,7 @@ class ProposalController extends Controller
         $proposal->save();
         // send view with proposal id
 
-        return view('proposal_submitted', ['proposal_id' => $proposal->proposal_id]);
+        return view('submitted', ['proposal_id' => $proposal->proposal_id]);
         
     }
 

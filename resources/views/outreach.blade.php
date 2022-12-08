@@ -38,6 +38,7 @@
             </div>
             <div id="nav">
                 <div id="wrapper">
+                    
                     <div id="mega-menu-wrap-primary" class="mega-menu-wrap">
                         <div class="mega-menu-toggle">
                             <div class="mega-toggle-blocks-left">
@@ -60,14 +61,42 @@
                             data-second-click="go" data-document-click="collapse" data-vertical-behaviour="standard"
                             data-breakpoint="600" data-unbind="true" data-hover-intent-timeout="300"
                             data-hover-intent-interval="100">
-                            <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
-                                id='mega-menu-item-25693'>
-                                <a class="mega-menu-link" target="_blank" href="login" tabindex="0">Login</a>
+                           
+                          
+                            @guest
+                            @if (Route::has('login'))
+                                <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
+                                    <a class=" mega-menu-link nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
+
+                            {{-- @if (Route::has('register'))
+                                <li  id="mega-menu-item-25693"  tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
+                                    <a class=" mega-menu-link nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif --}}
+                        @else
+                        <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                            <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a></li>
+                            <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="report" tabindex="0">Report</a></li>
+                            <li class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
+                                <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+
+                                <div class="dropdown-user-menu dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a id="dropdown-user-menu-item " class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
                             </li>
-                            <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
-                                id='mega-menu-item-25693'>
-                                <a class="mega-menu-link" target="_blank" href="register" tabindex="0">Register</a>
-                            </li>
+                        @endguest
                         </ul>
                     </div>
                 </div>
@@ -85,8 +114,17 @@
                 </div>
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
-                        <form action="{{ url('/') }}/outreach" method="post" enctype="multipart/form-data">
+                        <form autocomplete="off" action="{{ url('/') }}/outreach" method="post" enctype="multipart/form-data">
                             @csrf
+                            @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                             <div id="addFaculty">
                                 <div class='card mt-4'>
                                     <div class="card-header">

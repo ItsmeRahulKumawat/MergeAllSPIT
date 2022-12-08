@@ -14,7 +14,7 @@ class OutreachController extends Controller
      */
     public function index()
     {
-        //
+        return view('outreach');
     }
 
     /**
@@ -70,7 +70,7 @@ class OutreachController extends Controller
         $outreach->outreach_report = $report_path . '/' . $report_name;
         $outreach->save();
 
-
+        return view('submitted', ['outreach_id' => $outreach->id]);
 
     }
 
