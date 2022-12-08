@@ -532,10 +532,17 @@
             this.classList.add('selected');
             console.log(this);
             // reset form
+            var temp = document.querySelector("#reportType").value;
+            console.log("before reset",temp);
             document.querySelector("#report-form").reset();
+            // do not reset report type
+            console.log("after reset",temp);
+
+            document.querySelector("#reportType").value = temp;
             document.querySelector("#faculty_select").value = '0';
         }
 
+        
         // show date only on date select
         const date_btn = document.querySelector('.date_btn');
         const date_selection = document.querySelector('#date_selection');
@@ -615,10 +622,7 @@
             var department_select = document.getElementById('department_select');
             // select option 0
 
-            // if date is not empty
-            // checkDate();
-            // checkFaculty();
-            // checkDepartment();
+            
         }
 
         faculty_btn.addEventListener('click', showFaculty, false);

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Outreach;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class OutreachController extends Controller
 {
@@ -111,6 +113,23 @@ class OutreachController extends Controller
     public function destroy($id)
     {
         //
-        $outreach = Outreach::where('id', $id)->delete();
+        $outreach = Outreach::where('id', $id)->first();
+        // console log 
+        // delete outreach files from storage folder
+        // dd public path
+        $photos_array = explode(",", $outreach->outreach_photos);
+        
+        foreach($photos_array as $photos){
+            if(Storage::exists( $photos)){
+                Storage::disk('public')->delete($photos);
+            }
+            
+        }
+        if(Storage::exists($outreach->outreach_report)){
+            Storage::disk('public')->delete($outreach->outreach_report);
+        }
+        $outreach->delete();
+        // delete files from storage
+
     }
 }
