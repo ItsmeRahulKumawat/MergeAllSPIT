@@ -11,7 +11,7 @@
         <div class="checkmark"></div>
       </div>
       <h1 style="font-family: monospace">Success</h1> 
-      @if (isset($proposal))
+      @if (isset($proposal_id))
 
       <p style="font-family: monospace;"><b>We received your proposal paper<br/> we'll be in touch shortly!</b></p>
       {{-- proposal id --}}

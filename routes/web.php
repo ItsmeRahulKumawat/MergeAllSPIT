@@ -42,7 +42,7 @@ Route::middleware(['auth','isUser'])->group(function(){
     Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal');;
     Route::get('/submitted', [ProposalController::class, 'submitted']);
     Route::post('/proposal', [ProposalController::class, 'store']);
-    Route::get('/outreach', [OutreachController::class, 'index']);
+    Route::get('/outreach', [OutreachController::class, 'index'])->name('outreach');
     Route::post('outreach', [OutreachController::class, 'store']);
 
 

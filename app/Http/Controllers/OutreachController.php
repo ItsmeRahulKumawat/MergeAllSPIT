@@ -54,19 +54,23 @@ class OutreachController extends Controller
         $day_folder = $day;
         $photos_folder = 'photos';
         $report_folder = 'report';
-        $photos_path = 'outreach/'.$photos_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
-        $report_path = 'outreach/'.$report_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
+        $photos_path = 'public/outreach/'.$photos_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
+        $report_path = 'public/outreach/'.$report_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
         $photos = array();
         foreach($request->file('photos') as $image)
         {
             $name = $image->getClientOriginalName();
             $image->storeAs($photos_path, $name);
+            // remove public from photos path
+            $photos_path = substr($photos_path, 7);
             $photos[] = $photos_path . '/' . $name;
         }
         $photoList= implode(",",$photos);
         $outreach->outreach_photos = $photoList;
         $report_name = $report->getClientOriginalName();
         $report->storeAs($report_path, $report_name);
+        // remove public from report path
+        $report_path = substr($report_path, 7);
         $outreach->outreach_report = $report_path . '/' . $report_name;
         $outreach->save();
 
