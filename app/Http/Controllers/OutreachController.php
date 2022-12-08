@@ -27,6 +27,31 @@ class OutreachController extends Controller
      */
     public function store(Request $request)
     {
+
+        // validations
+        $request->validate([
+            'faculty_department_1' => 'required',
+            'faculty_name_1' => 'required',
+            'activity' => 'required',
+            'status' => 'required',
+            'place' => 'required',
+            'date_activity' => 'required',
+            'sponsorList' => 'required',
+            'outreach_amount' => 'required',
+            'photos' => 'required',
+            'report' => 'required',
+        ],[
+            'faculty_department_1.required' => 'Faculty Department is required',
+            'faculty_name_1.required' => 'Faculty Name is required',
+            'activity.required' => 'Activity is required',
+            'status.required' => 'Status is required',
+            'place.required' => 'Place is required',
+            'date_activity.required' => 'Date of Activity is required',
+            'sponsorList.required' => 'Sponsor is required',
+            'outreach_amount.required' => 'Amount is required',
+            'photos.required' => 'Photos are required',
+            'report.required' => 'Report is required',
+        ]);
         $outreach = new Outreach();
         $outreach->outreach_faculty_department = $request->input('faculty_department_1');
         $outreach->outreach_faculty_name = $request->input('faculty_name_1');

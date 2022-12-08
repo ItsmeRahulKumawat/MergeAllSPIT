@@ -181,7 +181,7 @@ class ProposalController extends Controller
         if(Storage::disk('public')->exists($proposal->proposal_file)){
             Storage::disk('public')->delete($proposal->proposal_file);
         }
-        // Proposal::where('proposal_id', $id)->delete();
+        Proposal::where('proposal_id', $id)->delete();
 
     }
 }
