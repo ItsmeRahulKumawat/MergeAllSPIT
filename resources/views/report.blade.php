@@ -284,7 +284,16 @@
                 {{-- make report table visible is $report is true --}}
                 @if (isset($report))
                     <div class="report_table mt-5">
-                        <table class="table table-striped table-bordered table-hover">
+                        {{-- download button --}}
+                        <button class="btn btn-primary" onclick="createPDF()">Download Report</button>
+                        <table  data-show-export="true"
+                        data-pagination="true"
+                        data-side-pagination="client"
+                        data-click-to-select="true"
+                        data-toolbar="#toolbar"
+                        data-show-toggle="true"
+                        data-show-columns="true"
+                        class="table table-striped table-bordered table-hover" id="tab">
                             @if (isset($proposal))
                                 <thead>
                                     <tr class="d-flex">
@@ -431,14 +440,60 @@
 
                                     @endif
                                 <tbody>
-
                             @endif
+                            
                         </table>
+                        <div id="toolbar" class="select">
+                            <select class="form-control">
+                              <option value="">Export Basic</option>
+                              <option value="all">Export All</option>
+                              <option value="selected">Export Selected</option>
+                            </select>
+                          </div>
+                          
                     </div>
                 @endif
             </div>
     </section>
     <script>
+        var $table = $('#tab')
+
+$(function() {
+  $('#toolbar').find('select').change(function () {
+    $table.bootstrapTable('destroy').bootstrapTable({
+      exportDataType: $(this).val(),
+      exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+    })
+  }).trigger('change')
+})
+        function createPDF() {
+                // var sTable = document.getElementById('tab').innerHTML;
+                // var report_heading = document.getElementById("reportType").value;
+                // var ay = "2022"
+
+                // var style = "<style>";
+                // style = style + "table {width: 100%;font: 14px Times-New-Roman;rotate:90}";
+                // style = style + "table, th, td,thead,tbody {border: solid 2px #DDD; border-collapse: collapse;";
+                // style = style + "padding: 3px 3px;text-align: center;}";
+                // style = style + "#removeheading{display:none;}";
+                // style = style + "#removelinks{display:none;}";
+                // style = style + "</style>";
+
+                // //Create Window Object
+                // var win = window.open('', '', 'height=600,width=1200');
+
+                // win.document.write('<html><head>');
+                // win.document.write('<title></title>');   // <title> FOR PDF HEADER.
+                // win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+                // win.document.write('</head>');
+                // win.document.write('<body><center><div id="Heading"> <h1 id="Report_Heading">' + report_heading.innerHTML + '</h1><hr style="width:40%;"> </div></center><br><br><h3>Academic Year: ' + ay + '</h3>');
+                // win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+                // win.document.write('</body></html>');
+
+                // win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+                // win.print();    // PRINT THE CONTENTS.
+            }
+
         function removeOutreach(outreachId){
             console.log(outreachId);
             // sweet alert for confirming
@@ -620,9 +675,7 @@
             var faculty_select = document.getElementById('faculty_select');
             // clear department
             var department_select = document.getElementById('department_select');
-            // select option 0
-
-            
+            // select option 0   
         }
 
         faculty_btn.addEventListener('click', showFaculty, false);
@@ -675,6 +728,19 @@
             </p>
             <script src="{{ asset('js/bootstrap.js') }}"></script>
             <script src="{{ asset('js/app.js') }}"></script>
+            <link href="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+<style>
+    #toolbar {
+      margin: 0;
+    }
         @show
     </div>
     
