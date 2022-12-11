@@ -70,14 +70,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
     // proposal edit and delete from report
     Route::get('/proposal/{id}', [ProposalController::class, 'show']);
     Route::delete('/proposal/{id}', [ProposalController::class, 'destroy'])->name('proposal.remove');
-    // Route::post('/proposal/{id}/edit', [ProposalController::class, 'showEditForm'])->name('proposal.edit');
     Route::post('/proposal/{id}/edit', [ProposalController::class, 'update'])->name('proposal.edit');;
+    Route::get('/proposal/{id}/edit', [ProposalController::class, 'showEditForm']);
 
 
     // outreach edit and delete from report
     Route::get('outreach/{id}',[OutreachController::class,'show']);
     Route::delete('outreach/{id}',[OutreachController::class,'destroy'])->name('outreach.remove');
-
+    Route::post('outreach/{id}/edit',[OutreachController::class,'update'])->name('outreach.edit');;
+    Route::get('outreach/{id}/edit',[OutreachController::class,'showEditForm']);
     // Route::get('/submitted', [ProposalController::class, 'submitted']);
     
 

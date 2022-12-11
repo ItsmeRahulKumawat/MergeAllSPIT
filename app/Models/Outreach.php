@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Outreach extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id';
+
+    
     protected $fillable = [
+        'id',
         'outreach_faculty_department',
         'outreach_faculty_name',
         'outreach_activity',

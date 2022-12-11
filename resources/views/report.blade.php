@@ -437,7 +437,12 @@
                                                                 class="btn btn-primary">View</a>
                                                             <button class="btn btn-danger"
                                                                 onclick="removeOutreach('{{ $outreach->id  }}')">Delete</button>
+                                                            <button type="submit" class="btn btn-warning"
+                                                                onclick="editOutreach('{{$outreach->id }}')">
+                                                                <i class="bi bi-pencil-square"></i>
+                                                            </button>
                                                         @endif
+                                                        
                                                     @endguest
                                                     {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
 
@@ -455,7 +460,7 @@
                               <option value="all">Export All</option>
                               <option value="selected">Export Selected</option>
                             </select>
-                          </div>
+                        </div>
                           
                     </div>
                 @endif
@@ -481,7 +486,11 @@
             
             
         }
-        
+        function editOutreach(outreachId){
+            var url = "{{ route('admin.outreach.edit', ':id') }}";
+            url = url.replace(':id', outreachId);
+            window.location.href = url;
+        }
         function removeOutreach(outreachId){
             console.log(outreachId);
             // sweet alert for confirming
