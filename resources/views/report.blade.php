@@ -321,7 +321,7 @@
                                                 {{-- {{-- reduce size of id --}}
                                                 @php
                                                     $id = $proposal->proposal_id;
-                                                    $id = substr($id, 0, 5) . '...' . substr($id, -5);
+                                                    // $id = substr($id, 0, 5) . '...' . substr($id, -5);
                                                 @endphp
                                                 <td class="col-1">{{ $id }}</td>
                                                 <td class="col-2">{{ $proposal->proposal_title }}</td>
@@ -356,8 +356,14 @@
                                                         @else
                                                             <a href="{{ route('admin.proposal') }}/{{ $proposal->proposal_id }}"
                                                                 class="btn btn-primary">View</a>
-                                                            <button class="btn btn-danger"
-                                                                onclick="removeProposal('{{ $proposal->proposal_id }}')">Delete</button>
+                                                            <button class="btn btn-danger m-1"
+                                                                onclick="removeProposal('{{ $proposal->proposal_id }}')">
+                                                                {{-- bootstrap icon for trash --}}
+                                                                <i class="bi bi-trash"></i>
+                                                            <button class="btn btn-warning"
+                                                                onclick="editProposal('{{ $proposal->proposal_id }}')">
+                                                                <i class="bi bi-pencil-square"></i>
+                                                            </button>
                                                         @endif
                                                     @endguest
                                                     {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
@@ -456,44 +462,26 @@
             </div>
     </section>
     <script>
+
         var $table = $('#tab')
+        $(function() {
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('destroy').bootstrapTable({
+            exportDataType: $(this).val(),
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            })
+        }).trigger('change')
+        })
 
-$(function() {
-  $('#toolbar').find('select').change(function () {
-    $table.bootstrapTable('destroy').bootstrapTable({
-      exportDataType: $(this).val(),
-      exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
-    })
-  }).trigger('change')
-})
-        function createPDF() {
-                // var sTable = document.getElementById('tab').innerHTML;
-                // var report_heading = document.getElementById("reportType").value;
-                // var ay = "2022"
-
-                // var style = "<style>";
-                // style = style + "table {width: 100%;font: 14px Times-New-Roman;rotate:90}";
-                // style = style + "table, th, td,thead,tbody {border: solid 2px #DDD; border-collapse: collapse;";
-                // style = style + "padding: 3px 3px;text-align: center;}";
-                // style = style + "#removeheading{display:none;}";
-                // style = style + "#removelinks{display:none;}";
-                // style = style + "</style>";
-
-                // //Create Window Object
-                // var win = window.open('', '', 'height=600,width=1200');
-
-                // win.document.write('<html><head>');
-                // win.document.write('<title></title>');   // <title> FOR PDF HEADER.
-                // win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
-                // win.document.write('</head>');
-                // win.document.write('<body><center><div id="Heading"> <h1 id="Report_Heading">' + report_heading.innerHTML + '</h1><hr style="width:40%;"> </div></center><br><br><h3>Academic Year: ' + ay + '</h3>');
-                // win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
-                // win.document.write('</body></html>');
-
-                // win.document.close(); 	// CLOSE THE CURRENT WINDOW.
-                // win.print();    // PRINT THE CONTENTS.
-            }
-
+        function editProposal(id){
+            var url = "{{ route('admin.proposal.edit', ':id') }}";
+            url = url.replace(':id', id);
+            window.location.href = url;
+            // fill the form with the details
+            
+            
+        }
+        
         function removeOutreach(outreachId){
             console.log(outreachId);
             // sweet alert for confirming
@@ -730,18 +718,14 @@ $(function() {
             <script src="{{ asset('js/app.js') }}"></script>
             <link href="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
-<style>
-    #toolbar {
-      margin: 0;
-    }
-        @show
+    @show
     </div>
     
 </body>

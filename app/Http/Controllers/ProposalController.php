@@ -123,7 +123,16 @@ class ProposalController extends Controller
         // $department = implode(',', $department);
         
         // give random hash string as id
-        $proposal->proposal_id = md5(uniqid(rand(), true));
+        // dd($request);
+        $temp = null;
+        if($request->input("proposal_id")!=null){
+            $temp = $request->input("proposal_id");
+            $proposal->proposal_id = $temp;
+        }
+        else if($request->proposal_id==null){
+            $temp = md5(uniqid(rand(), true));
+            $proposal->proposal_id = $temp;
+        }
         $proposal->proposal_title = $request->input('proposal_title');
         $proposal->proposal_authorityOrOrganization = $request->proposal_authorityOrOrganization[0];
         $proposal->proposal_govtPrivate = $request->proposal_govtPrivate[0];
@@ -133,12 +142,14 @@ class ProposalController extends Controller
         $proposal->proposal_file = $proposal_folder.'/'.$fileName;
         $proposal->save();
         // send view with proposal id
-
-        return view('submitted', ['proposal_id' => $proposal->proposal_id]);
+        
+        return view('submitted', ['proposal_id' => $temp]);
+        
         
     }
 
 
+  
     /**
      * Display the specified resource.
      *
@@ -161,11 +172,80 @@ class ProposalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $proposal_id)
     {
-        // update faculty
+        // delete old data
+        $proposal = Proposal::where('proposal_id', $proposal_id)->first();
+        $proposal->delete();
+        // add proposal id to request
+        $request->request->add(['proposal_id' => $proposal_id]);
+        return $this->store($request);
+        // update the proposal
+        // $proposal = Proposal::where('proposal_id', $proposal_id)->first();
+        // $proposal_file = $request->proposal_file;
+        // $path = $this->getFilePathAccordingToDates($request->proposal_submissionDate);
+    
+        // // $proposal_file->storeAs($path, $proposal_file->getClientOriginalName());
+        // // $proposal->proposal_file = $path.'/'.$proposal_file->getClientOriginalName();
+        // $proposal->update([
+        //     'proposal_title' => $request->input('proposal_title'),
+        //     'proposal_authorityOrOrganization' => $request->proposal_authorityOrOrganization[0],
+        //     'proposal_govtPrivate' => $request->proposal_govtPrivate[0],
+        //     'proposal_abstract' => $request->input('proposal_abstract'),
+        //     'proposal_fundingAmount' => $request->input('proposal_fundingAmount'),
+        //     'proposal_submissionDate' => $request->input('proposal_submissionDate'),
+        // ]);
+         
+        // $faculty_group = array();
+        // $department_group = array();
+        // for($i=1; $i<=5; $i++){
+        //     $faculty_id = $request->input('faculty_name_'.$i);
+        //     // find faculty name from faculty id
+        //     $faculty = Faculty::where('faculty_id', $faculty_id)->first();
+        //     $department = $request->input('faculty_department_'.$i);
+        //     if($faculty != null){
+        //         array_push($faculty_group, $faculty->faculty_name);
+        //         array_push($department_group, $department);
+        //     }
+        // }
+        // $faculty_group = implode(',', $faculty_group);
+        // $department_group = implode(',', $department_group);
+        // // log faculty group in console
+        // echo "<script>console.log('faculty_group: " . $faculty_group . "');</script>";
+        // echo "<script>console.log('department_group: " . $department_group . "');</script>";
+
+        // $faculty_group_table = new FacultyGroup();
+        // $faculty_group_table->faculty_group_name = $faculty_group;
+        // $faculty_group_table->faculty_group_department = $department_group;
+        // $faculty_group_table->save();
+
+        // $faculty_group_id = FacultyGroup::where('faculty_group_name', $faculty_group)->first()->faculty_group_id;
+        // $proposal->proposal_faculty_group_id = $faculty_group_id;
+
+        // return view('submitted', ['proposal_id' => $proposal_id]);
     }
 
+    public function showEditForm($id){
+        $proposal = Proposal::where('proposal_id', $id)->first();
+        $faculty_group = FacultyGroup::where('faculty_group_id', $proposal->proposal_faculty_group_id)->first();
+        return view('proposal_edit')->with(['proposal'=>Proposal::where('proposal_id', $id)->first(), 'faculty_group'=>$faculty_group]);
+    }
+    public function getFilePathAccordingToDates($submission_date){
+        $submission_date = str_replace('/', '-', $submission_date);
+        $year = date('Y', strtotime($submission_date));
+        $month = date('m', strtotime($submission_date));
+        $day = date('d', strtotime($submission_date));
+        $year_folder = $year;
+        // month in words
+        $monthNum  = $month;
+        $dateObj   = \DateTime::createFromFormat('!m', $monthNum);
+        $monthName = $dateObj->format('F');
+        $month_folder = $year_folder.'/'.$monthName;
+        $day_folder = $year.'/'.$monthName.'/'.$day;
+        return "proposal/".$year."/".$monthName."/".$day;
+        
+
+    }
     /**
      * Remove the specified resource from storage.
      *
