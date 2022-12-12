@@ -286,14 +286,19 @@
                     event.preventDefault();
                     let lastRow = document.querySelector('.add_faculty_table tbody tr:last-child');
                     // get last row number
-                    let lastRowNumber = lastRow.querySelector('td:first-child').innerText;
+                    if(lastRow!=null){
+                        let lastRowNumber = lastRow.querySelector('td:first-child').innerText;
                     // get last row number and increment it
-                    let newRowNumber = parseInt(lastRowNumber) + 1;
-                    addFaculty(newRowNumber);
+                        let newRowNumber = parseInt(lastRowNumber) + 1;
+                        addFaculty(newRowNumber);    
+                    }else{
+                        addFaculty(1);
+                    }
+                    
                 }
                 function addFaculty(newId) {
                     // add a new table row to add faculty name in input box
-                    var table = document.getElementsByClassName("add_faculty_table")[0];
+                    var table = document.querySelector(".add_faculty_table tbody");
                     var row = table.insertRow(-1);
                     row.classList.add("row_" + newId);
                     row.classList.add("input-tr");
@@ -457,7 +462,8 @@
                         faculty_email_td[i].remove();
                         faculty_phone_td[i].remove();
                         faculty_department_td[i].remove();
-                        
+                                                
+                        input_tr[i].classList.remove("input-tr");
                     }
                 }
                 
