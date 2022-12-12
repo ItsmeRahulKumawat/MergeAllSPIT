@@ -284,83 +284,30 @@
                 {{-- make report table visible is $report is true --}}
                 @if (isset($report))
                     <div class="report_table mt-5">
-                        <table class="table table-striped table-bordered table-hover">
-                            @if (isset($proposal))
+                        {{-- download button --}}
+
+                        <table  data-show-export="true"
+                        data-pagination="true"
+                        data-side-pagination="client"
+                        data-click-to-select="true"
+                        data-toolbar="#toolbar"
+                        data-show-toggle="true"
+                        data-show-columns="true"
+                        class="table table-striped table-bordered table-hover" id="tab">
                                 <thead>
-                                    <tr class="d-flex">
-                                        <th class="col-1">Proposal Id</th>
-                                        <th class="col-2">Proposal Name</th>
-                                        <th class="col-1">Propsal Date</th>
-                                        <th class="col-1">Proposal Amount</th>
-                                        <th class="col-1">Authority/Organization</th>
-                                        <th class="col-1"> Govt/Private</th>
-                                        <th class="col-2">Faculty Name</th>
-                                        <th class="col-1">Department Name</th>
-                                        <th class="col-2">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- show proposal data that is fetched from post request --}}
-                                    {{-- if proposal size is 0 --}}
-                                    @if (count($proposal) == 0)
-                                        <tr>
-                                            <td colspan="4" class="text-center">No Data Found</td>
+                                    @if (isset($proposal))
+                                        <tr class="d-flex">
+                                            <th class="col-1">Proposal Id</th>
+                                            <th class="col-2">Proposal Name</th>
+                                            <th class="col-1">Propsal Date</th>
+                                            <th class="col-1">Proposal Amount</th>
+                                            <th class="col-1">Authority/Organization</th>
+                                            <th class="col-1"> Govt/Private</th>
+                                            <th class="col-2">Faculty Name</th>
+                                            <th class="col-1">Department Name</th>
+                                            <th class="col-2">Actions</th>
                                         </tr>
                                     @else
-                                        @foreach ($proposal as $proposal)
-                                            <tr class="d-flex">
-                                                {{-- {{-- reduce size of id --}}
-                                                @php
-                                                    $id = $proposal->proposal_id;
-                                                    $id = substr($id, 0, 5) . '...' . substr($id, -5);
-                                                @endphp
-                                                <td class="col-1">{{ $id }}</td>
-                                                <td class="col-2">{{ $proposal->proposal_title }}</td>
-                                                <td class="col-1">{{ $proposal->proposal_submissionDate }}</td>
-                                                <td class="col-1">{{ $proposal->proposal_fundingAmount }}</td>
-                                                <td class="col-1">{{ $proposal->proposal_authorityOrOrganization }}
-                                                </td>
-                                                <td class="col-1">{{ $proposal->proposal_govtPrivate }}</td>
-                                                {{-- show faculty by getting faculty name from faculty group id --}}
-                                                {{-- hide this --}}
-                                                <?php
-                                                $faculty_names = DB::table('faculty_groups')
-                                                    ->where('faculty_group_id', $proposal->proposal_faculty_group_id)
-                                                    ->get();
-                                                ?>
-                                                <td class="col-2">{{ $faculty_names[0]->faculty_group_name }}</td>
-                                                <td class="col-1">{{ $faculty_names[0]->faculty_group_department }}
-                                                </td>
-
-                                                <td>
-                                                    {{-- if admin is logged in --}}
-
-                                                    @guest
-                                                        @if (Route::has('login'))
-                                                            <a href="{{ route('proposal') }}/{{ $proposal->proposal_id }}"
-                                                                class="btn btn-primary">View</a>
-                                                        @endif
-                                                    @else
-                                                        @if (Auth::user()->role == '0')
-                                                            <a href="{{ route('proposal') }}/{{ $proposal->proposal_id }}"
-                                                                class="btn btn-primary">View</a>
-                                                        @else
-                                                            <a href="{{ route('admin.proposal') }}/{{ $proposal->proposal_id }}"
-                                                                class="btn btn-primary">View</a>
-                                                            <button class="btn btn-danger"
-                                                                onclick="removeProposal('{{ $proposal->proposal_id }}')">Delete</button>
-                                                        @endif
-                                                    @endguest
-                                                    {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
-
-                                            </tr>
-                                        @endforeach
-
-                                    @endif
-                                    {{-- show outreach data that is fetched from post request --}}
-                                </tbody>
-                                @else 
-                                <thead>
                                     <tr class="d-flex">
                                         <th class="col-1">Outreach Id</th>
                                         <th class="col-2">Outreach Activity</th>
@@ -372,17 +319,82 @@
                                         <th class="col-1">Outreach Faculty Name</th>
                                         <th class="col-1">Outreach Faculty Department</th>
                                     </tr>
+                                    @endif
                                 </thead>
                                 <tbody>
                                     {{-- show proposal data that is fetched from post request --}}
-                                    
-                                    @if (count($outreach) == 0)
+                                    {{-- if proposal size is 0 --}}
+
+                                    @if(isset($proposal))
+                                        @if (count($proposal) == 0)
+                                            <tr>
+                                                <td colspan="4" class="text-center">No Data Found</td>
+                                            </tr>
+                                        @else
+                                            @foreach ($proposal as $proposal)
+                                                <tr class="d-flex">
+                                                    {{-- {{-- reduce size of id --}}
+                                                    @php
+                                                        $id = $proposal->proposal_id;
+                                                        // $id = substr($id, 0, 5) . '...' . substr($id, -5);
+                                                    @endphp
+                                                    <td class="col-1">{{ $id }}</td>
+                                                    <td class="col-2">{{ $proposal->proposal_title }}</td>
+                                                    <td class="col-1">{{ $proposal->proposal_submissionDate }}</td>
+                                                    <td class="col-1">{{ $proposal->proposal_fundingAmount }}</td>
+                                                    <td class="col-1">{{ $proposal->proposal_authorityOrOrganization }}
+                                                    </td>
+                                                    <td class="col-1">{{ $proposal->proposal_govtPrivate }}</td>
+                                                    {{-- show faculty by getting faculty name from faculty group id --}}
+                                                    {{-- hide this --}}
+                                                    <?php
+                                                    $faculty_names = DB::table('faculty_groups')
+                                                        ->where('faculty_group_id', $proposal->proposal_faculty_group_id)
+                                                        ->get();
+                                                    ?>
+                                                    <td class="col-2">{{ $faculty_names[0]->faculty_group_name }}</td>
+                                                    <td class="col-1">{{ $faculty_names[0]->faculty_group_department }}
+                                                    </td>
+
+                                                    <td>
+                                                        {{-- if admin is logged in --}}
+
+                                                        @guest
+                                                            @if (Route::has('login'))
+                                                                <a href="{{ route('proposal') }}/{{ $proposal->proposal_id }}"
+                                                                    class="btn btn-primary">View</a>
+                                                            @endif
+                                                        @else
+                                                            @if (Auth::user()->role == '0')
+                                                                <a href="{{ route('proposal') }}/{{ $proposal->proposal_id }}"
+                                                                    class="btn btn-primary">View</a>
+                                                            @else
+                                                                <a href="{{ route('admin.proposal') }}/{{ $proposal->proposal_id }}"
+                                                                    class="btn btn-primary">View</a>
+                                                                <button class="btn btn-danger m-1"
+                                                                    onclick="removeProposal('{{ $proposal->proposal_id }}')">
+                                                                    {{-- bootstrap icon for trash --}}
+                                                                    <i class="bi bi-trash"></i>
+                                                                <button class="btn btn-warning"
+                                                                    onclick="editProposal('{{ $proposal->proposal_id }}')">
+                                                                    <i class="bi bi-pencil-square"></i>
+                                                                </button>
+                                                            @endif
+                                                        @endguest
+                                                        {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
+
+                                                </tr>
+                                            @endforeach
+
+                                        @endif
+                                    @else
+                                        @if (count($outreach) == 0)
                                         <tr>
                                             <td colspan="4" class="text-center">No Data Found</td>
                                         </tr>
-                                    @else
-                                        @foreach ($outreach as $outreach)
-                                            <tr class="d-flex">
+                                        @else
+                                            @foreach ($outreach as $outreach)
+                                                <tr class="d-flex">
                                                 {{-- {{-- reduce size of id --}}
                                                 @php
                                                     $id = $outreach->id;
@@ -394,7 +406,7 @@
                                                 <td class="col-1">{{ $outreach->outreach_amount }}</td>
                                                 <td class="col-1">{{ $outreach->outreach_place }}</td>
                                                 <td class="col-1">{{ $outreach->outreach_sponsors }}</td>
-                                              
+                                            
                                                 <?php
                                                 $faculty_name = DB::table('faculties')
                                                     ->where('faculty_id', $outreach->outreach_faculty_name)
@@ -422,23 +434,69 @@
                                                                 class="btn btn-primary">View</a>
                                                             <button class="btn btn-danger"
                                                                 onclick="removeOutreach('{{ $outreach->id  }}')">Delete</button>
+                                                            <button type="submit" class="btn btn-warning"
+                                                                onclick="editOutreach('{{$outreach->id }}')">
+                                                                <i class="bi bi-pencil-square"></i>
+                                                            </button>
                                                         @endif
+                                                        
                                                     @endguest
                                                     {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
 
-                                            </tr>
-                                        @endforeach
-
+                                                    </tr>
+                                            @endforeach
+                                        @endif
                                     @endif
-                                <tbody>
-
-                            @endif
+                                    {{-- show outreach data that is fetched from post request --}}
+                                </tbody>
+                                {{-- @else  --}}
+                                {{-- <thead>
+                                    
+                                </thead> --}}
+                                {{-- <tbody> --}}
+                                    {{-- show proposal data that is fetched from post request --}}
+                                    
+                                                                {{-- <tbody> --}}
+                            {{-- @endif --}}
+                            
                         </table>
+                        <div id="toolbar" class="select">
+                            <select class="form-control">
+                              <option value="">Export Basic</option>
+                              <option value="all">Export All</option>
+                              <option value="selected">Export Selected</option>
+                            </select>
+                        </div>
+                          
                     </div>
                 @endif
             </div>
     </section>
     <script>
+
+        var $table = $('#tab')
+        $(function() {
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('destroy').bootstrapTable({
+            exportDataType: $(this).val(),
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            })
+        }).trigger('change')
+        })
+
+        function editProposal(id){
+            var url = "{{ route('admin.proposal.edit', ':id') }}";
+            url = url.replace(':id', id);
+            window.location.href = url;
+            // fill the form with the details
+            
+            
+        }
+        function editOutreach(outreachId){
+            var url = "{{ route('admin.outreach.edit', ':id') }}";
+            url = url.replace(':id', outreachId);
+            window.location.href = url;
+        }
         function removeOutreach(outreachId){
             console.log(outreachId);
             // sweet alert for confirming
@@ -620,9 +678,7 @@
             var faculty_select = document.getElementById('faculty_select');
             // clear department
             var department_select = document.getElementById('department_select');
-            // select option 0
-
-            
+            // select option 0   
         }
 
         faculty_btn.addEventListener('click', showFaculty, false);
@@ -675,7 +731,16 @@
             </p>
             <script src="{{ asset('js/bootstrap.js') }}"></script>
             <script src="{{ asset('js/app.js') }}"></script>
-        @show
+            <link href="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+    @show
     </div>
     
 </body>

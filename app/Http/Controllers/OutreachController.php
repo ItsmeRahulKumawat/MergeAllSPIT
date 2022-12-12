@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faculty;
 use App\Models\Outreach;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -28,6 +29,7 @@ class OutreachController extends Controller
     public function store(Request $request)
     {
 
+        
         // validations
         $request->validate([
             'faculty_department_1' => 'required',
@@ -99,12 +101,36 @@ class OutreachController extends Controller
         // remove public from report path
         $report_path = substr($report_path, 7);
         $outreach->outreach_report = $report_path . '/' . $report_name;
-        $outreach->save();
-
-        return view('submitted', ['outreach_id' => $outreach->id]);
+        $temp = null;
+        if($request->input('id')!=null){
+            $temp = $request->input('id');
+            // update outreach where id matches
+            $outreach = Outreach::where('id', $temp)->first();
+            $outreach->update([
+                'outreach_faculty_department' => $request->input('faculty_department_1'),
+                'outreach_faculty_name' => $request->input('faculty_name_1'),
+                'outreach_activity' => $request->input('activity'),
+                'outreach_status' => $request->input('status'),
+                'outreach_place' => $request->input('place'),
+                'outreach_date' => $request->input('date_activity'),
+                'outreach_sponsors' => $request->input('sponsorList'),
+                'outreach_amount' => $request->outreach_amount,
+                'outreach_photos' => $photoList,
+                'outreach_report' => $report_path . '/' . $report_name,
+            ]);
+        }else{
+            $outreach->save();
+        }
+        
+        $temp = $outreach->id;
+        return view('submitted', ['outreach_id' => $temp]);
 
     }
-
+    public function showEditForm($id){
+        $outreach = Outreach::where('id', $id)->first();
+        
+        return view('outreach_edit')->with(['outreach'=>$outreach]);
+    }
     /**
      * Display the specified resource.
      *
@@ -126,7 +152,15 @@ class OutreachController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $outreach = Outreach::where('id', $id)->first();
+
+        // $outreach->delete();
+        // dd($outreach);
+        $request->request->add(['id' => $id]);
+        // dd($request->all());
+        return $this->store($request);
+
+
     }
 
     /**
