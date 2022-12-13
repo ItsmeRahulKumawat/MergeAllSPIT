@@ -379,6 +379,8 @@
                                                                     onclick="editProposal('{{ $proposal->proposal_id }}')">
                                                                     <i class="bi bi-pencil-square"></i>
                                                                 </button>
+                                                                <button type="button" class="btn btn-success mt-2" onclick="createPDF(this,'{{ $proposal->proposal_id  }}')">
+                                                                    Download</button>
                                                             @endif
                                                         @endguest
                                                         {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
@@ -438,6 +440,8 @@
                                                                 onclick="editOutreach('{{$outreach->id }}')">
                                                                 <i class="bi bi-pencil-square"></i>
                                                             </button>
+                                                            <button type="button" class="btn btn-success" onclick="createPDF(this,'{{ $outreach->id  }}')">
+                                                                Download</button>
                                                         @endif
                                                         
                                                     @endguest
@@ -484,6 +488,44 @@
         }).trigger('change')
         })
 
+        function createPDF(e,id){
+                
+                //Create Window Object
+                var win = window.open('', '', 'height=600,width=1200');
+                // get the contents inside the table
+                var row = e.parentNode.parentNode;
+                console.log(row);
+                // fill the page with row contents
+                var th = Array.from(document.querySelectorAll("th"));
+                th.pop();
+                var headings = th.children;
+                var contents = Array.from(row.children);
+                console.log(contents);
+                // remove the last element of the array
+                contents.pop();
+                // get th 
+                win.document.write('<html><head>');
+                win.document.write('<title></title>');   // <title> FOR PDF HEADER.
+                var heading = document.getElementById("reportType").value;
+                win.document.write('</head>');
+                win.document.write('<body>  <center><div id="Heading"> <h1 id="Report_Heading">' + heading + '</h1><hr style="width:40%;"> </div></center><br><br>');
+                win.document.write('<table border="1" cellspacing="0" cellpadding="5" style="width:100%;border-collapse:collapse;">');   // CREATE A TABLE WITH BORDER.
+                win.document.write('<tr>');
+                for(var i = 0; i < th.length; i++){
+                    win.document.write('<th>' + th[i].innerHTML + '</th>');  // TABLE HEADER.
+                }
+                win.document.write('</tr>');
+                win.document.write('<tr>');
+                for(var i = 0; i < contents.length; i++){
+                    win.document.write('<td>' + contents[i].innerHTML + '</td>');  // TABLE HEADER.
+                }
+                win.document.write('</tr>');
+                win.document.write('</table>');
+                win.document.write('</body></html>');
+
+                win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+                win.print();    // PRINT THE CONTENTS.
+            }
         function editProposal(id){
             var url = "{{ route('admin.proposal.edit', ':id') }}";
             url = url.replace(':id', id);
