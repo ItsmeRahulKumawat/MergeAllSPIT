@@ -318,6 +318,8 @@
                                         <th class="col-1">Outreach Sponsors</th>
                                         <th class="col-1">Outreach Faculty Name</th>
                                         <th class="col-1">Outreach Faculty Department</th>
+                                        <th class="col-2">Actions</th>
+
                                     </tr>
                                     @endif
                                 </thead>
@@ -415,7 +417,11 @@
                                                     ->get();
                                                 ?>
                                                 
-                                                    <td class="col-1">{{ $faculty_name[0]->faculty_name }}</td>
+                                                    @if(count($faculty_name)!=0)
+                                                        <td class="col-1">{{ $faculty_name[0]->faculty_name }}</td>
+                                                    @else
+                                                        <td class="col-1">No faculty </td>
+                                                    @endif
                                                     <td class="col-1">{{ $outreach->outreach_faculty_department }}</td>
                                                 
 
@@ -443,10 +449,8 @@
                                                             <button type="button" class="btn btn-success" onclick="createPDF(this,'{{ $outreach->id  }}')">
                                                                 Download</button>
                                                         @endif
-                                                        
                                                     @endguest
                                                     {{-- <a href="{{ route('pdfStream') }}" class="btn btn-primary">View</a> --}}
-
                                                     </tr>
                                             @endforeach
                                         @endif
