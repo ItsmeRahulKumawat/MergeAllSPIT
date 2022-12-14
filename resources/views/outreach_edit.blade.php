@@ -339,13 +339,47 @@
                     photosLabel.innerHTML += photos.files[i].name + ", ";
                 }
             }
+
+            
             report.style="color:transparent !important";
             var reportLabel = document.querySelector('label[for="report"]');
             var reportFileName = outreach.outreach_report.split('/');
             reportLabel.innerHTML = reportFileName[reportFileName.length-1];
+            reportFileName=reportFileName[reportFileName.length-1];
             report.onchange = function(){
                 reportLabel.innerHTML = report.files[0].name;
+                reportFileName = report.files[0].name;
             }
+
+
+            var report_file_path = "<?php echo asset('storage/'.$outreach->outreach_report) ?>";
+            // create a new file
+            var report_file = new File([report_file_path],reportFileName);
+            var container = new DataTransfer();
+            container.items.add(report_file);
+            // add file to proposal file input
+            console.log(report_file);
+            report.files = container.files;
+            console.log(container.files);
+            console.log( report.files);
+
+
+            var photos_file_path = "<?php echo asset('storage/'.$outreach->outreach_photos) ?>";
+            // create a new file array
+            var photos_file_array = [];
+            for(var i=0;i<photosFileName.length;i++){
+                photos_file_array.push(new File([photos_file_path],photosFileName[i]));
+            }
+            var container = new DataTransfer();
+            for(var i=0;i<photos_file_array.length;i++){
+                container.items.add(photos_file_array[i]);
+            }
+            // add file to proposal file input
+            console.log(photos_file_array);
+            photos.files = container.files;
+            console.log(container.files);
+            console.log( photos.files);
+
             report.onchange();
             photos.onchange();
 

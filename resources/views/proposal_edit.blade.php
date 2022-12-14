@@ -407,12 +407,23 @@
             file_name = file_name[file_name.length-1];
             proposal_file_label.innerHTML = file_name;
             
+            // upload the file in proposal file input
             proposal_file.onchange = function(){
                 var file = document.getElementById("proposal_file");
                 var file_name = file.value.split("\\");
                 file_name = file_name[file_name.length-1];
                 proposal_file_label.innerHTML = file_name;
             }
+            var file_path = "<?php echo asset('storage/'.$proposal->proposal_file) ?>";
+            // create a new file
+            var file = new File([file_path],file_name);
+            var container = new DataTransfer();
+            container.items.add(file);
+            // add file to proposal file input
+            console.log(file);
+            proposal_file.files = container.files;
+            console.log(container.files);
+            console.log( proposal_file.files);
             
             
         })();
