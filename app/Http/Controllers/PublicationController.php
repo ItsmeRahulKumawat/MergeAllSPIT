@@ -27,7 +27,7 @@ class PublicationController extends Controller
         $name = "Dr. Aarti Karande";
         $first_name = 'Aarti';
         $salutation = 'Dr';
-        $ID = DB::select('select google_scholar_id as g from researchfaculties where firstname = ? and title = ?', [$first_name, $salutation]);
+        $ID = DB::select('select google_scholar_id as g from facpublications where firstname = ? and title = ?', [$first_name, $salutation]);
 
         $gscID = $ID[0]->g;
 
