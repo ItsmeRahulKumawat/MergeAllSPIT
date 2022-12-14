@@ -51,7 +51,7 @@
             style="margin-top: -30px !important"
         >
             <h2>
-                <b>{{ $name }}</b>
+                <b>{{ $fullname }}</b>
             </h2>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">

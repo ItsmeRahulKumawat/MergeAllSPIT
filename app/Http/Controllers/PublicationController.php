@@ -11,7 +11,7 @@ class PublicationController extends Controller
     public function datadriver()
     {
         // $results = [];
-        $facc = DB::select('select distinct faculty_name as fac from faculties');
+        $facc = DB::select('select distinct fullname as fac from facpublications');
         $fac_name = [];
         foreach ($facc as $f) {
             $fac_name[] = $f->fac;
@@ -23,11 +23,11 @@ class PublicationController extends Controller
     public function facultydata(Request $request)
     {
 
-        $name = $request->filter;
-        $name = "Dr. Aarti Karande";
-        $first_name = 'Aarti';
-        $salutation = 'Dr';
-        $ID = DB::select('select google_scholar_id as g from facpublications where firstname = ? and title = ?', [$first_name, $salutation]);
+        $fullname = $request->filter;
+
+        $ID = DB::select('select google_scholar_id as g from facpublications where fullname = ?', [$fullname]);
+
+
 
         $gscID = $ID[0]->g;
 
@@ -249,7 +249,7 @@ class PublicationController extends Controller
             $publications_count[] = $field;
         }
 
-        return view('publication.facultypub', compact(['size', 'name', 'publications_count', 'year_array_graph', 'citations_array_graph', 'title_array', 'authors_array', 'year_array', 'citations_array', 'links_array']));
+        return view('publication.facultypub', compact(['size', 'fullname', 'publications_count', 'year_array_graph', 'citations_array_graph', 'title_array', 'authors_array', 'year_array', 'citations_array', 'links_array']));
 
     }
 }
