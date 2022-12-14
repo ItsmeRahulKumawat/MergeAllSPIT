@@ -411,17 +411,17 @@
                                                 <td class="col-1">{{ $outreach->outreach_place }}</td>
                                                 <td class="col-1">{{ $outreach->outreach_sponsors }}</td>
                                             
-                                                <?php
+                                                {{-- <?php
                                                 $faculty_name = DB::table('faculties')
                                                     ->where('faculty_id', $outreach->outreach_faculty_name)
                                                     ->get();
-                                                ?>
+                                                ?> --}}
                                                 
-                                                    @if(count($faculty_name)!=0)
-                                                        <td class="col-1">{{ $faculty_name[0]->faculty_name }}</td>
-                                                    @else
-                                                        <td class="col-1">No faculty </td>
-                                                    @endif
+                                                    {{-- @if(count($faculty_name)!=0) --}}
+                                                        {{-- <td class="col-1">{{ $faculty_name[0]->faculty_name }}</td> --}}
+                                                    {{-- @else --}}
+                                                        <td class="col-1">{{$outreach->outreach_faculty_name}}</td>
+                                                    {{-- @endif --}}
                                                     <td class="col-1">{{ $outreach->outreach_faculty_department }}</td>
                                                 
 
@@ -439,14 +439,14 @@
                                                                 class="btn btn-primary">View</a>
                                                         @else
                                                             <a href="{{ route('admin.outreach') }}/{{$outreach->id  }}"
-                                                                class="btn btn-primary">View</a>
+                                                                class="btn btn-primary m-1">View</a>
                                                             <button class="btn btn-danger"
                                                                 onclick="removeOutreach('{{ $outreach->id  }}')">Delete</button>
-                                                            <button type="submit" class="btn btn-warning"
+                                                            <button type="submit" class="btn btn-warning m-1"
                                                                 onclick="editOutreach('{{$outreach->id }}')">
                                                                 <i class="bi bi-pencil-square"></i>
                                                             </button>
-                                                            <button type="button" class="btn btn-success" onclick="createPDF(this,'{{ $outreach->id  }}')">
+                                                            <button type="button" class="btn btn-success m-1" onclick="createPDF(this,'{{ $outreach->id  }}')">
                                                                 Download</button>
                                                         @endif
                                                     @endguest

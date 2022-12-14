@@ -112,10 +112,13 @@ Route::get('/report',[ReportController::class,'index'])->name('report');;
 Route::post('/report',[ReportController::class,'generateReport']);
 Route::get('/proposal/{id}', [ProposalController::class, 'show']);
 Route::get('outreach/{id}',[OutreachController::class,'show']);
-
+Route::post('/getDeptOutreach', [OutreachController::class, 'getDept']);
 // get departments
 Route::post('/getDept', [ProposalController::class, 'getDept']);
 
+Route::get('aboutUs',function(){
+    return view('about_us');
+});
 
 
 Auth::routes();

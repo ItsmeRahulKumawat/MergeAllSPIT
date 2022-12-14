@@ -20,6 +20,16 @@ class OutreachController extends Controller
         return view('outreach');
     }
 
+    public function getDept(){
+        $num = $_POST['num'];
+        $dept = $_POST['department'];
+        $connection = mysqli_connect('localhost', 'root', '', 'laravel');
+        $sql = mysqli_query($connection, "SELECT faculty_name,faculty_id FROM faculties Where faculty_department = '$dept'");
+        while ($row = $sql->fetch_assoc()) {
+            echo "<option value='" . $row['faculty_name'] . "'>" . $row['faculty_name'] . "</option>";
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -56,7 +66,7 @@ class OutreachController extends Controller
         ]);
         $outreach = new Outreach();
         $outreach->outreach_faculty_department = $request->input('faculty_department_1');
-        $outreach->outreach_faculty_name = $request->input('faculty_name_1');
+        $outreach->outreach_faculty_name =$request->input('faculty_name_1');
         $outreach->outreach_activity = $request->input('activity');
         $outreach->outreach_status = $request->input('status');
         $outreach->outreach_place = $request->input('place');
@@ -104,11 +114,12 @@ class OutreachController extends Controller
         $temp = null;
         if($request->input('id')!=null){
             $temp = $request->input('id');
+
             // update outreach where id matches
             $outreach = Outreach::where('id', $temp)->first();
             $outreach->update([
                 'outreach_faculty_department' => $request->input('faculty_department_1'),
-                'outreach_faculty_name' => $request->input('faculty_name_1'),
+                'outreach_faculty_name' =>$request->input('faculty_name_1'),
                 'outreach_activity' => $request->input('activity'),
                 'outreach_status' => $request->input('status'),
                 'outreach_place' => $request->input('place'),

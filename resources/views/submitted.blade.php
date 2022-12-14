@@ -16,10 +16,13 @@
       <p style="font-family: monospace;"><b>We received your proposal paper<br/> we'll be in touch shortly!</b></p>
       {{-- proposal id --}}
       <p style="font-family: monospace;"><b>Proposal ID: {{ $proposal_id }}</b></p>
+      <a href="/proposal">Continue here</a>
       @else 
       <p style="font-family: monospace;"><b>We received your outreach report<br/> we'll be in touch shortly!</b></p>
       {{-- outreach id --}}
       <p style="font-family: monospace;"><b>Outreach ID: {{ $outreach_id }}</b></p>
+      <a href="/outreach">Continue here</a>
       @endif
+      
     </body>
 </html>
