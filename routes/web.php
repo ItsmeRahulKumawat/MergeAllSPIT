@@ -133,8 +133,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 //Publications Routes
-Route::view('/publication/pub_home', 'publication.pub_home')->name('pub_home');
-// Route::view('/facfilter', 'facfilter')->name('facfilter');
-// Route::get('/facfilter', [FacultyController::class, 'datadriver']);
-// Route::post('/facultydata', [FacultyController::class, 'facultydata'])->name('facultyDataParser');
-// Route::view('/facultypub', 'facultypub')->name('facultypub');
+Route::view('/publication_home', 'publication.pub_home')->name('pub_home');
+Route::view('/facfilter', 'publication.facfilter')->name('facfilter');
+Route::get('/facfilter', [FacultyController::class, 'datadriver']);
+Route::post('/facultydata', [FacultyController::class, 'facultydata'])->name('facultyDataParser');
+Route::view('/facultypub', 'publication.facultypub')->name('facultypub');
