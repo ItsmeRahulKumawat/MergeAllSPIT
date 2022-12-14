@@ -31,6 +31,7 @@ Route::middleware(['auth','isAdmin'])->group(function () {
     
     Route::post('/getDept', [ProposalController::class, 'getDept']);
     
+    
     Route::post('/removeFaculty/{id}', [FacultyController::class, 'destroy']);
     
     
