@@ -35,8 +35,8 @@ class PublicationController extends Controller
         $key = "dc6cffab505c9fa7737419184008156209727fee5ee5812a9d5260eb548514e0";
 
 
-        $ext = shell_exec("python ext.py $gscID $key");
-        $title = shell_exec("python title.py $gscID $key");
+        $ext = shell_exec("python publicationScripts/ext.py $gscID $key");
+        $title = shell_exec("python publicationScripts/title.py $gscID $key");
 
         //===================================================================================================================
         //FOR TESTING PURPOSE WE CAN USE THIS TO KNOW WHERE THE EROR IS IN SCRIPT
@@ -53,11 +53,11 @@ class PublicationController extends Controller
 
         // dd($process->getOutput());
         //====================================================================================================================
-        $publications = shell_exec("python publications.py $gscID $key");
-        $authors = shell_exec("python authors.py $gscID $key");
-        $citations = shell_exec("python citations.py $gscID $key");
-        $year = shell_exec("python year.py $gscID $key");
-        $links = shell_exec("python links.py $gscID $key");
+        $publications = shell_exec("python publicationScripts/publications.py $gscID $key");
+        $authors = shell_exec("python publicationScripts/authors.py $gscID $key");
+        $citations = shell_exec("python publicationScripts/citations.py $gscID $key");
+        $year = shell_exec("python publicationScripts/year.py $gscID $key");
+        $links = shell_exec("python publicationScripts/links.py $gscID $key");
 
         // dd($citations);
         //title------------------------------------------------------------------------>
