@@ -186,7 +186,7 @@
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="team-item">
                             <div class="team-img">
-                                <img src="img/rahul.jpg" alt="Image">
+                                <img src="img/rahul.jpg" height="170px" alt="Image">
                             </div>
                             <div class="team-text">
                                 <h2>Rahul Kumawat</h2>
