@@ -17,7 +17,7 @@ class PublicationController extends Controller
             $fac_name[] = $f->fac;
         }
 
-        return view('facfilter', compact('fac_name'));
+        return view('publication.facfilter', compact('fac_name'));
     }
 
     public function facultydata(Request $request)
@@ -249,7 +249,7 @@ class PublicationController extends Controller
             $publications_count[] = $field;
         }
 
-        return view('facultypub', compact(['size', 'name', 'publications_count', 'year_array_graph', 'citations_array_graph', 'title_array', 'authors_array', 'year_array', 'citations_array', 'links_array']));
+        return view('publication.facultypub', compact(['size', 'name', 'publications_count', 'year_array_graph', 'citations_array_graph', 'title_array', 'authors_array', 'year_array', 'citations_array', 'links_array']));
 
     }
 }
