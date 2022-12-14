@@ -61,6 +61,7 @@ class ProposalController extends Controller
         ],
         );
         $title = $request->input('proposal_title');
+
         $file = $request->proposal_file;    
         // create a new folder with submission date as name
         $submission_date = $request->input('proposal_submissionDate');
@@ -123,7 +124,6 @@ class ProposalController extends Controller
         // $department = implode(',', $department);
         
         // give random hash string as id
-        // dd($request);
         $temp = null;
         if($request->input("proposal_id")!=null){
             $temp = $request->input("proposal_id");
@@ -142,7 +142,6 @@ class ProposalController extends Controller
         $proposal->proposal_file = $proposal_folder.'/'.$fileName;
         $proposal->save();
         // send view with proposal id
-        
         return view('submitted', ['proposal_id' => $temp]);
         
         
@@ -176,8 +175,7 @@ class ProposalController extends Controller
     {
         // delete old data
         $proposal = Proposal::where('proposal_id', $proposal_id)->first();
-        $proposal->delete();
-        
+        $proposal->delete();        
         $request->request->add(['proposal_id' => $proposal_id]);
         return $this->store($request);
         
@@ -185,6 +183,7 @@ class ProposalController extends Controller
 
     public function showEditForm($id){
         $proposal = Proposal::where('proposal_id', $id)->first();
+        
         $faculty_group = FacultyGroup::where('faculty_group_id', $proposal->proposal_faculty_group_id)->first();
         return view('proposal_edit')->with(['proposal'=>Proposal::where('proposal_id', $id)->first(), 'faculty_group'=>$faculty_group]);
     }
