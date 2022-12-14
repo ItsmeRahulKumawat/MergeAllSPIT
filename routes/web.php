@@ -27,20 +27,21 @@ Route::get('/', function () {
 });
 
 
-Route::get('/login',function(){
+Route::get('/login', function () {
     return view('login');
 });
 
-Route::get('/register',function(){
+Route::get('/register', function () {
     return view('register');
 });
 
 
 
-Route::middleware(['auth','isUser'])->group(function(){
-    
+Route::middleware(['auth', 'isUser'])->group(function () {
+
     // proposal submission for user
-    Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal');;
+    Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal');
+    ;
     Route::get('/submitted', [ProposalController::class, 'submitted']);
     Route::post('/proposal', [ProposalController::class, 'store']);
 
@@ -54,33 +55,36 @@ Route::middleware(['auth','isUser'])->group(function(){
 // Route::get('/department',[DepartmentController::class,'index']);
 // make protected routes that user can access
 // admin
-Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'isAdmin'])->group(function () {
 
     // proposal submission
-    Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal');;
+    Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal');
+    ;
     Route::get('/submitted', [ProposalController::class, 'submitted']);
     Route::post('/proposal', [ProposalController::class, 'store']);
 
     // outreach submission
     Route::get('/outreach', [OutreachController::class, 'index'])->name('outreach');
     Route::post('outreach', [OutreachController::class, 'store']);
-    
+
 
     // Route::get('/proposal', [ProposalController::class, 'index'])->name('proposal');
     // proposal edit and delete from report
     Route::get('/proposal/{id}', [ProposalController::class, 'show']);
     Route::delete('/proposal/{id}', [ProposalController::class, 'destroy'])->name('proposal.remove');
-    Route::post('/proposal/{id}/edit', [ProposalController::class, 'update'])->name('proposal.edit');;
+    Route::post('/proposal/{id}/edit', [ProposalController::class, 'update'])->name('proposal.edit');
+    ;
     Route::get('/proposal/{id}/edit', [ProposalController::class, 'showEditForm']);
 
 
     // outreach edit and delete from report
-    Route::get('outreach/{id}',[OutreachController::class,'show']);
-    Route::delete('outreach/{id}',[OutreachController::class,'destroy'])->name('outreach.remove');
-    Route::post('outreach/{id}/edit',[OutreachController::class,'update'])->name('outreach.edit');;
-    Route::get('outreach/{id}/edit',[OutreachController::class,'showEditForm']);
+    Route::get('outreach/{id}', [OutreachController::class, 'show']);
+    Route::delete('outreach/{id}', [OutreachController::class, 'destroy'])->name('outreach.remove');
+    Route::post('outreach/{id}/edit', [OutreachController::class, 'update'])->name('outreach.edit');
+    ;
+    Route::get('outreach/{id}/edit', [OutreachController::class, 'showEditForm']);
     // Route::get('/submitted', [ProposalController::class, 'submitted']);
-    
+
 
     // Faculty CRUD
     Route::get('/faculty', [FacultyController::class, 'index'])->name('faculty');
@@ -89,34 +93,36 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
     Route::put('/faculty/{id}', [FacultyController::class, 'update']);
 
     // Department CRUD
-    Route::get('/department',[DepartmentController::class,'index'])->name('department');
-    Route::post('/department',[DepartmentController::class,'store']);
+    Route::get('/department', [DepartmentController::class, 'index'])->name('department');
+    Route::post('/department', [DepartmentController::class, 'store']);
     Route::delete('/department/{id}', [DepartmentController::class, 'destroy']);
     Route::put('/department/{department_id}', [DepartmentController::class, 'update']);
-    
-    // Report view and generate
-    Route::get('/report',[ReportController::class,'index'])->name('report');;    
-    Route::post('/report',[ReportController::class,'generateReport']);
 
-    
+    // Report view and generate
+    Route::get('/report', [ReportController::class, 'index'])->name('report');
+    ;
+    Route::post('/report', [ReportController::class, 'generateReport']);
+
+
     // Route::get('/outreach',[OutreachController::class,'index'])->name('outreach');
     // Route::post('outreach', [OutreachController::class, 'store']);
 
-    
+
 
 });
 
 
 // report view and generate for anyone
-Route::get('/report',[ReportController::class,'index'])->name('report');;    
-Route::post('/report',[ReportController::class,'generateReport']);
+Route::get('/report', [ReportController::class, 'index'])->name('report');
+;
+Route::post('/report', [ReportController::class, 'generateReport']);
 Route::get('/proposal/{id}', [ProposalController::class, 'show']);
-Route::get('outreach/{id}',[OutreachController::class,'show']);
+Route::get('outreach/{id}', [OutreachController::class, 'show']);
 Route::post('/getDeptOutreach', [OutreachController::class, 'getDept']);
 // get departments
 Route::post('/getDept', [ProposalController::class, 'getDept']);
 
-Route::get('aboutUs',function(){
+Route::get('aboutUs', function () {
     return view('about_us');
 });
 
@@ -124,3 +130,11 @@ Route::get('aboutUs',function(){
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+//Publications Routes
+Route::view('/publication/pub_home', 'publication.pub_home')->name('pub_home');
+// Route::view('/facfilter', 'facfilter')->name('facfilter');
+// Route::get('/facfilter', [FacultyController::class, 'datadriver']);
+// Route::post('/facultydata', [FacultyController::class, 'facultydata'])->name('facultyDataParser');
+// Route::view('/facultypub', 'facultypub')->name('facultypub');

@@ -101,6 +101,8 @@
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
                             <a class="mega-menu-link" target="_blank" href="http://research.spit.ac.in" tabindex="0">Research</a></li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                            <a class="mega-menu-link" target="_blank" href="{{route('pub_home')}}" tabindex="0">Publications</a></li>
+                        <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
                         <a class="mega-menu-link" target="_blank" href="http://pdc.spit.ac.in/login" tabindex="0">PDC</a></li>
                         
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
