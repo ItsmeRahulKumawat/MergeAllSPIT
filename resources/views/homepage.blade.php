@@ -108,6 +108,12 @@
                                 <li class="mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-29857" id="mega-menu-item-29857">
                                     <a class="mega-menu-link" href="https://research.spit.ac.in/register">Register</a>
                                 </li>
+                                <li class="mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-29857" id="mega-menu-item-29857">
+                                    <a class="mega-menu-link" href="https://research.spit.ac.in/front-contact">Enquiry/Problem</a>
+                                </li>
+                                <li class="mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-29857" id="mega-menu-item-29857">
+                                    <a class="mega-menu-link" href="https://research.spit.ac.in/all-forms-view">All Report View</a>
+                                </li>
                             </ul>
                         </li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
