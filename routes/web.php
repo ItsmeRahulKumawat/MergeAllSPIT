@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\FacultyController;
-use App\Http\Controllers\OutreachController;
+use App\Http\Controllers\proposal_outreach\DepartmentController;
+use App\Http\Controllers\proposal_outreach\FacultyController;
+use App\Http\Controllers\proposal_outreach\OutreachController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProposalController;
-use App\Http\Controllers\ReportController;
-use App\Models\Faculty;
-use App\Models\Proposal;
+use App\Http\Controllers\proposal_outreach\ProposalController;
+use App\Http\Controllers\proposal_outreach\ReportController;
+use App\Models\proposal_outreach\Faculty;
+use App\Models\proposal_outreach\Proposal;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -123,4 +123,4 @@ Route::get('aboutUs',function(){
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\proposal_outreach\HomeController::class, 'index'])->name('home');

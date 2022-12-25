@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\FacultyController;
-use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\proposal_outreach\DepartmentController;
+use App\Http\Controllers\proposal_outreach\FacultyController;
+use App\Http\Controllers\proposal_outreach\ProposalController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
