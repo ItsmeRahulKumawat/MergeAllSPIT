@@ -31,9 +31,9 @@ Route::get('/login',function(){
     return view('login');
 });
 
-Route::get('/register',function(){
-    return view('register');
-});
+// Route::get('/register',function(){
+//     return view('register');
+// });
 
 
 
@@ -121,6 +121,6 @@ Route::get('aboutUs',function(){
 });
 
 
-Auth::routes();
+Auth::routes(['register'=>false]);
 
 Route::get('/home', [App\Http\Controllers\proposal_outreach\HomeController::class, 'index'])->name('home');

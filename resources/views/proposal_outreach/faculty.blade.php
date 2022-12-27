@@ -568,28 +568,52 @@
                 function removeFaculty(id,i){
                     var faculty_name = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[1].innerHTML;
                     var faculty_department = document.getElementsByClassName("row_" + i)[0].getElementsByTagName("td")[4].innerHTML;
-                    Swal.fire({
-                        title: 'Are you sure',
-                        html: `<p>Do you want to delete this faculty ?</p>
-                                <p>Faculty Name : <b>${faculty_name}</b></p>
-                                <p>Faculty Department : <b>${faculty_department}</b></p>`,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            Swal.fire(
-                                title = 'Deleted!',
-                                html = '<p>Faculty <b>' + faculty_name + '</b> has been deleted.</p>',
-                                icon = 'success',
-                                showConfirmButton = false,
-                                timer = 1500
-                            );
-                            removeFacultyFromDB(id, i);
-                        }
-                    });
+                    console.log(faculty_name.value);
+                    if(faculty_name.value&&faculty_department.value){
+                        Swal.fire({
+                            title: 'Are you sure',
+                            html: `<p>Do you want to delete this faculty ?</p>
+                                    <p>Faculty Name : <b>${faculty_name}</b></p>
+                                    <p>Faculty Department : <b>${faculty_department}</b></p>`,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire(
+                                    title = 'Deleted!',
+                                    html = '<p>Faculty <b>' + faculty_name + '</b> has been deleted.</p>',
+                                    icon = 'success',
+                                    showConfirmButton = false,
+                                    timer = 1500
+                                );
+                                removeFacultyFromDB(id, i);
+                            }
+                        });
+                    }else{
+                        Swal.fire({
+                            title: 'Are you sure',
+                            html: `<p>Do you want to delete this faculty ?</p>`,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire(
+                                    title = 'Deleted!',
+                                    html = '<p>Faculty has been deleted.</p>',
+                                    icon = 'success',
+                                    showConfirmButton = false,
+                                    timer = 1500
+                                );
+                                removeFacultyFromDB(id, i);
+                            }
+                        });
+                    }
                 }
                 function removeFacultyFromDB(id, i) {
                     console.log("here",id,i);
