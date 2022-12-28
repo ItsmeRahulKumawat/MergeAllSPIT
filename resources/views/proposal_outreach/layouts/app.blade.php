@@ -14,12 +14,12 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/dash_icons.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/custom.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/navbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/dash_icons.css') }}" />
 
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/app.css') }}" />
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" type="text/css"

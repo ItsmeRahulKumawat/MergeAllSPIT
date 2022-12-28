@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/dash_icons.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/app.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/custom.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/dash_icons.css') }}" />
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" type="text/css"
@@ -17,9 +17,9 @@
     <link rel="stylesheet" type="text/css" href="https://www.spit.ac.in/wp-content/themes/spit-main/red.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('css/proposal.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/proposal.css') }}" />
 
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('proposal_outreach/css/navbar.css') }}" />
     <title>outreach</title>
 </head>
 
