@@ -1,0 +1,22 @@
+
+.selected{
+    background-color: green;
+}
+
+.btn-group>.btn.active, .btn-group>.btn:active, .btn-group>.btn:focus {
+    background-color: green;
+    border-color: green;
+}
+
+.hidden{
+    display: none;
+}
+
+.visible{
+    display: block;
+}
+
+/* reduce table width */
+table {
+    width: 50%;
+}
