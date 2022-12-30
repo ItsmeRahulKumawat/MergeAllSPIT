@@ -33,6 +33,7 @@
         <link rel="stylesheet" href="{{ asset('proposal_outreach/css/proposal.css') }}" />
         <link rel="stylesheet" href="{{ asset('proposal_outreach/css/navbar.css') }}" />
         <link rel="stylesheet" href="{{ asset('proposal_outreach/css/addFaculty.css') }}" />
+        {{ Vite::useBuildDirectory('proposal_outreach/build') }}
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     
         <!-- Template Stylesheet -->
@@ -77,38 +78,66 @@
                                 data-breakpoint="600" data-unbind="true" data-hover-intent-timeout="300"
                                 data-hover-intent-interval="100">
                                
-                                
-                                <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                    <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
-                                </li>
-                                <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                    <a class=" mega-menu-link nav-link" href="{{ route('admin.report') }}">Report</a>
-                                </li>
                                 @guest
                                 @if (Route::has('login'))
-                                    <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
+                                    <li id='mega-menu-item-25693' tabindex="0"
+                                        class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
                                         <a class=" mega-menu-link nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                     </li>
                                 @endif
-    
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                    id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a>
+                                </li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                    id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a>
+                                </li>
                                 {{-- @if (Route::has('register'))
-                                    <li  id="mega-menu-item-25693"  tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
-                                        <a class=" mega-menu-link nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                    </li>
-                                @endif --}}
+                                <li  id="mega-menu-item-25693"  tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
+                                    <a class=" mega-menu-link nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif --}}
                             @else
-                                <li class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
-                                    <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                @if (Auth::user()->role == '1')
+                                    <li id='mega-menu-item-25693' tabindex="0"
+                                        class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
+                                        <a class=" mega-menu-link nav-link"
+                                            href="{{ route('admin.department') }}">Department</a>
+                                    </li>
+                                    <li id='mega-menu-item-25693' tabindex="0"
+                                        class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
+                                        <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
+                                    </li>
+                                @endif
+                                @if (Auth::user()->role == '0')
+                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                        id='mega-menu-item-25693'>
+                                        <a class="mega-menu-link" target="_blank" href="proposal"
+                                            tabindex="0">Proposal</a>
+                                    </li>
+                                    <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
+                                        id='mega-menu-item-25693'>
+                                        <a class="mega-menu-link" target="_blank" href="outreach"
+                                            tabindex="0">Outreach</a>
+                                    </li>
+                                @endif
+                                <li
+                                    class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
+                                    <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#"
+                                        role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        v-pre>
                                         {{ Auth::user()->name }}
                                     </a>
-    
-                                    <div class="dropdown-user-menu dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <div class="dropdown-user-menu dropdown-menu dropdown-menu-end"
+                                        aria-labelledby="navbarDropdown">
                                         <a id="dropdown-user-menu-item " class="dropdown-item" href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}
                                         </a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            class="d-none">
                                             @csrf
                                         </form>
                                     </div>
@@ -134,7 +163,7 @@
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.0s">
                         <div class="team-item">
                             <div class="team-img">
-                                <img src="img/aarti maam.jpg" alt="Image">
+                                <img src="proposal_outreach/img/aarti maam.jpg" alt="Image">
                             </div>
                             <div class="team-text">
                                 <h2>Dr.Aarti Karande</h2>
@@ -152,7 +181,7 @@
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.0s">
                         <div class="team-item">
                             <div class="team-img">
-                                <img src="img/shubham.jpg" alt="Image">
+                                <img src="proposal_outreach/img/shubham.jpg" alt="Image">
                             </div>
                             <div class="team-text">
                                 <h2>Shubham Gupta</h2>
@@ -169,7 +198,7 @@
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="team-item">
                             <div class="team-img">
-                                <img src="img/swapnil.jpg" alt="Image">
+                                <img src="proposal_outreach/img/swapnil.jpg" alt="Image">
                             </div>
                             <div class="team-text">
                                 <h2>Swapnil Mhapankar</h2>
@@ -186,7 +215,7 @@
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="team-item">
                             <div class="team-img">
-                                <img src="img/rahul.jpg" alt="Image">
+                                <img src="proposal_outreach/img/rahul.jpg" alt="Image">
                             </div>
                             <div class="team-text">
                                 <h2>Rahul Kumawat</h2>
@@ -204,7 +233,7 @@
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="team-item">
                             <div class="team-img">
-                                <img src="img/srushti.jpg" alt="Image">
+                                <img src="proposal_outreach/img/srushti.jpg" alt="Image">
                             </div>
                             <div class="team-text">
                                 <h2>Srushti Panchbai</h2>

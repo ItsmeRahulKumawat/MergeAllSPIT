@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('proposal_outreach/css/navbar.css') }}" />
     <link rel="stylesheet" href="{{ asset('proposal_outreach/css/faculty.css') }}" />
     <link rel="stylesheet" href="{{ asset('proposal_outreach/css/report.css') }}" />
+    {{ Vite::useBuildDirectory('proposal_outreach/build') }}
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
 </head>
