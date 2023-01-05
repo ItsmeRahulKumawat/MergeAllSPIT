@@ -2,6 +2,8 @@
 /public/build
 /public/hot
 /public/storage
+# /proposal_outreach/public/storage
+
 /storage/*.key
 /vendor
 .env
