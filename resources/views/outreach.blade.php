@@ -162,7 +162,7 @@
                                                         var selected = $(`#faculty_department_${i}`).val();
                                                         console.log(selected);
                                                         $.ajax({
-                                                            url: '/getDeptOutreach',
+                                                            url: `{{route('getDeptOutreach')}}`,
                                                             type: 'POST',
                                                             dataType: 'html',
                                                             data: {

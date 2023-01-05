@@ -210,7 +210,7 @@
                                                                 var selected = $(`#faculty_department_${i}`).val();
                                                                 console.log(selected);
                                                                 $.ajax({
-                                                                    url: '/getDept',
+                                                                    url: `{{route('getDept')}}`,
                                                                     type: 'POST',
                                                                     dataType: 'html',
                                                                     data: {
