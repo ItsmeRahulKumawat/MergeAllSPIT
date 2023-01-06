@@ -106,13 +106,14 @@ class OutreachController extends Controller
             $name = $activity_name . '_' .($i).'.'.$image->getClientOriginalExtension();
             // print name in console    
             // echo "<script>console.log('" . $name . "')</script>";
-            // dd($image,$photos_path,$name);
-            
-            $image->move("proposal_outreach/storage/".$photos_path, $name);
+            $image->storeAs($photos_path, $name);
             // remove public from photos path
+            $i++;
+        }
+        foreach($request->file('photos') as $image)
+        {
             $photos_path = substr($photos_path, 7);
             $photos[] = $photos_path . '/' . $name;
-            $i++;
         }
 
         $photoList= implode(",",$photos);
