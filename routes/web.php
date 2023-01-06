@@ -130,8 +130,11 @@ Route::get('aboutUs', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
+Route::get('/', function () {
+    return view('homepage');
+})->name('home');
 
 //Publications Routes
 Route::view('/publication_home', 'publication.pub_home')->name('pub_home');

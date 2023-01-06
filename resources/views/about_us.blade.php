@@ -70,50 +70,57 @@
                                 <div class="mega-toggle-blocks-right">
                                 </div>
                             </div>
-                            <ul id="mega-menu-primary" class="mega-menu max-mega-menu mega-menu-horizontal mega-no-js"
-                                data-event="hover_intent" data-effect="fade_up" data-effect-speed="200"
-                                data-effect-mobile="disabled" data-effect-speed-mobile="0" data-mobile-force-width="false"
-                                data-second-click="go" data-document-click="collapse" data-vertical-behaviour="standard"
-                                data-breakpoint="600" data-unbind="true" data-hover-intent-timeout="300"
-                                data-hover-intent-interval="100">
-                               
+                            <ul id="mega-menu-primary" class="mega-menu max-mega-menu mega-menu-horizontal mega-no-js" data-event="hover_intent" data-effect="fade_up" data-effect-speed="200" data-effect-mobile="disabled" data-effect-speed-mobile="0" data-mobile-force-width="false" data-second-click="go" data-document-click="collapse" data-vertical-behaviour="standard" data-breakpoint="600" data-unbind="true" data-hover-intent-timeout="300" data-hover-intent-interval="100">
+                                <!-- <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" href="about_us" tabindex="0">About Us</a>
+                                </li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" href="/" tabindex="0">Home</a>
+                                </li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" href="student_registration" tabindex="0">Student Registration</a>
+                                </li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" href="login" tabindex="0">Login</a>
+                                </li> -->
+                                {{-- create a dropdown --}}
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="http://spit.ac.in" tabindex="0">SPIT</a></li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="http://research.spit.ac.in" tabindex="0">Reimbursement</a>
+                                    <ul class="mega-sub-menu">
+                                        <li class="mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-29857" id="mega-menu-item-29857">
+                                            <a class="mega-menu-link" href="https://research.spit.ac.in/login">Login</a>
+                                        </li>
+                                        <li class="mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-29857" id="mega-menu-item-29857">
+                                            <a class="mega-menu-link" href="https://research.spit.ac.in/register">Register</a>
+                                        </li>
+                                        <li class="mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-29857" id="mega-menu-item-29857">
+                                            <a class="mega-menu-link" href="https://research.spit.ac.in/front-contact">Enquiry/Problem</a>
+                                        </li>
+                                        <li class="mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-29857" id="mega-menu-item-29857">
+                                            <a class="mega-menu-link" href="https://research.spit.ac.in/all-forms-view">All Report View</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="{{route('pub_home')}}" tabindex="0">Publications</a></li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="http://pdc.spit.ac.in/login" tabindex="0">PDC</a></li>
                                 
-                                <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                    <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>
-                                </li>
-                                <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                    <a class=" mega-menu-link nav-link" href="{{ route('admin.report') }}">Report</a>
-                                </li>
-                                @guest
-                                @if (Route::has('login'))
-                                    <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
-                                        <a class=" mega-menu-link nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                    </li>
-                                @endif
-    
-                                {{-- @if (Route::has('register'))
-                                    <li  id="mega-menu-item-25693"  tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693">
-                                        <a class=" mega-menu-link nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                    </li>
-                                @endif --}}
-                            @else
-                                <li class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
-                                    <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ Auth::user()->name }}
-                                    </a>
-    
-                                    <div class="dropdown-user-menu dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                        <a id="dropdown-user-menu-item " class="dropdown-item" href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </li>
-                            @endguest
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="http://iedc-project.spit.ac.in/" tabindex="0">IEDC</a></li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a></li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a></li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="phd" tabindex="0">PHD</a></li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="http://vlab-ci.spit.ac.in/" tabindex="0">VLab</a></li>
+                                
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="/aboutUs" tabindex="0">About Us</a></li>
                             </ul>
                         </div>
                     </div>

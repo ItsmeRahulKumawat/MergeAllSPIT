@@ -23,7 +23,7 @@ class AdminMiddleware
             if(Auth::user()->role == '1'){
                 return $next($request);
             }else{
-                return redirect('/home')->with('error', 'You are not allowed to access this page');
+                return redirect('/dashboard')->with('error', 'You are not allowed to access this page');
             }
         }else{
             return redirect('/login')->with('status', 'Login to access this page');

@@ -77,9 +77,13 @@
                             @endif --}}
                         @else
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                            <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a></li>
+                            <a class="mega-menu-link" target="_blank" href="http://spit.ac.in" tabindex="0">SPIT</a></li>
                             <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                                <a class="mega-menu-link" target="_blank" href="report" tabindex="0">Report</a></li>
+                                <a class="mega-menu-link" target="_blank" href="/" tabindex="0">Home</a></li>
+                        <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                            <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a></li>
+                            <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="report" tabindex="0">Report of Outreach</a></li>
                             <li class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
                                 <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}

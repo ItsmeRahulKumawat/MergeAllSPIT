@@ -77,14 +77,12 @@
                                 </li>
                             @endif --}}
                             @else
-                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
-                                    id='mega-menu-item-25693'>
-                                    <a class="mega-menu-link" target="_blank" href="proposal" tabindex="0">Proposal</a>
-                                </li>
-                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693'
-                                    id='mega-menu-item-25693'>
-                                    <a class="mega-menu-link" target="_blank" href="report" tabindex="0">Report</a>
-                                </li>
+                            <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="http://spit.ac.in" tabindex="0">SPIT</a></li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="/" tabindex="0">Home</a></li>
+                                <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                    <a class="mega-menu-link" target="_blank" href="{{route('report')}}"  tabindex="0">Report of Outreach</a></li>
                                 <li
                                     class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
                                     <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#"
@@ -120,7 +118,7 @@
             {{-- <h2 class="text-left">Outreach Submission</h2> --}}
             <div class="content">
                 <div class="card-header">
-                    <h3>Outreach Submission</h3>
+                    <h3>Outreach Edit</h3>
                 </div>
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
@@ -324,8 +322,8 @@
             photos.style="color:transparent !important";
             var photosLabel = document.querySelector('label[for="photos"]');
             var photos_array = outreach.outreach_photos.split(',');
-            var photosFileName = []
-            var labelForPhotos = ""
+            var photosFileName = [];
+            var labelForPhotos = "";
             for(var i=0;i<photos_array.length;i++){
                 photosFileName.push(photos_array[i].split('/')[photos_array[i].split('/').length-1]);
                 labelForPhotos += photosFileName[i] + ", ";
@@ -340,8 +338,7 @@
                 }
             }
 
-            
-            report.style="color:transparent !important";
+            report.style= "color:transparent !important";
             var reportLabel = document.querySelector('label[for="report"]');
             var reportFileName = outreach.outreach_report.split('/');
             reportLabel.innerHTML = reportFileName[reportFileName.length-1];
@@ -352,19 +349,19 @@
             }
 
 
-            var report_file_path = "<?php echo asset('storage/'.$outreach->outreach_report) ?>";
+            var report_file_path = "<?php echo asset('proposal_outreach/storage/'.$outreach->outreach_report) ?>";
+            console.log("report_file_path",report_file_path);
             // create a new file
             var report_file = new File([report_file_path],reportFileName);
             var container = new DataTransfer();
-            container.items.add(report_file);
+            container.items.add(new File([report_file_path],reportFileName));
             // add file to proposal file input
             console.log(report_file);
             report.files = container.files;
             console.log(container.files);
             console.log( report.files);
-
-
-            var photos_file_path = "<?php echo asset('storage/'.$outreach->outreach_photos) ?>";
+            
+            var photos_file_path = "<?php echo asset('proposal_outreach/storage/'.$outreach->outreach_photos) ?>";
             // create a new file array
             var photos_file_array = [];
             for(var i=0;i<photosFileName.length;i++){

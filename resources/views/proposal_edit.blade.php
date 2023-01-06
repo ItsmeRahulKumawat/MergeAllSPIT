@@ -80,6 +80,13 @@
                             @endif --}}
                         @else
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                            <a class="mega-menu-link" target="_blank" href="http://spit.ac.in" tabindex="0">SPIT</a></li>
+                        <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                            <a class="mega-menu-link" target="_blank" href="/" tabindex="0">Home</a></li>
+                        
+                            <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="{{route('report')}}" tabindex="0">Report of Proposal</a></li>
+                        <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
                            
                             <li class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693 nav-item dropdown">
                                 <a id="navbarDropdown" class="mega-menu-link nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -109,7 +116,7 @@
             <div class="content">
                 @section('content')
                     <div class="card-header">
-                        <h3>Proposal Submission</h3>
+                        <h3>Proposal Edit</h3>
                     </div>
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
@@ -414,7 +421,7 @@
                 file_name = file_name[file_name.length-1];
                 proposal_file_label.innerHTML = file_name;
             }
-            var file_path = "<?php echo asset('storage/'.$proposal->proposal_file) ?>";
+            var file_path = "<?php echo asset('proposal_outreach/storage/'.$proposal->proposal_file) ?>";
             // create a new file
             var file = new File([file_path],file_name);
             var container = new DataTransfer();

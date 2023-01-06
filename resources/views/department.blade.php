@@ -63,7 +63,10 @@
                             data-second-click="go" data-document-click="collapse" data-vertical-behaviour="standard"
                             data-breakpoint="600" data-unbind="true" data-hover-intent-timeout="300"
                             data-hover-intent-interval="100">
-                           
+                            <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="http://spit.ac.in" tabindex="0">SPIT</a></li>
+                            <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                                <a class="mega-menu-link" target="_blank" href="/" tabindex="0">Home</a></li>
                             
                             <li  id='mega-menu-item-25693' tabindex="0" class="nav-item mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693" >
                                 <a class=" mega-menu-link nav-link" href="{{ route('admin.faculty') }}">Faculty</a>

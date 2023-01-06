@@ -100,7 +100,9 @@
                         </li> -->
                         {{-- create a dropdown --}}
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                            <a class="mega-menu-link" target="_blank" href="http://research.spit.ac.in" tabindex="0">Research</a>
+                            <a class="mega-menu-link" target="_blank" href="http://spit.ac.in" tabindex="0">SPIT</a></li>
+                        <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
+                            <a class="mega-menu-link" target="_blank" href="http://research.spit.ac.in" tabindex="0">Reimbursement</a>
                             <ul class="mega-sub-menu">
                                 <li class="mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-29857" id="mega-menu-item-29857">
                                     <a class="mega-menu-link" href="https://research.spit.ac.in/login">Login</a>
@@ -128,10 +130,10 @@
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
                         <a class="mega-menu-link" target="_blank" href="outreach" tabindex="0">Outreach</a></li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
-                        <a class="mega-menu-link" target="_blank" href="report" tabindex="0">Report</a></li>
-                        
+                            <a class="mega-menu-link" target="_blank" href="phd" tabindex="0">PHD</a></li>
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
                         <a class="mega-menu-link" target="_blank" href="http://vlab-ci.spit.ac.in/" tabindex="0">VLab</a></li>
+                        
                         <li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-25693' id='mega-menu-item-25693'>
                         <a class="mega-menu-link" target="_blank" href="/aboutUs" tabindex="0">About Us</a></li>
                     </ul>
