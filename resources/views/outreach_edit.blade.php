@@ -277,7 +277,7 @@
                                     accept="image/png, image/jpeg" multiple>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="report">Upload Report</label class="form-label">
+                                <label id="outreach_file_label" class="form-label outreach_file_label" for="report">Upload Report</label class="form-label">
                                 <input type="file" class="form-control" id="report" name="report"
                                     accept=".pdf,.doc">
                             </div>
@@ -331,6 +331,14 @@
                 labelForPhotos += photosFileName[i] + ", ";
             }
 
+            for(var i=0;i<photos_array.length;i++){
+                photosFileName[i] = photosFileName[i].split(".");
+                photosFileName[i].pop();
+                photosFileName[i] = photosFileName[i].join(".");
+                console.log("photosFileName[i] name",photosFileName[i]);
+            }
+
+
             console.log(outreach.outreach_photos)
             photosLabel.innerHTML = labelForPhotos;
             photos.onchange = function(){
@@ -343,19 +351,21 @@
 
 
             report.style= "color:transparent !important";
-            var reportLabel = document.querySelector('label[for="report"]');
+            var reportLabel =document.getElementById('outreach_file_label');
             var reportFileName = outreach.outreach_report.split('/');
-            reportLabel.innerHTML = reportFileName[reportFileName.length-1];
+            console.log("reportFileName=",reportFileName)
             reportFileName=reportFileName[reportFileName.length-1];
+            reportLabel.innerHTML = reportFileName;
 
             reportFileName = reportFileName.split(".");
             reportFileName.pop();
             reportFileName = reportFileName.join(".");
             console.log("reportFileName name",reportFileName);
-            report.onchange = function(){
-                reportLabel.innerHTML = report.files[0].name;
-                reportFileName = report.files[0].name;
-            }
+
+            // report.onchange = function(){
+            //     reportLabel.innerHTML = report.files[0].name;
+            //     reportFileName = report.files[0].name;
+            // }
 
             var report_file_path = "<?php echo asset('proposal_outreach/storage/'.$outreach->outreach_report) ?>";
             console.log("report_file_path",report_file_path);
@@ -385,7 +395,7 @@
             console.log(container.files);
             console.log( photos.files);
 
-            report.onchange();
+            // report.onchange();
             photos.onchange();
 
             

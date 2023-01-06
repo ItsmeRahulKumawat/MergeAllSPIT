@@ -96,30 +96,37 @@ class OutreachController extends Controller
         $photos_path = 'public/outreach/'.$photos_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
         $report_path = 'public/outreach/'.$report_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
         $photos = array();
-        foreach($request->file('photos') as $image)
+        $activity_name = $request->input('activity');
+        foreach($request->file('photos') as $key=>$image)
         {
-            $name = $image->getClientOriginalName();
+            // $name = $image->getClientOriginalName();
+            // store name as activity name and itertation
+            $name = $activity_name . '_' .($key+1).'.'.$image->getClientOriginalExtension();
             $image->storeAs($photos_path, $name);
             // remove public from photos path
             $photos_path = substr($photos_path, 7);
             $photos[] = $photos_path . '/' . $name;
         }
+
         $photoList= implode(",",$photos);
         $outreach->outreach_photos = $photoList;
     
 
         // remove extension from report name
-        $activity_name = $request->input('activity');
+        
         // dd($report->getClientOriginalExtension());
         $report_name = $activity_name . '.' . $report->getClientOriginalExtension();
+        // dd($report->getClientOriginalExtension());
         $report->storeAs($report_path, $report_name);
-        // remove public from report path
+
         $report_path = substr($report_path, 7);
         $outreach->outreach_report = $report_path . '/' . $report_name;
+        
+
         $temp = null;
         if($request->input('id')!=null){
             $temp = $request->input('id');
-
+            
             // update outreach where id matches
             $outreach = Outreach::where('id', $temp)->first();
             $outreach->update([
