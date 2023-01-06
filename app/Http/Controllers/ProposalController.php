@@ -62,7 +62,8 @@ class ProposalController extends Controller
         );
         $title = $request->input('proposal_title');
 
-        $file = $request->proposal_file;    
+        $file = $request->proposal_file;
+        // dd($file);
         // create a new folder with submission date as name
         $submission_date = $request->input('proposal_submissionDate');
         $submission_date = str_replace('/', '-', $submission_date);
@@ -87,9 +88,27 @@ class ProposalController extends Controller
         }
         // create a new folder with proposal title as name
         $proposal_folder = 'public/proposal/'.$year.'/'.$monthName.'/'.$day;
-
+        // remove extension from file name if it is there
+        
+        // dd($file->getClientOriginalName(), $title.'.'.$file->getClientOriginalExtension());
+        // store only if file name and title is different
+        // if($file->getClientOriginalName() != $title){
+        
         $fileName = $title.'.'.$file->getClientOriginalExtension();
         $file->storeAs($proposal_folder, $fileName);
+        // }
+        // else{
+            // $fileName = $file->getClientOriginalName();
+            // $file->storeAs($proposal_folder, $fileName);
+        // }
+        // $fileName = $title.'.'.$file->getClientOriginalExtension();
+        // $file->storeAs($proposal_folder, $fileName);
+        // only store if file is not already present
+        // if(!file_exists(asset('proposal_outreach/storage/proposal/'.$year.'/'.$monthName.'/'.$day.'/'.$fileName))){
+            // dd(asset('proposal_outreach/storage/proposal/'.$year.'/'.$monthName.'/'.$day.'/'.$fileName));
+        
+        // }
+        // $file->storeAs($proposal_folder, $fileName);
         $proposal_folder = 'proposal/'.$year.'/'.$monthName.'/'.$day;
         
         $proposal = new Proposal();

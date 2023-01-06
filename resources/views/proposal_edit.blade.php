@@ -414,6 +414,11 @@
             file_name = file_name[file_name.length-1];
             proposal_file_label.innerHTML = file_name;
             
+            // remove extension from file name
+            file_name = file_name.split(".");
+            file_name.pop();
+            file_name = file_name.join(".");
+            console.log("file name",file_name);
             // upload the file in proposal file input
             proposal_file.onchange = function(){
                 var file = document.getElementById("proposal_file");
@@ -423,6 +428,7 @@
             }
             var file_path = "<?php echo asset('proposal_outreach/storage/'.$proposal->proposal_file) ?>";
             // create a new file
+            console.log("file path",file_path);
             var file = new File([file_path],file_name);
             var container = new DataTransfer();
             container.items.add(file);

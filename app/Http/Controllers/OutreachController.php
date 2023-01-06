@@ -106,7 +106,12 @@ class OutreachController extends Controller
         }
         $photoList= implode(",",$photos);
         $outreach->outreach_photos = $photoList;
-        $report_name = $report->getClientOriginalName();
+    
+
+        // remove extension from report name
+        $activity_name = $request->input('activity');
+        // dd($report->getClientOriginalExtension());
+        $report_name = $activity_name . '.' . $report->getClientOriginalExtension();
         $report->storeAs($report_path, $report_name);
         // remove public from report path
         $report_path = substr($report_path, 7);

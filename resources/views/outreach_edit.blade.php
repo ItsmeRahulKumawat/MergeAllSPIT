@@ -325,7 +325,9 @@
             var photosFileName = [];
             var labelForPhotos = "";
             for(var i=0;i<photos_array.length;i++){
-                photosFileName.push(photos_array[i].split('/')[photos_array[i].split('/').length-1]);
+                photosFileName.push(
+                    photos_array[i].split('/')[photos_array[i].split('/').length-1]
+                    );
                 labelForPhotos += photosFileName[i] + ", ";
             }
 
@@ -337,17 +339,23 @@
                     photosLabel.innerHTML += photos.files[i].name + ", ";
                 }
             }
+            
+
 
             report.style= "color:transparent !important";
             var reportLabel = document.querySelector('label[for="report"]');
             var reportFileName = outreach.outreach_report.split('/');
             reportLabel.innerHTML = reportFileName[reportFileName.length-1];
             reportFileName=reportFileName[reportFileName.length-1];
+
+            reportFileName = reportFileName.split(".");
+            reportFileName.pop();
+            reportFileName = reportFileName.join(".");
+            console.log("reportFileName name",reportFileName);
             report.onchange = function(){
                 reportLabel.innerHTML = report.files[0].name;
                 reportFileName = report.files[0].name;
             }
-
 
             var report_file_path = "<?php echo asset('proposal_outreach/storage/'.$outreach->outreach_report) ?>";
             console.log("report_file_path",report_file_path);
