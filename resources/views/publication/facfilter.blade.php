@@ -1,3 +1,6 @@
+@extends('publication.pubtemplate')
+
+@section('content')
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -18,7 +21,7 @@
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
             crossorigin="anonymous"
         ></script>
-        <link rel="stylesheet" href="/dropdown.css">
+        {{-- <link rel="stylesheet" href="/dropdown.css"> --}}
         <script src="/dropdown.js"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,13 +29,13 @@
     </head>
     <body>
         <div class="container" style="margin-top:-50px">
-            <div class="container" style="margin-bottom: auto;height:60px">
+            {{-- <div class="container" style="margin-bottom: auto;height:60px">
                     <span class="material-symbols-outlined icons" style="scale: 5; color:#E7473C">
                         assignment 
                     </span>
-            </div>
-            <div class="card-box">
-                <div class="text-center p-2">         
+            </div> --}}
+            <div class="card-box" style="margin-top:50px;">
+                <div class="text-center p-2 m-auto">         
                     <span style="font-size:35px;font-weight:bold" class="mt-8 text-3xl">Faculty Research Papers</span> 
                     
                 </div>
@@ -42,7 +45,7 @@
                             <div class="form-group col-sm-6" style="margin:auto">
                                 <form action="{{ route('facultyDataParser') }}" method="post">
                                     @csrf
-                                    <select class="custom-select" id="inputTopic" name="filter" data-flip="false" style="height: 50px;background: white">
+                                    <select class="custom-select" id="inputTopic" name="filter" data-flip="false" style="height: 50px;width:520px;background: white">
                                         <option class="opt" value="" disabled selected hidden>Choose Faculty...</option>
                                         @foreach($fac_name as $f)
                                         <option value="{{$f}}">{{$f}} </option>
@@ -62,4 +65,6 @@
             </div>
         
     </body>
+@endsection
 </html>
+

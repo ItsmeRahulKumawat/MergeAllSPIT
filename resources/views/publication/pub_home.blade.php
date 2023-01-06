@@ -1,3 +1,6 @@
+@extends('publication.pubtemplate')
+
+@section('content')
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -69,4 +72,5 @@
 
     
 </body>
+@endsection
 </html>
