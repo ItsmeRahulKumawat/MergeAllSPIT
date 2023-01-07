@@ -47,7 +47,6 @@ class ProposalController extends Controller
             'proposal_abstract' => 'required|min:20',
             'proposal_fundingAmount' => 'required:min:1000',
             'proposal_submissionDate' => 'required',
-            'proposal_file' => 'required|max:10240',
         ],[
             'proposal_title.required' => 'Proposal Title is required',
             'proposal_title.unique' => 'Proposal Title already exists',
@@ -61,8 +60,11 @@ class ProposalController extends Controller
         ],
         );
         $title = $request->input('proposal_title');
+        $file = null;
+        if($request->hasFile('proposal_file')){
+            $file = $request->proposal_file;
+        }
 
-        $file = $request->proposal_file;
         // dd($file);
         // create a new folder with submission date as name
         $submission_date = $request->input('proposal_submissionDate');
@@ -92,27 +94,26 @@ class ProposalController extends Controller
         
         // dd($file->getClientOriginalName(), $title.'.'.$file->getClientOriginalExtension());
         // store only if file name and title is different
-        // if($file->getClientOriginalName() != $title){
-        // dd($file->getClientOriginalExtension());
-        $fileName = $title.'.'.$file->getClientOriginalExtension();
-        $file->storeAs($proposal_folder, $fileName);
-        // }
-        // else{
-            // $fileName = $file->getClientOriginalName();
-            // $file->storeAs($proposal_folder, $fileName);
-        // }
-        // $fileName = $title.'.'.$file->getClientOriginalExtension();
-        // $file->storeAs($proposal_folder, $fileName);
-        // only store if file is not already present
-        // if(!file_exists(asset('proposal_outreach/storage/proposal/'.$year.'/'.$monthName.'/'.$day.'/'.$fileName))){
-            // dd(asset('proposal_outreach/storage/proposal/'.$year.'/'.$monthName.'/'.$day.'/'.$fileName));
-        
-        // }
-        // $file->storeAs($proposal_folder, $fileName);
-        $proposal_folder = 'proposal/'.$year.'/'.$monthName.'/'.$day;
-        
+        // $final_proposal_path = Proposal::where('proposal_id', $request->get("proposal_id"))->get('proposal_file')->first()->proposal_file;
+        // get proposal file path from database
+        // $final_proposal_path = Proposal::where('proposal_id', $request->get("proposal_id"))->get('proposal_file')->first()->proposal_file;
+        // dd(Proposal::where('proposal_id', )->first());
+
+        // get proposal file path from database
+        $final_proposal_path = "";
+        if($request->has("old_proposal")){
+            $final_proposal_path = $request->get("old_proposal")->proposal_file;
+        }
+        // dd($final_proposal_path);
+
+        if($file!=null){
+            $fileName = $title.'.'.$file->getClientOriginalExtension();
+            $file->storeAs($proposal_folder, $fileName);
+            $proposal_folder = 'proposal/'.$year.'/'.$monthName.'/'.$day;        
+            $final_proposal_path = $proposal_folder.'/'.$fileName;
+        }
+
         $proposal = new Proposal();
-        
         $faculty_group = array();
         $department_group = array();
         for($i=1; $i<=5; $i++){
@@ -158,7 +159,7 @@ class ProposalController extends Controller
         $proposal->proposal_abstract = $request->input('proposal_abstract');
         $proposal->proposal_fundingAmount = $request->input('proposal_fundingAmount');
         $proposal->proposal_submissionDate = $request->input('proposal_submissionDate');
-        $proposal->proposal_file = $proposal_folder.'/'.$fileName;
+        $proposal->proposal_file = $final_proposal_path;
         $proposal->save();
         // send view with proposal id
         // if request edit exists
@@ -198,16 +199,17 @@ class ProposalController extends Controller
     {
         // delete old data
         $proposal = Proposal::where('proposal_id', $proposal_id)->first();
+        // create copy of old data
+        $old_proposal = $proposal;
         $proposal->delete();
         $request->request->add(['edit'=> 'true']);
-        $request->request->add(['proposal_id' => $proposal_id]);
+        $request->request->add(['proposal_id' => $proposal_id,'old_proposal' => $old_proposal]);
         return $this->store($request);
         
     }
 
     public function showEditForm($id){
         $proposal = Proposal::where('proposal_id', $id)->first();
-        
         $faculty_group = FacultyGroup::where('faculty_group_id', $proposal->proposal_faculty_group_id)->first();
         return view('proposal_edit')->with(['proposal'=>Proposal::where('proposal_id', $id)->first(), 'faculty_group'=>$faculty_group]);
     }

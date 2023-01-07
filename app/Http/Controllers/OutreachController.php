@@ -96,7 +96,6 @@ class OutreachController extends Controller
         
         // find photos of the outreach activity from database
         $photoList = Outreach::where('id', $request->get("id"))->get('outreach_photos')->first()->outreach_photos;
-        
         $final_report_path = Outreach::where('id', $request->get("id"))->get('outreach_report')->first()->outreach_report;
         // sanitize activity name add - in place of spaces
         $activity_name = str_replace(' ', '-', $activity_name);
