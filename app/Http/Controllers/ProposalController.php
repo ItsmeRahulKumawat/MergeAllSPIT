@@ -93,7 +93,7 @@ class ProposalController extends Controller
         // dd($file->getClientOriginalName(), $title.'.'.$file->getClientOriginalExtension());
         // store only if file name and title is different
         // if($file->getClientOriginalName() != $title){
-        
+        // dd($file->getClientOriginalExtension());
         $fileName = $title.'.'.$file->getClientOriginalExtension();
         $file->storeAs($proposal_folder, $fileName);
         // }
@@ -161,6 +161,10 @@ class ProposalController extends Controller
         $proposal->proposal_file = $proposal_folder.'/'.$fileName;
         $proposal->save();
         // send view with proposal id
+        // if request edit exists
+        if($request->input("edit")!=null){
+            return view('submitted', ['proposal_id' => $temp, 'edit' => true]);
+        }
         return view('submitted', ['proposal_id' => $temp]);
         
         
@@ -194,7 +198,8 @@ class ProposalController extends Controller
     {
         // delete old data
         $proposal = Proposal::where('proposal_id', $proposal_id)->first();
-        $proposal->delete();        
+        $proposal->delete();
+        $request->request->add(['edit'=> 'true']);
         $request->request->add(['proposal_id' => $proposal_id]);
         return $this->store($request);
         

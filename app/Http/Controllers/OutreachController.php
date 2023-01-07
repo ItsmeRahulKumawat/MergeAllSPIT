@@ -50,8 +50,6 @@ class OutreachController extends Controller
             'date_activity' => 'required',
             'sponsorList' => 'required',
             'outreach_amount' => 'required',
-            'photos' => 'required',
-            'report' => 'required',
         ],[
             'faculty_department_1.required' => 'Faculty Department is required',
             'faculty_name_1.required' => 'Faculty Name is required',
@@ -61,8 +59,6 @@ class OutreachController extends Controller
             'date_activity.required' => 'Date of Activity is required',
             'sponsorList.required' => 'Sponsor is required',
             'outreach_amount.required' => 'Amount is required',
-            'photos.required' => 'Photos are required',
-            'report.required' => 'Report is required',
         ]);
         $outreach = new Outreach();
         $outreach->outreach_faculty_department = $request->input('faculty_department_1');
@@ -97,40 +93,49 @@ class OutreachController extends Controller
         $report_path = 'public/outreach/'.$report_folder . '/' . $year_folder . '/' . $month_folder . '/' . $day_folder;
         $photos = array();
         $activity_name = $request->input('activity');
-        $i = 1;
         
-        foreach($request->file('photos') as $image)
-        {
-            // $name = $image->getClientOriginalName();
-            // store name as activity name and itertation
-            $name = $activity_name . '_' .($i).'.'.$image->getClientOriginalExtension();
-            // print name in console    
-            // echo "<script>console.log('" . $name . "')</script>";
-            $image->storeAs($photos_path, $name);
-            // remove public from photos path
-            $i++;
+        // find photos of the outreach activity from database
+        $photoList = Outreach::where('id', $request->get("id"))->get('outreach_photos')->first()->outreach_photos;
+        
+        $final_report_path = Outreach::where('id', $request->get("id"))->get('outreach_report')->first()->outreach_report;
+        // sanitize activity name add - in place of spaces
+        $activity_name = str_replace(' ', '-', $activity_name);
+        if($request->hasfile('photos')){
+            $i = 1;
+            foreach($request->file('photos') as $image)
+            {
+                // $name = $image->getClientOriginalName();
+                // store name as activity name and itertation
+                $name = $activity_name . '_' .($i).'.'.$image->getClientOriginalExtension();
+                // print name in console    
+                // echo "<script>console.log('" . $name . "')</script>";
+                // dd(File::get($image));
+                // Storage::disk('public')->put($photos_path . '/' . $name, File::get($image));
+                $image->storeAs($photos_path, $name);
+                $i++;
+            }
+            foreach($request->file('photos') as $image)
+            {
+                // remove public from photos path
+                $photos_path = substr($photos_path, 7);
+                $photos[] = $photos_path . '/' . $name;
+            }
+            $photoList= implode(",",$photos);
+            $outreach->outreach_photos = $photoList;
         }
-        foreach($request->file('photos') as $image)
-        {
-            $photos_path = substr($photos_path, 7);
-            $photos[] = $photos_path . '/' . $name;
-        }
-
-        $photoList= implode(",",$photos);
-        $outreach->outreach_photos = $photoList;
-    
 
         // remove extension from report name
-        
-        // dd($report->getClientOriginalExtension());
-        $report_name = $activity_name . '.' . $report->getClientOriginalExtension();
-        // dd($report->getClientOriginalExtension());
-        $report->storeAs($report_path, $report_name);
+        if($request->hasfile('report')){
+            // dd($report->getClientOriginalExtension());
+            $report_name = $activity_name . '.' . $report->getClientOriginalExtension();
+            // dd($report->getClientOriginalExtension());
+            $report->storeAs($report_path, $report_name);
 
-        $report_path = substr($report_path, 7);
-        $outreach->outreach_report = $report_path . '/' . $report_name;
+            $report_path = substr($report_path, 7);
+            $final_report_path = $report_path . '/' . $report_name;
+            $outreach->outreach_report = $final_report_path;
+        }
         
-
         $temp = null;
         if($request->input('id')!=null){
             $temp = $request->input('id');
@@ -147,13 +152,16 @@ class OutreachController extends Controller
                 'outreach_sponsors' => $request->input('sponsorList'),
                 'outreach_amount' => $request->outreach_amount,
                 'outreach_photos' => $photoList,
-                'outreach_report' => $report_path . '/' . $report_name,
+                'outreach_report' => $final_report_path,
             ]);
         }else{
             $outreach->save();
         }
         
         $temp = $outreach->id;
+        if($request->input("edit")!=null){
+            return view('submitted', ['outreach_id' => $temp, 'edit' => true]);
+        }
         return view('submitted', ['outreach_id' => $temp]);
 
     }
@@ -188,6 +196,8 @@ class OutreachController extends Controller
         // $outreach->delete();
         // dd($outreach);
         $request->request->add(['id' => $id]);
+        $request->request->add(['edit'=> 'true']);
+
         // dd($request->all());
         return $this->store($request);
 
