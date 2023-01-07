@@ -2,10 +2,11 @@ from serpapi import GoogleSearch
 import sys
 
 id = sys.argv[1]
+key = sys.argv[2]
 params = {
   "engine": "google_scholar_author",
   "author_id": id,
-  "api_key": "dc6cffab505c9fa7737419184008156209727fee5ee5812a9d5260eb548514e0",
+  "api_key": key,
   "sort":"pubdate"
 }
 
