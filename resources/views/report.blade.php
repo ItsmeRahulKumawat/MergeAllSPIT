@@ -141,6 +141,9 @@
         @show
     </div>
     <section class="container">
+        <?php
+            $faculty_names = array();
+        ?>
         <div id="wrapper" class="card m-5" style="border-radius: 10px;">
 
             <div class="card-header">
@@ -501,7 +504,6 @@
             console.log(prop_outreach);
             prop_outreach = JSON.parse(prop_outreach);
             if(prop_outreach["proposal_id"]!=null){
-                
                 //sample proposal object {"proposal_id":"c14692c3c5150f6e6ccdf6528a0f1433","proposal_title":"test 7 jan 2","proposal_authorityOrOrganization":"Authority","proposal_govtPrivate":"Govt","proposal_abstract":"test 7 jan 2test 7 jan 2test 7 jan 2","proposal_fundingAmount":"1111","proposal_submissionDate":"2023-01-07","proposal_file":"proposal/2023/January/07/test 7 jan 2.pdf","proposal_faculty_group_id":"42","created_at":"2023-01-07T07:35:29.000000Z","updated_at":"2023-01-07T07:35:29.000000Z"}
                 var win = window.open('', '', 'height=600,width=1200');
                 // write text to the window
@@ -511,8 +513,10 @@
                 win.document.write('</head>');
                 var  faculty_in_proposal = prop_outreach.faculty_group_id;
                 // query faculty group id from faculty group table
-                
+                // check if faculty names is set
+
                 var faculty_group =  <?php echo json_encode($faculty_names); ?>;
+                
                 var faculty_name = faculty_group[0].faculty_group_name;
                 var faculty_dept = faculty_group[0].faculty_group_department;
                 // create a array of faculty name by splitting faculty_name by ,
