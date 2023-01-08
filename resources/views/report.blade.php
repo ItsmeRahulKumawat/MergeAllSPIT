@@ -498,8 +498,8 @@
         function createPDF(e,prop_outreach){
             
             // convert prop_outreach to json
+            console.log(prop_outreach);
             prop_outreach = JSON.parse(prop_outreach);
-            console.log(prop_outreach["proposal_id"]);
             if(prop_outreach["proposal_id"]!=null){
                 
                 //sample proposal object {"proposal_id":"c14692c3c5150f6e6ccdf6528a0f1433","proposal_title":"test 7 jan 2","proposal_authorityOrOrganization":"Authority","proposal_govtPrivate":"Govt","proposal_abstract":"test 7 jan 2test 7 jan 2test 7 jan 2","proposal_fundingAmount":"1111","proposal_submissionDate":"2023-01-07","proposal_file":"proposal/2023/January/07/test 7 jan 2.pdf","proposal_faculty_group_id":"42","created_at":"2023-01-07T07:35:29.000000Z","updated_at":"2023-01-07T07:35:29.000000Z"}
@@ -507,12 +507,9 @@
                 // write text to the window
                 win.document.write('<html><head>');
                 win.document.write('<title></title>');   // <title> FOR PDF HEADER.
-                var heading = document.getElementById("reportType").value;
+                var heading = "Proposal Report";
                 win.document.write('</head>');
-                // center this
-                // center text
-                // convert heading to uppercase first character
-                heading = heading.charAt(0).toUpperCase() + heading.slice(1);
+                
                 win.document.write('<body> <h1 style="text-align:center">'+heading+'</h1>');
                     // write in paragraph
                     win.document.write('<p><b>Proposal ID: </b>'+prop_outreach.proposal_id+'</p>');
@@ -530,6 +527,31 @@
                 win.document.close(); 	// CLOSE THE CURRENT WINDOW.
                 win.print();    // PRINT THE CONTENTS.
             }else{
+                // sample outreach object {"id":81,"created_at":"2023-01-07T06:53:25.000000Z","updated_at":"2023-01-07T06:53:25.000000Z","outreach_faculty_department":"mca","outreach_faculty_name":"testfaculty","outreach_activity":"testtt","outreach_status":"Conducted","outreach_place":"test","outreach_date":"2023-01-07","outreach_sponsors":"ACM","outreach_amount":"1112","outreach_photos":"outreach/photos/2023/January/07/testtt_1.jpeg","outreach_report":"outreach/report/2023/January/07/testtt.pdf"}
+                var win = window.open('', '', 'height=600,width=1200');
+                // write text to the window
+                win.document.write('<html><head>');
+                win.document.write('<title></title>');   // <title> FOR PDF HEADER.
+                var heading = "Outreach Report"
+                win.document.write('</head>');
+                win.document.write('<body> <h1 style="text-align:center">'+heading+'</h1>');
+                    // write in paragraph
+                    win.document.write('<p><b>Outreach ID: </b>'+prop_outreach.id+'</p>');
+                    win.document.write('<p><b>Outreach Faculty Department: </b>'+prop_outreach.outreach_faculty_department+'</p>');
+                    win.document.write('<p><b>Outreach Faculty Name: </b>'+prop_outreach.outreach_faculty_name+'</p>');
+                    win.document.write('<p><b>Outreach Activity: </b>'+prop_outreach.outreach_activity+'</p>');
+                    win.document.write('<p><b>Outreach Status: </b>'+prop_outreach.outreach_status+'</p>');
+                    win.document.write('<p><b>Outreach Place: </b>'+prop_outreach.outreach_place+'</p>');
+                    win.document.write('<p><b>Outreach Date: </b>'+prop_outreach.outreach_date+'</p>');
+                    win.document.write('<p><b>Outreach Sponsors: </b>'+prop_outreach.outreach_sponsors+'</p>');
+                    win.document.write('<p><b>Outreach Amount: </b>'+prop_outreach.outreach_amount+'</p>');
+                    win.document.write('<p><b>Outreach Photos: </b>'+prop_outreach.outreach_photos+'</p>');
+                    win.document.write('<p><b>Outreach Report: </b>'+prop_outreach.outreach_report+'</p>');
+                    win.document.write('<p><b>Created At</b>: '+prop_outreach.created_at+'</p>');
+                    win.document.write('<p><b>Updated At</b>: '+prop_outreach.updated_at+'</p>');
+                win.document.write('</body></html>');
+                win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+                win.print();    // PRINT THE CONTENTS.
 
             }
                 //Create Window Object
