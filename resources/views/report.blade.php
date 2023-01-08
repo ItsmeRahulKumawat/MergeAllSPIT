@@ -141,6 +141,9 @@
         @show
     </div>
     <section class="container">
+        <?php
+            $faculty_names = array();
+        ?>
         <div id="wrapper" class="card m-5" style="border-radius: 10px;">
 
             <div class="card-header">
@@ -384,7 +387,7 @@
                                                                     onclick="editProposal('{{ $proposal->proposal_id }}')">
                                                                     <i class="bi bi-pencil-square"></i>
                                                                 </button>
-                                                                <button type="button" class="btn btn-success mt-2" onclick="createPDF(this,'{{ $proposal->proposal_id  }}')">
+                                                                <button type="button" class="btn btn-success mt-2" onclick="createPDF(this,'{{ $proposal  }}')">
                                                                     Download</button>
                                                             @endif
                                                         @endguest
@@ -449,7 +452,7 @@
                                                                 onclick="editOutreach('{{$outreach->id }}')">
                                                                 <i class="bi bi-pencil-square"></i>
                                                             </button>
-                                                            <button type="button" class="btn btn-success m-1" onclick="createPDF(this,'{{ $outreach->id  }}')">
+                                                            <button type="button" class="btn btn-success m-1" onclick="createPDF(this,'{{ $outreach}}')">
                                                                 Download</button>
                                                         @endif
                                                     @endguest
@@ -495,43 +498,113 @@
         }).trigger('change')
         })
 
-        function createPDF(e,id){
-                
-                //Create Window Object
+        function createPDF(e,prop_outreach){
+            
+            // convert prop_outreach to json
+            console.log(prop_outreach);
+            prop_outreach = JSON.parse(prop_outreach);
+            if(prop_outreach["proposal_id"]!=null){
+                //sample proposal object {"proposal_id":"c14692c3c5150f6e6ccdf6528a0f1433","proposal_title":"test 7 jan 2","proposal_authorityOrOrganization":"Authority","proposal_govtPrivate":"Govt","proposal_abstract":"test 7 jan 2test 7 jan 2test 7 jan 2","proposal_fundingAmount":"1111","proposal_submissionDate":"2023-01-07","proposal_file":"proposal/2023/January/07/test 7 jan 2.pdf","proposal_faculty_group_id":"42","created_at":"2023-01-07T07:35:29.000000Z","updated_at":"2023-01-07T07:35:29.000000Z"}
                 var win = window.open('', '', 'height=600,width=1200');
-                // get the contents inside the table
-                var row = e.parentNode.parentNode;
-                console.log(row);
-                // fill the page with row contents
-                var th = Array.from(document.querySelectorAll("th"));
-                th.pop();
-                var headings = th.children;
-                var contents = Array.from(row.children);
-                console.log(contents);
-                // remove the last element of the array
-                contents.pop();
-                // get th 
+                // write text to the window
                 win.document.write('<html><head>');
                 win.document.write('<title></title>');   // <title> FOR PDF HEADER.
-                var heading = document.getElementById("reportType").value;
+                var heading = "Proposal Report";
                 win.document.write('</head>');
-                win.document.write('<body>  <center><div id="Heading"> <h1 id="Report_Heading">' + heading + '</h1><hr style="width:40%;"> </div></center><br><br>');
-                win.document.write('<table border="1" cellspacing="0" cellpadding="5" style="width:100%;border-collapse:collapse;">');   // CREATE A TABLE WITH BORDER.
-                win.document.write('<tr>');
-                for(var i = 0; i < th.length; i++){
-                    win.document.write('<th>' + th[i].innerHTML + '</th>');  // TABLE HEADER.
-                }
-                win.document.write('</tr>');
-                win.document.write('<tr>');
-                for(var i = 0; i < contents.length; i++){
-                    win.document.write('<td>' + contents[i].innerHTML + '</td>');  // TABLE HEADER.
-                }
-                win.document.write('</tr>');
-                win.document.write('</table>');
-                win.document.write('</body></html>');
+                var  faculty_in_proposal = prop_outreach.faculty_group_id;
+                // query faculty group id from faculty group table
+                // check if faculty names is set
 
+                var faculty_group =  <?php echo json_encode($faculty_names); ?>;
+                
+                var faculty_name = faculty_group[0].faculty_group_name;
+                var faculty_dept = faculty_group[0].faculty_group_department;
+                // create a array of faculty name by splitting faculty_name by ,
+                var faculty_name_array = faculty_name.split(",");
+                var fauclty_dept_array = faculty_dept.split(",");
+                win.document.write('<body> <h1 style="text-align:center">'+heading+'</h1>');
+                    // write in paragraph
+                    win.document.write('<p><b>Proposal ID: </b>'+prop_outreach.proposal_id+'</p>');
+                    win.document.write('<p><b>Proposal Title: </b>'+prop_outreach.proposal_title+'</p>');
+                    win.document.write('<p><b>Proposal Authority/</b>Organization: '+prop_outreach.proposal_authorityOrOrganization+'</p>');
+                    win.document.write('<p><b>Proposal Govt/</b>Private: '+prop_outreach.proposal_govtPrivate+'</p>');
+                    win.document.write('<p><b>Proposal Abstract: </b>'+prop_outreach.proposal_abstract+'</p>');
+                    win.document.write('<p><b>Proposal Funding </b>Amount: '+prop_outreach.proposal_fundingAmount+'</p>');
+                    win.document.write('<p><b>Proposal Submission </b>Date: '+prop_outreach.proposal_submissionDate+'</p>');
+                    win.document.write('<p><b>Proposal File Path: </b>'+prop_outreach.proposal_file+'</p>');
+                    for(var i=0;i<faculty_name_array.length;i++){
+                        win.document.write( `<p>${(i+1)}. <b>Faculty Name : </b>' ${faculty_name_array[i]}</p>`);
+                        win.document.write(`<p><b>  Faculty Department: </b>'${fauclty_dept_array[i]}</p>`);
+                    }
+                    win.document.write('<p><b>Created At</b>: '+prop_outreach.created_at+'</p>');
+                    win.document.write('<p><b>Updated At</b>: '+prop_outreach.updated_at+'</p>');
+                win.document.write('</body></html>');
                 win.document.close(); 	// CLOSE THE CURRENT WINDOW.
                 win.print();    // PRINT THE CONTENTS.
+            }else{
+                // sample outreach object {"id":81,"created_at":"2023-01-07T06:53:25.000000Z","updated_at":"2023-01-07T06:53:25.000000Z","outreach_faculty_department":"mca","outreach_faculty_name":"testfaculty","outreach_activity":"testtt","outreach_status":"Conducted","outreach_place":"test","outreach_date":"2023-01-07","outreach_sponsors":"ACM","outreach_amount":"1112","outreach_photos":"outreach/photos/2023/January/07/testtt_1.jpeg","outreach_report":"outreach/report/2023/January/07/testtt.pdf"}
+                var win = window.open('', '', 'height=600,width=1200');
+                // write text to the window
+                win.document.write('<html><head>');
+                win.document.write('<title></title>');   // <title> FOR PDF HEADER.
+                var heading = "Outreach Report";
+                ;
+                win.document.write('</head>');
+                win.document.write('<body> <h1 style="text-align:center">'+heading+'</h1>');
+                    // write in paragraph
+                    win.document.write('<p><b>Outreach ID: </b>'+prop_outreach.id+'</p>');
+                    win.document.write('<p><b>Outreach Faculty Department: </b>'+prop_outreach.outreach_faculty_department+'</p>');
+                    win.document.write('<p><b>Outreach Faculty Name: </b>'+prop_outreach.outreach_faculty_name+'</p>');
+                    win.document.write('<p><b>Outreach Activity: </b>'+prop_outreach.outreach_activity+'</p>');
+                    win.document.write('<p><b>Outreach Status: </b>'+prop_outreach.outreach_status+'</p>');
+                    win.document.write('<p><b>Outreach Place: </b>'+prop_outreach.outreach_place+'</p>');
+                    win.document.write('<p><b>Outreach Date: </b>'+prop_outreach.outreach_date+'</p>');
+                    win.document.write('<p><b>Outreach Sponsors: </b>'+prop_outreach.outreach_sponsors+'</p>');
+                    win.document.write('<p><b>Outreach Amount: </b>'+prop_outreach.outreach_amount+'</p>');
+                    win.document.write('<p><b>Outreach Photos: </b>'+prop_outreach.outreach_photos+'</p>');
+                    win.document.write('<p><b>Outreach Report: </b>'+prop_outreach.outreach_report+'</p>');
+                    win.document.write('<p><b>Created At</b>: '+prop_outreach.created_at+'</p>');
+                    win.document.write('<p><b>Updated At</b>: '+prop_outreach.updated_at+'</p>');
+                win.document.write('</body></html>');
+                win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+                win.print();    // PRINT THE CONTENTS.
+
+            }
+                //Create Window Object
+                
+                // get the contents inside the table
+                // var row = e.parentNode.parentNode;
+                // console.log(row);
+                // // fill the page with row contents
+                // var th = Array.from(document.querySelectorAll("th"));
+                // th.pop();
+                // var headings = th.children;
+                // var contents = Array.from(row.children);
+                // console.log(contents);
+                // // remove the last element of the array
+                // contents.pop();
+                // // get th 
+                // win.document.write('<html><head>');
+                // win.document.write('<title></title>');   // <title> FOR PDF HEADER.
+                // var heading = document.getElementById("reportType").value;
+                // win.document.write('</head>');
+                // win.document.write('<body>  <center><div id="Heading"> <h1 id="Report_Heading">' + heading + '</h1><hr style="width:40%;"> </div></center><br><br>');
+                // win.document.write('<table border="1" cellspacing="0" cellpadding="5" style="width:100%;border-collapse:collapse;">');   // CREATE A TABLE WITH BORDER.
+                // win.document.write('<tr>');
+                // for(var i = 0; i < th.length; i++){
+                //     win.document.write('<th>' + th[i].innerHTML + '</th>');  // TABLE HEADER.
+                // }
+                // win.document.write('</tr>');
+                // win.document.write('<tr>');
+                // for(var i = 0; i < contents.length; i++){
+                //     win.document.write('<td>' + contents[i].innerHTML + '</td>');  // TABLE HEADER.
+                // }
+                // win.document.write('</tr>');
+                // win.document.write('</table>');
+                // win.document.write('</body></html>');
+
+                // win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+                // win.print();    // PRINT THE CONTENTS.
             }
         function editProposal(id){
             var url = "{{ route('admin.proposal.edit', ':id') }}";

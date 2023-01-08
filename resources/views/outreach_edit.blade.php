@@ -271,16 +271,16 @@
                                     @enderror
                                 </span>
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="photos" class="form-label">Photos</label>
                                 <input type="file" class="form-control" id="photos" name="photos[]"
                                     accept="image/png, image/jpeg" multiple>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="report">Upload Report</label class="form-label">
+                                <label id="outreach_file_label" class="form-label outreach_file_label" for="report">Upload Report</label class="form-label">
                                 <input type="file" class="form-control" id="report" name="report"
                                     accept=".pdf,.doc">
-                            </div>
+                            </div> --}}
                             <button class="btn btn-info btn-md" type="submit">Submit Data</button>
                         </form>
                     </blockquote>
@@ -319,69 +319,85 @@
                 faculty_name.value = outreach.outreach_faculty_name;
             }, 1000);
 
-            photos.style="color:transparent !important";
-            var photosLabel = document.querySelector('label[for="photos"]');
-            var photos_array = outreach.outreach_photos.split(',');
-            var photosFileName = [];
-            var labelForPhotos = "";
-            for(var i=0;i<photos_array.length;i++){
-                photosFileName.push(photos_array[i].split('/')[photos_array[i].split('/').length-1]);
-                labelForPhotos += photosFileName[i] + ", ";
-            }
+            // photos.style="color:transparent !important";
+            // var photosLabel = document.querySelector('label[for="photos"]');
+            // console.log("outreach.outreach_photos",outreach.outreach_photos);
+            // var photos_array = outreach.outreach_photos.split(',');
+            // var photosFileName = [];
+            // var labelForPhotos = "";
+            // for(var i=0;i<photos_array.length;i++){
+            //     photosFileName.push(
+            //         photos_array[i].split('/')[photos_array[i].split('/').length-1]
+            //         );
+            //     labelForPhotos += photosFileName[i] + ", ";
+            // }
 
-            console.log(outreach.outreach_photos)
-            photosLabel.innerHTML = labelForPhotos;
-            photos.onchange = function(){
-                photosLabel.innerHTML = "";
-                for(var i=0;i<photos.files.length;i++){
-                    photosLabel.innerHTML += photos.files[i].name + ", ";
-                }
-            }
-
-            report.style= "color:transparent !important";
-            var reportLabel = document.querySelector('label[for="report"]');
-            var reportFileName = outreach.outreach_report.split('/');
-            reportLabel.innerHTML = reportFileName[reportFileName.length-1];
-            reportFileName=reportFileName[reportFileName.length-1];
-            report.onchange = function(){
-                reportLabel.innerHTML = report.files[0].name;
-                reportFileName = report.files[0].name;
-            }
+            // for(var i=0;i<photos_array.length;i++){
+            //     // photosFileName[i] = photosFileName[i].split(".");
+            //     // photosFileName[i].pop();
+            //     // photosFileName[i] = photosFileName[i].join(".");
+            //     // console.log("photosFileName[i] name",photosFileName[i]);
+            // }
 
 
-            var report_file_path = "<?php echo asset('proposal_outreach/storage/'.$outreach->outreach_report) ?>";
-            console.log("report_file_path",report_file_path);
-            // create a new file
-            var report_file = new File([report_file_path],reportFileName);
-            var container = new DataTransfer();
-            container.items.add(new File([report_file_path],reportFileName));
-            // add file to proposal file input
-            console.log(report_file);
-            report.files = container.files;
-            console.log(container.files);
-            console.log( report.files);
+            // console.log(outreach.outreach_photos)
+            // photosLabel.innerHTML = labelForPhotos;
+            // photos.onchange = function(){
+            //     photosLabel.innerHTML = "";
+            //     for(var i=0;i<photos.files.length;i++){
+            //         photosLabel.innerHTML += photos.files[i].name + ", ";
+            //     }
+            // }
             
-            var photos_file_path = "<?php echo asset('proposal_outreach/storage/'.$outreach->outreach_photos) ?>";
-            // create a new file array
-            var photos_file_array = [];
-            for(var i=0;i<photosFileName.length;i++){
-                photos_file_array.push(new File([photos_file_path],photosFileName[i]));
-            }
-            var container = new DataTransfer();
-            for(var i=0;i<photos_file_array.length;i++){
-                container.items.add(photos_file_array[i]);
-            }
-            // add file to proposal file input
-            console.log(photos_file_array);
-            photos.files = container.files;
-            console.log(container.files);
-            console.log( photos.files);
 
-            report.onchange();
-            photos.onchange();
 
+            // report.style= "color:transparent !important";
+            // var reportLabel =document.getElementById('outreach_file_label');
+            // var reportFileName = outreach.outreach_report.split('/');
+            // console.log("reportFileName=",reportFileName)
+            // reportFileName=reportFileName[reportFileName.length-1];
+            // reportLabel.innerHTML = reportFileName;
+
+            // reportFileName = reportFileName.split(".");
+            // reportFileName.pop();
+            // reportFileName = reportFileName.join(".");
+            // console.log("reportFileName name",reportFileName);
+
+            // // report.onchange = function(){
+            // //     reportLabel.innerHTML = report.files[0].name;
+            // //     reportFileName = report.files[0].name;
+            // // }
+
+            // var report_file_path = "<?php echo asset('proposal_outreach/storage/'.$outreach->outreach_report) ?>";
+            // console.log("report_file_path",report_file_path);
+            // // create a new file
+            // var report_file = new File([report_file_path],reportFileName);
+            // var container = new DataTransfer();
+            // container.items.add(new File([report_file_path],reportFileName));
+            // // add file to proposal file input
+            // console.log(report_file);
+            // report.files = container.files;
+            // console.log(container.files);
+            // console.log( report.files);
             
-            
+            // var photos_file_path = "<?php echo asset('proposal_outreach/storage/'.$outreach->outreach_photos) ?>";
+            // // create a new file array
+            // var photos_file_array = [];
+            // for(var i=0;i<photosFileName.length;i++){
+            //     photos_file_array.push(new File([photos_file_path],photosFileName[i]));
+            // }
+            // var container = new DataTransfer();
+            // for(var i=0;i<photos_file_array.length;i++){
+            //     container.items.add(photos_file_array[i]);
+            // }
+            // // add file to proposal file input
+            // console.log("photos_file_array",photos_file_array);
+            // photos.files = container.files;
+            // console.log("container",container);
+            // console.log(container.files);
+            // console.log( photos.files);
+            // report.onchange();
+            // photos.onchange();
         })()
     </script>
 

@@ -323,12 +323,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group ">
+                                    {{-- <div class="form-group ">
                                         <label class="form-label" id="proposal_file_label" for="proposal_file">Upload File</label
                                             class="form-label">
                                         <input type="file" name="proposal_file" accept="application/pdf"
                                             id="proposal_file" class="form-control" aria-describedby="">
-                                    </div>
+                                    </div> --}}
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
                             </div>
@@ -406,31 +406,37 @@
                 }
             },1500);  
 
-            proposal_file.style="color:transparent !important";
-            var proposal_file_label = document.getElementById("proposal_file_label");
-            // file name path in file label
-            var file_name = $proposal.proposal_file.split("/");
-            console.log(file_name);
-            file_name = file_name[file_name.length-1];
-            proposal_file_label.innerHTML = file_name;
+            // proposal_file.style="color:transparent !important";
+            // var proposal_file_label = document.getElementById("proposal_file_label");
+            // // file name path in file label
+            // var file_name = $proposal.proposal_file.split("/");
+            // console.log(file_name);
+            // file_name = file_name[file_name.length-1];
+            // proposal_file_label.innerHTML = file_name;
             
-            // upload the file in proposal file input
-            proposal_file.onchange = function(){
-                var file = document.getElementById("proposal_file");
-                var file_name = file.value.split("\\");
-                file_name = file_name[file_name.length-1];
-                proposal_file_label.innerHTML = file_name;
-            }
-            var file_path = "<?php echo asset('proposal_outreach/storage/'.$proposal->proposal_file) ?>";
-            // create a new file
-            var file = new File([file_path],file_name);
-            var container = new DataTransfer();
-            container.items.add(file);
-            // add file to proposal file input
-            console.log(file);
-            proposal_file.files = container.files;
-            console.log(container.files);
-            console.log( proposal_file.files);
+            // // remove extension from file name
+            // file_name = file_name.split(".");
+            // file_name.pop();
+            // file_name = file_name.join(".");
+            // console.log("file name",file_name);
+            // // upload the file in proposal file input
+            // proposal_file.onchange = function(){
+            //     var file = document.getElementById("proposal_file");
+            //     var file_name = file.value.split("\\");
+            //     file_name = file_name[file_name.length-1];
+            //     proposal_file_label.innerHTML = file_name;
+            // }
+            // var file_path = "<?php echo asset('proposal_outreach/storage/'.$proposal->proposal_file) ?>";
+            // // create a new file
+            // console.log("file path",file_path);
+            // var file = new File([file_path],file_name);
+            // var container = new DataTransfer();
+            // container.items.add(file);
+            // // add file to proposal file input
+            // console.log(file);
+            // proposal_file.files = container.files;
+            // console.log(container.files);
+            // console.log( proposal_file.files);
             
             
         })();
