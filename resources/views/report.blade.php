@@ -509,7 +509,15 @@
                 win.document.write('<title></title>');   // <title> FOR PDF HEADER.
                 var heading = "Proposal Report";
                 win.document.write('</head>');
+                var  faculty_in_proposal = prop_outreach.faculty_group_id;
+                // query faculty group id from faculty group table
                 
+                var faculty_group =  <?php echo json_encode($faculty_names); ?>;
+                var faculty_name = faculty_group[0].faculty_group_name;
+                var faculty_dept = faculty_group[0].faculty_group_department;
+                // create a array of faculty name by splitting faculty_name by ,
+                var faculty_name_array = faculty_name.split(",");
+                var fauclty_dept_array = faculty_dept.split(",");
                 win.document.write('<body> <h1 style="text-align:center">'+heading+'</h1>');
                     // write in paragraph
                     win.document.write('<p><b>Proposal ID: </b>'+prop_outreach.proposal_id+'</p>');
@@ -520,7 +528,10 @@
                     win.document.write('<p><b>Proposal Funding </b>Amount: '+prop_outreach.proposal_fundingAmount+'</p>');
                     win.document.write('<p><b>Proposal Submission </b>Date: '+prop_outreach.proposal_submissionDate+'</p>');
                     win.document.write('<p><b>Proposal File Path: </b>'+prop_outreach.proposal_file+'</p>');
-                    // win.document.write('<p>Proposal Faculty Group ID: '+prop_outreach.proposal_faculty_group_id+'</p>');
+                    for(var i=0;i<faculty_name_array.length;i++){
+                        win.document.write( `<p>${(i+1)}. <b>Faculty Name : </b>' ${faculty_name_array[i]}</p>`);
+                        win.document.write(`<p><b>  Faculty Department: </b>'${fauclty_dept_array[i]}</p>`);
+                    }
                     win.document.write('<p><b>Created At</b>: '+prop_outreach.created_at+'</p>');
                     win.document.write('<p><b>Updated At</b>: '+prop_outreach.updated_at+'</p>');
                 win.document.write('</body></html>');
@@ -532,7 +543,8 @@
                 // write text to the window
                 win.document.write('<html><head>');
                 win.document.write('<title></title>');   // <title> FOR PDF HEADER.
-                var heading = "Outreach Report"
+                var heading = "Outreach Report";
+                ;
                 win.document.write('</head>');
                 win.document.write('<body> <h1 style="text-align:center">'+heading+'</h1>');
                     // write in paragraph
