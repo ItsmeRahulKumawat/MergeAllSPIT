@@ -384,7 +384,7 @@
                                                                     onclick="editProposal('{{ $proposal->proposal_id }}')">
                                                                     <i class="bi bi-pencil-square"></i>
                                                                 </button>
-                                                                <button type="button" class="btn btn-success mt-2" onclick="createPDF(this,'{{ $proposal->proposal_id  }}')">
+                                                                <button type="button" class="btn btn-success mt-2" onclick="createPDF(this,'{{ $proposal  }}')">
                                                                     Download</button>
                                                             @endif
                                                         @endguest
@@ -449,7 +449,7 @@
                                                                 onclick="editOutreach('{{$outreach->id }}')">
                                                                 <i class="bi bi-pencil-square"></i>
                                                             </button>
-                                                            <button type="button" class="btn btn-success m-1" onclick="createPDF(this,'{{ $outreach->id  }}')">
+                                                            <button type="button" class="btn btn-success m-1" onclick="createPDF(this,'{{ $outreach}}')">
                                                                 Download</button>
                                                         @endif
                                                     @endguest
@@ -495,43 +495,78 @@
         }).trigger('change')
         })
 
-        function createPDF(e,id){
+        function createPDF(e,prop_outreach){
+            
+            // convert prop_outreach to json
+            prop_outreach = JSON.parse(prop_outreach);
+            console.log(prop_outreach["proposal_id"]);
+            if(prop_outreach["proposal_id"]!=null){
                 
-                //Create Window Object
+                //sample proposal object {"proposal_id":"c14692c3c5150f6e6ccdf6528a0f1433","proposal_title":"test 7 jan 2","proposal_authorityOrOrganization":"Authority","proposal_govtPrivate":"Govt","proposal_abstract":"test 7 jan 2test 7 jan 2test 7 jan 2","proposal_fundingAmount":"1111","proposal_submissionDate":"2023-01-07","proposal_file":"proposal/2023/January/07/test 7 jan 2.pdf","proposal_faculty_group_id":"42","created_at":"2023-01-07T07:35:29.000000Z","updated_at":"2023-01-07T07:35:29.000000Z"}
                 var win = window.open('', '', 'height=600,width=1200');
-                // get the contents inside the table
-                var row = e.parentNode.parentNode;
-                console.log(row);
-                // fill the page with row contents
-                var th = Array.from(document.querySelectorAll("th"));
-                th.pop();
-                var headings = th.children;
-                var contents = Array.from(row.children);
-                console.log(contents);
-                // remove the last element of the array
-                contents.pop();
-                // get th 
+                // write text to the window
                 win.document.write('<html><head>');
                 win.document.write('<title></title>');   // <title> FOR PDF HEADER.
                 var heading = document.getElementById("reportType").value;
                 win.document.write('</head>');
-                win.document.write('<body>  <center><div id="Heading"> <h1 id="Report_Heading">' + heading + '</h1><hr style="width:40%;"> </div></center><br><br>');
-                win.document.write('<table border="1" cellspacing="0" cellpadding="5" style="width:100%;border-collapse:collapse;">');   // CREATE A TABLE WITH BORDER.
-                win.document.write('<tr>');
-                for(var i = 0; i < th.length; i++){
-                    win.document.write('<th>' + th[i].innerHTML + '</th>');  // TABLE HEADER.
-                }
-                win.document.write('</tr>');
-                win.document.write('<tr>');
-                for(var i = 0; i < contents.length; i++){
-                    win.document.write('<td>' + contents[i].innerHTML + '</td>');  // TABLE HEADER.
-                }
-                win.document.write('</tr>');
-                win.document.write('</table>');
+                // center this
+                // center text
+                // convert heading to uppercase first character
+                heading = heading.charAt(0).toUpperCase() + heading.slice(1);
+                win.document.write('<body> <h1 style="text-align:center">'+heading+'</h1>');
+                    // write in paragraph
+                    win.document.write('<p><b>Proposal ID: </b>'+prop_outreach.proposal_id+'</p>');
+                    win.document.write('<p><b>Proposal Title: </b>'+prop_outreach.proposal_title+'</p>');
+                    win.document.write('<p><b>Proposal Authority/</b>Organization: '+prop_outreach.proposal_authorityOrOrganization+'</p>');
+                    win.document.write('<p><b>Proposal Govt/</b>Private: '+prop_outreach.proposal_govtPrivate+'</p>');
+                    win.document.write('<p><b>Proposal Abstract: </b>'+prop_outreach.proposal_abstract+'</p>');
+                    win.document.write('<p><b>Proposal Funding </b>Amount: '+prop_outreach.proposal_fundingAmount+'</p>');
+                    win.document.write('<p><b>Proposal Submission </b>Date: '+prop_outreach.proposal_submissionDate+'</p>');
+                    win.document.write('<p><b>Proposal File Path: </b>'+prop_outreach.proposal_file+'</p>');
+                    // win.document.write('<p>Proposal Faculty Group ID: '+prop_outreach.proposal_faculty_group_id+'</p>');
+                    win.document.write('<p><b>Created At</b>: '+prop_outreach.created_at+'</p>');
+                    win.document.write('<p><b>Updated At</b>: '+prop_outreach.updated_at+'</p>');
                 win.document.write('</body></html>');
-
                 win.document.close(); 	// CLOSE THE CURRENT WINDOW.
                 win.print();    // PRINT THE CONTENTS.
+            }else{
+
+            }
+                //Create Window Object
+                
+                // get the contents inside the table
+                // var row = e.parentNode.parentNode;
+                // console.log(row);
+                // // fill the page with row contents
+                // var th = Array.from(document.querySelectorAll("th"));
+                // th.pop();
+                // var headings = th.children;
+                // var contents = Array.from(row.children);
+                // console.log(contents);
+                // // remove the last element of the array
+                // contents.pop();
+                // // get th 
+                // win.document.write('<html><head>');
+                // win.document.write('<title></title>');   // <title> FOR PDF HEADER.
+                // var heading = document.getElementById("reportType").value;
+                // win.document.write('</head>');
+                // win.document.write('<body>  <center><div id="Heading"> <h1 id="Report_Heading">' + heading + '</h1><hr style="width:40%;"> </div></center><br><br>');
+                // win.document.write('<table border="1" cellspacing="0" cellpadding="5" style="width:100%;border-collapse:collapse;">');   // CREATE A TABLE WITH BORDER.
+                // win.document.write('<tr>');
+                // for(var i = 0; i < th.length; i++){
+                //     win.document.write('<th>' + th[i].innerHTML + '</th>');  // TABLE HEADER.
+                // }
+                // win.document.write('</tr>');
+                // win.document.write('<tr>');
+                // for(var i = 0; i < contents.length; i++){
+                //     win.document.write('<td>' + contents[i].innerHTML + '</td>');  // TABLE HEADER.
+                // }
+                // win.document.write('</tr>');
+                // win.document.write('</table>');
+                // win.document.write('</body></html>');
+
+                // win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+                // win.print();    // PRINT THE CONTENTS.
             }
         function editProposal(id){
             var url = "{{ route('admin.proposal.edit', ':id') }}";
