@@ -1,3 +1,7 @@
+@extends('publication.pubtemplate')
+
+@section('content')
+
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -21,7 +25,7 @@
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
             crossorigin="anonymous"
         ></script>
-        <link rel="stylesheet" href="/dropdown.css" />
+        {{-- <link rel="stylesheet" href="/dropdown.css" /> --}}
         <script src="/dropdown.js"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -178,3 +182,4 @@
         </div>
     </body>
 </html>
+@endsection

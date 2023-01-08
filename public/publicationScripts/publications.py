@@ -7,13 +7,30 @@ params = {
   "engine": "google_scholar_author",
   "author_id": id,
   "api_key": key,
-  "sort":"pubdate"
+  "sort":"pubdate",
+  "start":0,
+  "num":100,
 }
 
 search = GoogleSearch(params)
 results = search.get_dict()
 articles = results["articles"]
 
-res = [ sub['publication'] for sub in articles ]
+res1 = [ sub['publication'] for sub in articles ]
 
-print(res)
+params = {
+  "engine": "google_scholar_author",
+  "author_id": id,
+  "api_key": key,
+  "sort":"pubdate",
+  "start":100,
+  "num":100,
+}
+
+search = GoogleSearch(params)
+results = search.get_dict()
+articles = results["articles"]
+
+res2 = [ sub['publication'] for sub in articles ]
+
+print(res1+res2)

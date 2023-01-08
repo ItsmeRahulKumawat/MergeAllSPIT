@@ -59,7 +59,7 @@ class PublicationController extends Controller
         $year = shell_exec("python publicationScripts/year.py $gscID $key");
         $links = shell_exec("python publicationScripts/links.py $gscID $key");
 
-        // dd($citations);
+        // dd($title);
         //title------------------------------------------------------------------------>
         $ch = "";
         $i = 27;
@@ -192,7 +192,7 @@ class PublicationController extends Controller
         $findauth = array("' '");
         $replaceauth = array(",");
 
-        $size = sizeof($title_array);
+        $size = sizeof($links_array);
 
         for ($i = 0; $i < $size; $i++) {
             $title_array[$i] = str_replace($find, $replace, $title_array[$i]);
@@ -218,10 +218,10 @@ class PublicationController extends Controller
         $j = 0;
         for ($i = 0; $i < sizeof($year_array) - 1; $i++) {
             $cit_add[$j] = 0;
-            while ($year_array[$i] == $year_array[$i + 1]) {
-                $cit_add[$j] = $cit_add[$j] + $citations_array[$i];
-                $i++;
-            }
+            // while ($year_array[$i] == $year_array[$i + 1]) {
+            //     $cit_add[$j] = $cit_add[$j] + $citations_array[$i];
+            //     $i++;
+            // }
             $cit_add[$j] = $cit_add[$j] + $citations_array[$i];
             $j++;
         }
